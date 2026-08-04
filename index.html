@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#231F20">
+<title>Ura+</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23231F20'/><text x='46' y='66' font-size='50' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>U</text><circle cx='76' cy='62' r='9' fill='%2346BEC5'/></svg>">
+<style>
+  :root{
+    --green:#2C9AA1; --green-d:#1D7A80; --green2:#46BEC5; --green-soft:#D8F1F3;
+    --ink:#231F20; --muted:#6E6A6B; --line:#E7E5E5; --bg:#F6F5F5; --card:#fff;
+    --amber:#d97706; --red:#dc2626;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom)}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
+    box-shadow:0 0 40px rgba(15,23,42,.08)}
+
+  /* ===== header ===== */
+  .hdr{background:linear-gradient(150deg,#181516,#332E2F);color:#fff;
+    padding:calc(14px + env(safe-area-inset-top)) 18px 60px;border-radius:0 0 30px 30px;position:relative}
+  .hdr-top{display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:19px;letter-spacing:.3px}
+  .logo small{font-weight:600;opacity:.75;font-size:11px;display:block;letter-spacing:.6px;text-transform:uppercase}
+  .icon-btn{background:rgba(255,255,255,.16);border:none;color:#fff;width:38px;height:38px;
+    border-radius:12px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .streakb{background:rgba(255,255,255,.14);padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700}
+  .ach{background:var(--card);margin:12px 16px 0;border-radius:16px;padding:12px 14px;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  .ach .at{font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:8px}
+  .bdgs{display:flex;justify-content:space-between;gap:4px}
+  .bdg{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1;min-width:0}
+  .bdg .bi{font-size:19px;line-height:1.2}
+  .bdg .bl{font-size:8.5px;color:var(--muted);font-weight:700;white-space:nowrap}
+  .bdg.lock{opacity:.28;filter:grayscale(1)}
+  .recrow{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--muted)}
+  .recrow b{color:var(--ink)}
+  .wchart{display:flex;gap:8px;align-items:flex-end;height:118px;padding-top:16px}
+  .wcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+  .wval{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700;white-space:nowrap}
+  .wbar{width:100%;max-width:46px;border-radius:7px 7px 0 0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+  .wa{background:#46BEC5}
+  .wp{background:#B5E6EA}
+  .wlab{font-size:9px;color:var(--muted);margin-top:5px;white-space:nowrap}
+  .wempty{color:var(--muted);font-size:12.5px;text-align:center;padding:18px 0}
+  .mo-nav{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px}
+  .mo-nav button{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;
+    border-radius:10px;font-size:16px;cursor:pointer}
+  .mo-nav .mo{font-size:16px;font-weight:700;min-width:170px;text-align:center;text-transform:capitalize}
+
+  /* ===== ring card ===== */
+  .ring-card{background:var(--card);margin:-44px 16px 0;border-radius:22px;padding:20px 18px 14px;
+    box-shadow:0 10px 30px rgba(15,23,42,.10);position:relative;z-index:2}
+  .ring-flex{display:flex;align-items:center;gap:18px}
+  .ring{width:138px;height:138px;border-radius:50%;flex:none;position:relative;
+    display:flex;align-items:center;justify-content:center;transition:background .4s}
+  .ring .in{width:106px;height:106px;background:var(--card);border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .ring .in b{font-size:21px;line-height:1.05}
+  .ring .in small{color:var(--muted);font-size:10.5px;margin-top:2px}
+  .ring .in .pct{color:var(--green);font-weight:800;font-size:12px;margin-top:3px}
+  .ring-side{flex:1;min-width:0}
+  .ks{padding:5px 0;border-bottom:1px dashed var(--line)}
+  .ks:last-child{border-bottom:none}
+  .ks small{display:block;color:var(--muted);font-size:11px}
+  .ks b{font-size:14.5px}
+  .ks b.g{color:var(--green)}
+  .reward{margin-top:12px;background:#EFFAFB;border:1px solid #C9ECEF;border-radius:12px;
+    padding:8px 12px;font-size:13px;display:none}
+  .reward.on{display:block}
+  .reward .bar{height:6px;background:#DFF4F6;border-radius:99px;margin-top:6px;overflow:hidden}
+  .reward .bar i{display:block;height:100%;background:var(--green2);border-radius:99px;transition:width .4s}
+  .goal-hit{margin-top:12px;background:linear-gradient(135deg,#231F20,#2C9AA1);color:#fff;border-radius:12px;
+    padding:10px 12px;font-size:13.5px;font-weight:700;text-align:center;display:none;animation:pop .5s}
+  .goal-hit.on{display:block}
+  .pacechip{margin-top:12px;border-radius:12px;padding:9px 12px;font-size:13px;font-weight:600;display:none}
+  .pacechip.on{display:block}
+  .pc-ok{background:#EFFAFB;color:#1D7A80;border:1px solid #C9ECEF}
+  .pc-warn{background:#FFF8EB;color:#92400E;border:1px solid #FDE6B8}
+  .xrow{display:flex;gap:8px}
+  .xc{flex:1;background:#F6F5F5;border-radius:10px;padding:9px 6px;text-align:center}
+  .xc small{display:block;color:var(--muted);font-size:10px;font-weight:700;margin-bottom:2px}
+  .xc b{color:var(--green);font-size:14px}
+  @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+
+  /* ===== stats strip ===== */
+  .strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 16px 0}
+  .tile{background:var(--card);border-radius:14px;padding:10px 8px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  .tile small{display:block;color:var(--muted);font-size:10px;letter-spacing:.3px;text-transform:uppercase;font-weight:600}
+  .tile b{font-size:14px}
+
+  /* ===== calendar ===== */
+  .cal-card{background:var(--card);margin:12px 16px;border-radius:20px;padding:14px 12px 12px;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;color:var(--muted);
+    font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+  .dow .we{color:#46BEC5}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .day{aspect-ratio:.82;border-radius:12px;border:1px solid transparent;background:#f8fafc;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
+    font-size:13px;position:relative;transition:transform .08s}
+  .day:active{transform:scale(.93)}
+  .day.blank{background:transparent;cursor:default}
+  .day .dn{font-weight:600;color:var(--ink)}
+  .day .hh{font-size:9.5px;font-weight:800;color:var(--green);line-height:1.1}
+  .day .ee{font-size:8.5px;color:var(--muted);line-height:1.1}
+  .day.has{background:var(--green-soft);border-color:#B9E7EB}
+  .day.today{border:2px solid var(--green);font-weight:800}
+  .day.future .dn{color:#94a3b8}
+  .cal-sum{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--muted)}
+  .cal-sum b{color:var(--ink)}
+
+  /* ===== FAB ===== */
+  .fab{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+    background:var(--ink);color:#fff;border:none;border-radius:999px;padding:14px 26px;font-size:15px;
+    font-weight:700;box-shadow:0 10px 24px rgba(35,31,32,.38);cursor:pointer;z-index:5;white-space:nowrap}
+  .fab .plus{color:#46BEC5;font-weight:800}
+  .fab:active{transform:translateX(-50%) scale(.96)}
+  .spacer{height:90px}
+
+  /* ===== sheet / modal ===== */
+  .ovl{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:10;display:none;align-items:flex-end;justify-content:center}
+  .ovl.on{display:flex}
+  .sheet{background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));
+    animation:up .22s ease-out;max-height:88vh;overflow:auto}
+  @keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:translateY(0);opacity:1}}
+  .sheet h3{margin:0 0 2px;font-size:18px}
+  .sheet .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 0;font-size:15px;
+    font-weight:700;cursor:pointer;flex:1 1 28%;text-align:center;min-width:70px}
+  .chip small{display:block;font-weight:600;color:var(--muted);font-size:10.5px}
+  .chip.sel{border-color:var(--green);background:var(--green-soft);color:var(--green-d)}
+  .mtabs{display:flex;gap:6px;background:#f1f5f9;border-radius:12px;padding:4px;margin:4px 0 2px}
+  .mt{flex:1;border:none;background:transparent;border-radius:9px;padding:9px 0;font-size:13.5px;font-weight:700;
+    color:var(--muted);cursor:pointer;font-family:inherit}
+  .mt.sel{background:#fff;color:var(--green-d);box-shadow:0 1px 3px rgba(15,23,42,.12)}
+  select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:15px;
+    font-family:inherit;background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
+  select:focus{outline:none;border-color:var(--green)}
+  input[type=time]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;
+    font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+  input[type=time]:focus{outline:none;border-color:var(--green)}
+  .day.plan{background:#EFFAFB;border:1.5px dashed #8BD7DC}
+  .day.plan .hh{color:#46BEC5}
+  label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin:12px 0 4px;letter-spacing:.2px}
+  input[type=number],input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:12px;
+    padding:12px 12px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--green)}
+  .row2{display:flex;gap:10px}
+  .row2>*{flex:1}
+  .btn{width:100%;border:none;border-radius:14px;padding:14px;font-size:15.5px;font-weight:700;cursor:pointer;margin-top:14px;font-family:inherit}
+  .btn.p{background:var(--green);color:#fff}
+  .btn.s{background:#f1f5f9;color:var(--ink);margin-top:8px}
+  .btn.d{background:#fef2f2;color:var(--red);margin-top:8px}
+  .live-calc{background:#f0fdf4;border-radius:12px;padding:10px 12px;font-size:13.5px;margin-top:12px;color:var(--green-d);text-align:center;font-weight:600}
+  .set-sec{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}
+  .set-sec h4{margin:0 0 2px;font-size:14px}
+  .set-sec p{margin:0 0 8px;color:var(--muted);font-size:12.5px}
+  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:10px 18px;border-radius:12px;font-size:14px;z-index:50;display:none;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+  .warn{display:none;margin:10px 16px 0;background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:12px;padding:10px 12px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="logo">Ura<span style="color:#46BEC5">+</span><small>ure → denar</small></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="streakb" id="streakB" style="display:none"></div>
+        <button class="icon-btn" onclick="openSettings()" title="Nastavitve">⚙︎</button>
+      </div>
+    </div>
+    <div class="mo-nav">
+      <button onclick="chMonth(-1)">‹</button>
+      <div class="mo" id="moLabel"></div>
+      <button onclick="chMonth(1)">›</button>
+    </div>
+  </div>
+
+  <div class="ring-card">
+    <div class="ring-flex">
+      <div class="ring" id="ring">
+        <div class="in">
+          <b id="rMoney">0 €</b>
+          <small id="rGoal">od 0 € cilja</small>
+          <span class="pct" id="rPct">0%</span>
+        </div>
+      </div>
+      <div class="ring-side">
+        <div class="ks"><small>Ure ta mesec</small><b id="kHours">0 / 0 h</b></div>
+        <div class="ks"><small>Še do cilja</small><b id="kLeft">—</b></div>
+        <div class="ks" id="kPlanRow" style="display:none"><small>Planirano naprej</small><b id="kPlan">—</b></div>
+        <div class="ks" id="kPaceRow"><small>Pri tem tempu končaš z</small><b class="g" id="kPace">—</b></div>
+        <div class="ks" id="kCmpRow" style="display:none"><small>Prejšnji mesec do danes</small><b id="kCmp">—</b></div>
+      </div>
+    </div>
+    <div class="reward" id="rewardBox">
+      Delam za 🎯 <b id="rewName"></b>
+      <div class="bar"><i id="rewBar"></i></div>
+      <small style="color:var(--muted)" id="rewTxt"></small>
+    </div>
+    <div class="goal-hit" id="goalHit">🎉 Mesečni cilj dosežen! Bravo!</div>
+    <div class="pacechip" id="paceChip"></div>
+  </div>
+
+  <div class="strip">
+    <div class="tile"><small>Danes</small><b id="tToday">—</b></div>
+    <div class="tile"><small>Ta teden</small><b id="tWeek">—</b></div>
+    <div class="tile"><small>Povpr./dan</small><b id="tAvg">—</b></div>
+  </div>
+
+  <div class="ach" id="extraCard" style="display:none">
+    <div class="at" id="xTitle">Vsaka ura šteje</div>
+    <div class="xrow" id="xRows"></div>
+  </div>
+
+  <div class="ach">
+    <div class="at">Dosežki</div>
+    <div class="bdgs" id="badges"></div>
+    <div class="recrow" id="recRow" style="display:none"></div>
+  </div>
+
+  <div class="warn" id="storWarn">⚠️ Ta brskalnik ne dovoli trajnega shranjevanja — podatki bodo izgubljeni ob zaprtju. Odpri datoteko v Chrome/Edge/Firefox ali uporabi “Izvozi kopijo”.</div>
+
+  <div class="cal-card">
+    <div class="dow"><span>Pon</span><span>Tor</span><span>Sre</span><span>Čet</span><span>Pet</span><span class="we">Sob</span><span class="we">Ned</span></div>
+    <div class="grid" id="calGrid"></div>
+    <div class="cal-sum">
+      <span>Delovnih vnosov: <b id="sumDays">0</b></span>
+      <span>Skupaj: <b id="sumH">0 h</b> · <b id="sumE" style="color:var(--green)">0 €</b></span>
+    </div>
+  </div>
+
+  <div class="cal-card">
+    <div class="at" style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted)">Zaslužek po tednih</div>
+    <div class="wchart" id="wchart"></div>
+  </div>
+
+  <div style="text-align:center;padding:2px 0 4px;font-size:10.5px;letter-spacing:.6px;color:#B7B4B5;font-weight:600">
+    powered by foqs<span style="color:#46BEC5">.</span>
+  </div>
+  <div class="spacer"></div>
+  <button class="fab" onclick="openEntry(todayKey())"><span class="plus">+</span> Dodaj ure za danes</button>
+
+  <!-- ===== entry sheet ===== -->
+  <div class="ovl" id="entryOvl" onclick="if(event.target===this)closeOvl('entryOvl')">
+    <div class="sheet">
+      <h3 id="eTitle">Vnos ur</h3>
+      <p class="sub" id="eSub"></p>
+      <div class="mtabs">
+        <button class="mt sel" id="tabH" onclick="setMode('h')">Št. ur</button>
+        <button class="mt" id="tabT" onclick="setMode('t')">Od – do 🕐</button>
+      </div>
+      <div id="modeH">
+        <div class="chips" id="eChips"></div>
+        <label>Ali vpiši po svoje (ure, npr. 7,5)</label>
+        <input type="number" id="eCustom" inputmode="decimal" step="0.25" min="0" max="24" placeholder="0" oninput="entrySel=null;paintChips();liveCalc()">
+      </div>
+      <div id="modeT" style="display:none">
+        <div class="row2">
+          <div><label>Začetek</label><input type="time" id="eFrom" value="08:00" oninput="liveCalc()"></div>
+          <div><label>Konec</label><input type="time" id="eTo" value="16:00" oninput="liveCalc()"></div>
+        </div>
+        <label>Malica / pavza (minut, se odšteje)</label>
+        <input type="number" id="eBreak" inputmode="numeric" min="0" max="480" step="5" placeholder="0" oninput="liveCalc()">
+      </div>
+      <label>Ponovi ta delavnik (do konca meseca)</label>
+      <select id="eRepeat">
+        <option value="">Ne ponavljaj — samo ta dan</option>
+        <option value="pp">Vsak pon–pet</option>
+        <option value="ps">Vsak pon–sob</option>
+        <option value="vd">Vsak dan</option>
+        <option value="td">Vsak isti dan v tednu</option>
+      </select>
+      <div class="live-calc" id="eCalc">0 h = 0 €</div>
+      <button class="btn p" onclick="saveEntry()">Shrani</button>
+      <button class="btn d" id="eDel" onclick="delEntry()" style="display:none">Izbriši vnos</button>
+      <button class="btn s" onclick="closeOvl('entryOvl')">Prekliči</button>
+    </div>
+  </div>
+
+  <!-- ===== settings sheet ===== -->
+  <div class="ovl" id="setOvl" onclick="if(event.target===this)closeOvl('setOvl')">
+    <div class="sheet">
+      <h3>Nastavitve</h3>
+      <p class="sub">Vse se preračuna takoj, ko shraniš.</p>
+      <label>Urna postavka (€/h)</label>
+      <input type="number" id="sRate" inputmode="decimal" step="0.1" min="0" placeholder="npr. 8">
+      <label>Mesečni cilj si postavim …</label>
+      <div class="mtabs" style="margin-top:2px">
+        <button class="mt sel" id="gTabH" onclick="setGoalMode('h')">v urah ⏱</button>
+        <button class="mt" id="gTabE" onclick="setGoalMode('e')">v denarju 💶</button>
+      </div>
+      <div id="gModeH">
+        <label>Mesečni cilj (ur)</label>
+        <input type="number" id="sGoal" inputmode="numeric" step="1" min="0" placeholder="npr. 160">
+      </div>
+      <div id="gModeE" style="display:none">
+        <label>Koliko € hočeš zaslužiti ta mesec?</label>
+        <input type="number" id="sGoalEur" inputmode="decimal" step="10" min="0" placeholder="npr. 1500">
+      </div>
+      <div class="live-calc" id="sCalc"></div>
+      <label>Za kaj delaš ta mesec? 🎯 (neobvezno)</label>
+      <input type="text" id="sReward" placeholder="npr. nov telefon" maxlength="40">
+      <div class="row2" style="margin-top:8px">
+        <div><label style="margin-top:0">Cena nagrade (€, neobvezno)</label>
+        <input type="number" id="sRewPrice" inputmode="decimal" min="0" placeholder="npr. 600"></div>
+      </div>
+      <button class="btn p" onclick="saveSettings()">Shrani nastavitve</button>
+
+      <div class="set-sec">
+        <h4>Račun in sinhronizacija</h4>
+        <div id="acctBox"></div>
+      </div>
+
+      <div class="set-sec">
+        <h4>Varnostna kopija</h4>
+        <p>Podatki so shranjeni samo na tej napravi. Občasno izvozi kopijo — z njo lahko podatke preneseš tudi na drugo napravo.</p>
+        <button class="btn s" style="margin-top:0" onclick="exportData()">⬇︎ Izvozi kopijo (.json)</button>
+        <button class="btn s" onclick="document.getElementById('impFile').click()">⬆︎ Uvozi kopijo</button>
+        <input type="file" id="impFile" accept=".json,application/json" style="display:none" onchange="importData(this)">
+      </div>
+      <button class="btn s" onclick="closeOvl('setOvl')">Zapri</button>
+    </div>
+  </div>
+
+  <!-- ===== auth sheet ===== -->
+  <div class="ovl" id="authOvl" onclick="if(event.target===this)closeOvl('authOvl')">
+    <div class="sheet">
+      <h3>Račun</h3>
+      <p class="sub">S prijavo se podatki samodejno sinhronizirajo med telefonom in računalnikom.</p>
+      <label>E-pošta</label>
+      <input type="text" id="aEmail" inputmode="email" autocomplete="username" placeholder="ime@primer.si">
+      <label>Geslo (vsaj 6 znakov)</label>
+      <input type="password" id="aPass" autocomplete="current-password" placeholder="••••••••">
+      <div id="aErr" style="display:none;margin-top:10px;background:#fef2f2;color:var(--red);border-radius:10px;padding:9px 12px;font-size:13px"></div>
+      <button class="btn p" id="aLoginBtn" onclick="doLogin()">Prijava</button>
+      <button class="btn s" id="aSignupBtn" onclick="doSignup()">Ustvari nov račun</button>
+      <button class="btn s" onclick="closeOvl('authOvl')">Nazaj</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+'use strict';
+/* ================= state ================= */
+var KEY='uraplus_v1';
+var memStore=null, storageOK=true;
+try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }
+catch(e){ storageOK=false; }
+
+var S=load();
+function load(){
+  var def={rate:0, goalHours:0, goalMode:'h', goalMoney:0, reward:'', rewPrice:0, data:{}, celebrated:{}, msDone:0};
+  try{
+    var raw= storageOK? localStorage.getItem(KEY) : memStore;
+    if(!raw) return def;
+    var o=JSON.parse(raw);
+    for(var k in def) if(!(k in o)) o[k]=def[k];
+    return o;
+  }catch(e){ return def; }
+}
+function persist(){
+  var raw=JSON.stringify(S);
+  if(storageOK){ try{ localStorage.setItem(KEY,raw); }catch(e){} }
+  else memStore=raw;
+}
+function save(){
+  S._ts=new Date().toISOString();
+  persist();
+  queueSync();
+}
+
+/* view month */
+var now=new Date();
+var vy=now.getFullYear(), vm=now.getMonth();
+
+/* ================= utils ================= */
+var MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
+function pad(n){return (n<10?'0':'')+n;}
+function key(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d);}
+function todayKey(){var t=new Date();return key(t.getFullYear(),t.getMonth(),t.getDate());}
+function dim(y,m){return new Date(y,m+1,0).getDate();}
+function eur(n){
+  var s=(Math.round(n*100)/100).toLocaleString('sl-SI',{minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2});
+  return s+' €';
+}
+function hrs(n){return (Math.round(n*100)/100).toLocaleString('sl-SI')+' h';}
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.style.display='block';
+  clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2200);
+}
+/* entry can be a number (hours) or {h,f,t,b} (from-to). */
+function entH(v){ if(v==null) return 0; return typeof v==='number' ? v : (v.h||0); }
+function entRange(v){ return (v && typeof v==='object' && v.f && v.t) ? v.f+'–'+v.t : null; }
+/* derived goal: hours & money, from whichever mode is set */
+function goalH(){
+  if(S.goalMode==='e') return S.rate>0 ? S.goalMoney/S.rate : 0;
+  return S.goalHours;
+}
+function goalE(){
+  if(S.goalMode==='e') return S.goalMoney;
+  return S.goalHours*S.rate;
+}
+/* streak: zaporedni delovni dnevi z vnosom; prazen vikend ne prekine niza,
+   današnji (še ne vpisan) dan tudi ne */
+function calcStreak(){
+  var t=new Date(); var d=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  var k=key(d.getFullYear(),d.getMonth(),d.getDate());
+  if(!S.data[k]) d.setDate(d.getDate()-1);
+  var s=0;
+  for(var i=0;i<730;i++){
+    var kk=key(d.getFullYear(),d.getMonth(),d.getDate());
+    if(S.data[kk]!=null && entH(S.data[kk])>0){ s++; }
+    else { var dow=d.getDay(); if(dow!==0 && dow!==6) break; }
+    d.setDate(d.getDate()-1);
+  }
+  return s;
+}
+function allTimeEarned(){
+  var tk=todayKey(), tot=0;
+  for(var k in S.data){ if(k<=tk) tot+=entH(S.data[k]); }
+  return tot*S.rate;
+}
+var MILES=[1000,2000,2500,3000,4000,5000];
+var MICON=['💶','🥉','🥈','🥇','🏆','👑'];
+var MLAB=['1k €','2k €','2,5k €','3k €','4k €','5k+ €'];
+function bestMonth(){
+  var tk=todayKey(), agg={};
+  for(var k in S.data){ if(k<=tk){ var mk=k.slice(0,7); agg[mk]=(agg[mk]||0)+entH(S.data[k]); } }
+  var best=null;
+  for(var mk in agg){ if(!best || agg[mk]>agg[best]) best=mk; }
+  return best? {mk:best, h:agg[best]} : null;
+}
+function monthCalc(y,m){
+  var tk=todayKey();
+  var aH=0,aD=0,pH=0,pD=0, n=dim(y,m);
+  for(var d=1;d<=n;d++){
+    var k=key(y,m,d), v=S.data[k]; if(v==null) continue;
+    var h=entH(v);
+    if(k<=tk){ aH+=h; aD++; } else { pH+=h; pD++; }
+  }
+  return {aH:aH,aD:aD,pH:pH,pD:pD};
+}
+
+/* ================= render ================= */
+function render(){
+  var isCur = (vy===now.getFullYear() && vm===now.getMonth());
+  document.getElementById('moLabel').textContent = MESECI[vm]+' '+vy;
+
+  var mh=monthCalc(vy,vm);
+  var earned=mh.aH*S.rate;            /* dejansko (do vključno danes) */
+  var planEur=mh.pH*S.rate;           /* planirano naprej */
+  var gH=goalH(), gE=goalE();
+  var pctA = gE>0 ? Math.min(100, earned/gE*100) : 0;
+  var pctB = gE>0 ? Math.min(100, (earned+planEur)/gE*100) : 0;
+
+  /* ring: polno = zasluženo, svetlo = planirano */
+  document.getElementById('rMoney').textContent=eur(earned);
+  document.getElementById('rGoal').textContent = gE>0 ? 'od '+eur(gE)+' cilja' : 'nastavi cilj ⚙︎';
+  var rp=document.getElementById('rPct');
+  rp.textContent = Math.round(pctA)+'%'+(mh.pH>0?' · plan '+Math.round(pctB)+'%':'');
+  rp.style.fontSize = mh.pH>0 ? '9.5px' : '12px';
+  rp.style.letterSpacing = mh.pH>0 ? '.1px' : '';
+  document.getElementById('ring').style.background =
+    'conic-gradient(#46BEC5 0% '+pctA+'%, #B5E6EA '+pctA+'% '+pctB+'%, #E7E5E5 '+pctB+'% 100%)';
+
+  /* side stats */
+  document.getElementById('kHours').textContent = hrs(mh.aH)+(gH?' / '+(Math.round(gH*10)/10).toLocaleString('sl-SI')+' h':'');
+  var leftH = Math.max(0, gH-mh.aH);
+  var leftEl=document.getElementById('kLeft');
+  if(!gH){ leftEl.textContent='—'; }
+  else if(leftH<=0){ leftEl.textContent='Cilj dosežen! 🎉'; leftEl.className='g'; }
+  else{
+    var txt=hrs(leftH)+' · '+eur(leftH*S.rate);
+    if(isCur){
+      var daysLeft = dim(vy,vm)-now.getDate()+1;
+      if(daysLeft>0) txt+=' · '+ (Math.round(leftH/daysLeft*10)/10).toLocaleString('sl-SI')+' h/dan';
+    }
+    leftEl.textContent=txt; leftEl.className='';
+  }
+
+  /* planirano naprej */
+  var planRow=document.getElementById('kPlanRow');
+  if(mh.pH>0){
+    planRow.style.display='';
+    document.getElementById('kPlan').textContent = hrs(mh.pH)+' · '+eur(planEur)+' → skupaj '+eur(earned+planEur);
+  } else planRow.style.display='none';
+
+  /* pace projection — only current month */
+  var paceRow=document.getElementById('kPaceRow');
+  if(isCur && mh.aH>0){
+    paceRow.style.display='';
+    var proj = mh.aH/now.getDate()*dim(vy,vm)*S.rate;
+    document.getElementById('kPace').textContent='~'+eur(proj);
+  } else paceRow.style.display='none';
+
+  /* reward */
+  var rb=document.getElementById('rewardBox');
+  if(S.reward){
+    rb.classList.add('on');
+    document.getElementById('rewName').textContent=S.reward;
+    var bar=document.getElementById('rewBar'), rt=document.getElementById('rewTxt');
+    if(S.rewPrice>0){
+      var rp=Math.min(100, earned/S.rewPrice*100);
+      bar.style.width=rp+'%';
+      rt.textContent= earned>=S.rewPrice ? 'Imaš jo! 🎉' : eur(Math.max(0,S.rewPrice-earned))+' še manjka ('+Math.round(rp)+'%)';
+      bar.parentElement.style.display='';
+    } else { bar.parentElement.style.display='none'; rt.textContent=''; }
+  } else rb.classList.remove('on');
+
+  /* goal hit banner + one-time celebration (samo dejanske ure) */
+  var hit = gH>0 && mh.aH>=gH;
+  document.getElementById('goalHit').classList.toggle('on',hit);
+  var mk=vy+'-'+vm;
+  if(hit && !S.celebrated[mk]){ S.celebrated[mk]=1; save(); confetti(); }
+
+  /* strip tiles */
+  var tv=entH(S.data[todayKey()]);
+  document.getElementById('tToday').textContent = isCur? (tv? hrs(tv)+' · +'+eur(tv*S.rate):'—') : '—';
+  /* week (mon-sun) of today, only up to today */
+  var wtot=0;
+  if(isCur){
+    var t=new Date(); var off=(t.getDay()+6)%7; var tk2=todayKey();
+    for(var i=0;i<7;i++){
+      var d=new Date(t.getFullYear(),t.getMonth(),t.getDate()-off+i);
+      var kk=key(d.getFullYear(),d.getMonth(),d.getDate());
+      if(kk<=tk2) wtot += entH(S.data[kk]);
+    }
+    document.getElementById('tWeek').textContent = wtot? hrs(wtot)+' · '+eur(wtot*S.rate) : '—';
+  } else document.getElementById('tWeek').textContent='—';
+  document.getElementById('tAvg').textContent = mh.aD? hrs(mh.aH/mh.aD) : '—';
+
+  /* calendar */
+  var g=document.getElementById('calGrid'); g.innerHTML='';
+  var first=new Date(vy,vm,1); var offset=(first.getDay()+6)%7;
+  var n=dim(vy,vm);
+  for(var b=0;b<offset;b++){var e=document.createElement('div');e.className='day blank';g.appendChild(e);}
+  var tk=todayKey();
+  for(var d=1;d<=n;d++){
+    var k=key(vy,vm,d), v=S.data[k], h=entH(v);
+    var el=document.createElement('div');
+    var isFut = k>tk;
+    el.className='day'+(v!=null?(isFut?' plan':' has'):'')+(k===tk?' today':'')+(isFut&&v==null?' future':'');
+    el.innerHTML='<span class="dn">'+d+'</span>'+
+      (v!=null? '<span class="hh">'+(Math.round(h*100)/100).toLocaleString('sl-SI')+'h</span><span class="ee">'+eur(h*S.rate)+'</span>':'');
+    (function(kk){ el.onclick=function(){openEntry(kk);}; })(k);
+    g.appendChild(el);
+  }
+  document.getElementById('sumDays').textContent=mh.aD+mh.pD;
+  document.getElementById('sumH').textContent=hrs(mh.aH+mh.pH);
+  document.getElementById('sumE').textContent=eur(earned+planEur);
+
+  /* primerjava z istim dnem prejšnjega meseca (tekma s sabo) */
+  var cmpRow=document.getElementById('kCmpRow');
+  if(isCur){
+    var py=vm===0?vy-1:vy, pm=vm===0?11:vm-1;
+    var lim=Math.min(now.getDate(), dim(py,pm)), prevH=0, hadPrev=false;
+    for(var pd=1; pd<=lim; pd++){
+      var pv=S.data[key(py,pm,pd)];
+      if(pv!=null){ prevH+=entH(pv); hadPrev=true; }
+    }
+    /* pokaži tudi, če je imel prejšnji mesec karkoli vnešeno */
+    var hadAnyPrev=false;
+    for(var pd2=1; pd2<=dim(py,pm); pd2++){ if(S.data[key(py,pm,pd2)]!=null){ hadAnyPrev=true; break; } }
+    if(hadAnyPrev){
+      cmpRow.style.display='';
+      var diff=mh.aH-prevH, cEl=document.getElementById('kCmp');
+      if(diff>=0){ cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--green)">+'+hrs(diff)+' 💪</span>'; }
+      else { cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--amber)">'+hrs(diff).replace('-','−')+'</span>'; }
+    } else cmpRow.style.display='none';
+  } else cmpRow.style.display='none';
+
+  /* semafor tempa: me trenutni tempo pripelje do cilja? */
+  var pc=document.getElementById('paceChip');
+  pc.classList.remove('on','pc-ok','pc-warn');
+  if(isCur && gH>0 && mh.aH>0 && leftH>0){
+    var daysLeft2 = dim(vy,vm)-now.getDate()+1;
+    var proj2 = mh.aH/now.getDate()*dim(vy,vm);
+    var needPerDay = daysLeft2>0 ? leftH/daysLeft2 : 0;
+    var curPerDay = mh.aH/now.getDate();
+    if(proj2>=gH){
+      pc.classList.add('on','pc-ok');
+      pc.textContent='✅ Na poti do cilja — ta tempo ti prinese ~'+hrs(Math.round(proj2))+'.';
+    } else {
+      pc.classList.add('on','pc-warn');
+      pc.textContent='⚠️ Ta tempo ti da le ~'+hrs(Math.round(proj2))+'. Za cilj od zdaj: '+
+        (Math.round(needPerDay*10)/10).toLocaleString('sl-SI')+' h/dan (zdaj delaš ~'+
+        (Math.round(curPerDay*10)/10).toLocaleString('sl-SI')+' h/dan).';
+    }
+  }
+
+  /* vsaka dodatna ura šteje — do konca meseca */
+  var xc=document.getElementById('extraCard');
+  if(isCur && S.rate>0){
+    var dl=dim(vy,vm)-now.getDate()+1;
+    xc.style.display='';
+    document.getElementById('xTitle').textContent='Vsaka ura šteje — še '+dl+' dni do konca meseca';
+    var xr=document.getElementById('xRows'); xr.innerHTML='';
+    [0.5,1,2].forEach(function(x){
+      var el=document.createElement('div'); el.className='xc';
+      el.innerHTML='<small>+'+(x===0.5?'0,5':x)+' h/dan</small><b>+'+eur(Math.round(x*dl*S.rate))+'</b>';
+      xr.appendChild(el);
+    });
+  } else xc.style.display='none';
+
+  /* streak badge */
+  var st=calcStreak(), sb=document.getElementById('streakB');
+  if(st>=2){ sb.style.display=''; sb.textContent='🔥 '+st+' dni'; }
+  else sb.style.display='none';
+
+  /* dosežki: mejniki + rekord */
+  var ate=allTimeEarned();
+  var bd=document.getElementById('badges'); bd.innerHTML='';
+  var topHit=0;
+  for(var mi=0; mi<MILES.length; mi++){
+    var got = ate>=MILES[mi]; if(got) topHit=MILES[mi];
+    var be=document.createElement('div');
+    be.className='bdg'+(got?'':' lock');
+    be.innerHTML='<span class="bi">'+MICON[mi]+'</span><span class="bl">'+MLAB[mi]+'</span>';
+    bd.appendChild(be);
+  }
+  if(topHit>S.msDone){ S.msDone=topHit; save(); confetti(); toast('🏅 Mejnik dosežen: '+eur(topHit)+'!'); }
+  var bm=bestMonth(), rr=document.getElementById('recRow');
+  if(bm && S.rate>0){
+    rr.style.display='';
+    var bp=bm.mk.split('-');
+    rr.innerHTML='🏆 Najboljši mesec: <b>'+MESECI[+bp[1]-1]+' '+bp[0]+'</b> · <b>'+hrs(bm.h)+'</b> · <b style="color:var(--green)">'+eur(bm.h*S.rate)+'</b>';
+  } else rr.style.display='none';
+
+  /* graf po tednih (pogledani mesec) */
+  var wc=document.getElementById('wchart'); wc.innerHTML='';
+  var weeks=[]; /* {a,p,from,to} */
+  for(var dd=1; dd<=n; dd++){
+    var wi=Math.floor((dd+offset-1)/7);
+    if(!weeks[wi]) weeks[wi]={a:0,p:0,from:dd,to:dd};
+    weeks[wi].to=dd;
+    var vv=S.data[key(vy,vm,dd)]; if(vv==null) continue;
+    var hh2=entH(vv)*S.rate;
+    if(key(vy,vm,dd)<=tk) weeks[wi].a+=hh2; else weeks[wi].p+=hh2;
+  }
+  var wmax=0; weeks.forEach(function(w){ wmax=Math.max(wmax,w.a+w.p); });
+  if(wmax<=0){
+    wc.innerHTML='<div class="wempty" style="width:100%">Ko vneseš ure, se tukaj pokaže graf 📊</div>';
+  } else {
+    weeks.forEach(function(w){
+      var col=document.createElement('div'); col.className='wcol';
+      var tot=w.a+w.p;
+      var barH=Math.round(tot/wmax*82);
+      var aH2 = tot>0? Math.round(barH*(w.a/tot)) : 0;
+      col.innerHTML='<div class="wval">'+(tot>0?eur(Math.round(tot)):'')+'</div>'+
+        '<div class="wbar" style="height:'+Math.max(barH,tot>0?4:0)+'px">'+
+          '<div class="wp" style="height:'+(barH-aH2)+'px"></div>'+
+          '<div class="wa" style="height:'+aH2+'px"></div>'+
+        '</div>'+
+        '<div class="wlab">'+w.from+'.–'+w.to+'.</div>';
+      wc.appendChild(col);
+    });
+  }
+
+  if(!storageOK) document.getElementById('storWarn').style.display='block';
+}
+
+/* tiny confetti */
+function confetti(){
+  for(var i=0;i<36;i++){
+    var p=document.createElement('div');
+    p.style.cssText='position:fixed;z-index:99;top:-10px;width:9px;height:9px;border-radius:2px;pointer-events:none;'+
+      'left:'+(Math.random()*100)+'vw;background:'+['#46BEC5','#231F20','#2C9AA1','#B5E6EA','#8BD7DC'][i%5]+';'+
+      'transition:transform 2.4s ease-in,opacity 2.4s;transform:translateY(0) rotate(0)';
+    document.body.appendChild(p);
+    (function(p){
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        p.style.transform='translateY(110vh) rotate('+(360+Math.random()*720)+'deg)'; p.style.opacity='0';
+      });});
+      setTimeout(function(){p.remove();},2600);
+    })(p);
+  }
+}
+
+/* ================= month nav ================= */
+function chMonth(d){ vm+=d; if(vm<0){vm=11;vy--;} if(vm>11){vm=0;vy++;} render(); }
+
+/* ================= entry ================= */
+var entryKey=null, entrySel=null, entryMode='h';
+var CHIPS=[2,4,6,8,10,12];
+function setMode(m){
+  entryMode=m;
+  document.getElementById('tabH').classList.toggle('sel',m==='h');
+  document.getElementById('tabT').classList.toggle('sel',m==='t');
+  document.getElementById('modeH').style.display = m==='h'?'':'none';
+  document.getElementById('modeT').style.display = m==='t'?'':'none';
+  liveCalc();
+}
+function timeToMin(s){ if(!s) return null; var p=s.split(':'); return (+p[0])*60+(+p[1]); }
+function calcRange(){
+  var f=timeToMin(document.getElementById('eFrom').value);
+  var t=timeToMin(document.getElementById('eTo').value);
+  if(f==null||t==null) return 0;
+  var mins=t-f; if(mins<=0) mins+=1440;          /* nočna izmena čez polnoč */
+  var br=parseInt(document.getElementById('eBreak').value,10)||0;
+  mins-=br;
+  return Math.max(0, Math.round(mins/60*100)/100);
+}
+function openEntry(k){
+  entryKey=k; entrySel=null;
+  var parts=k.split('-');
+  var dt=new Date(+parts[0],+parts[1]-1,+parts[2]);
+  var DNI=['nedelja','ponedeljek','torek','sreda','četrtek','petek','sobota'];
+  var isFut = k>todayKey();
+  document.getElementById('eTitle').textContent = (k===todayKey()?'Danes':DNI[dt.getDay()])+', '+dt.getDate()+'. '+MESECI[dt.getMonth()]+' '+dt.getFullYear();
+  var v=S.data[k], h=entH(v), rng=entRange(v);
+  document.getElementById('eSub').textContent =
+    v!=null ? ((isFut?'Planirano: ':'Trenutno vpisano: ')+hrs(h)+(rng?' ('+rng+')':''))
+            : (isFut?'Planiraj delavnik za ta dan.':'Koliko ur si delal ta dan?');
+  /* prefill */
+  document.getElementById('eCustom').value='';
+  document.getElementById('eBreak').value='';
+  document.getElementById('eRepeat').value='';
+  if(v!=null && typeof v==='object' && v.f){
+    setMode('t');
+    document.getElementById('eFrom').value=v.f;
+    document.getElementById('eTo').value=v.t;
+    document.getElementById('eBreak').value=v.b||'';
+  } else {
+    setMode('h');
+    if(h && CHIPS.indexOf(h)>=0) entrySel=h;
+    else if(h) document.getElementById('eCustom').value=h;
+  }
+  document.getElementById('eDel').style.display = v!=null? 'block':'none';
+  paintChips(); liveCalc();
+  document.getElementById('entryOvl').classList.add('on');
+}
+function paintChips(){
+  var c=document.getElementById('eChips'); c.innerHTML='';
+  CHIPS.forEach(function(h){
+    var b=document.createElement('button');
+    b.className='chip'+(entrySel===h?' sel':'');
+    b.innerHTML=h+' h<small>'+eur(h*S.rate)+'</small>';
+    b.onclick=function(){ entrySel=h; document.getElementById('eCustom').value=''; paintChips(); liveCalc(); };
+    c.appendChild(b);
+  });
+}
+function entryVal(){
+  if(entryMode==='t') return calcRange();
+  if(entrySel!=null) return entrySel;
+  var v=parseFloat(String(document.getElementById('eCustom').value).replace(',','.'));
+  return isNaN(v)?0:v;
+}
+function liveCalc(){
+  var v=entryVal();
+  var pre = entryMode==='t' ? (document.getElementById('eFrom').value+'–'+document.getElementById('eTo').value+' → ') : '';
+  document.getElementById('eCalc').textContent = pre+hrs(v)+' = '+eur(v*S.rate);
+}
+function buildValue(){
+  var h=Math.round(entryVal()*100)/100;
+  if(entryMode==='t'){
+    return { h:h, f:document.getElementById('eFrom').value, t:document.getElementById('eTo').value,
+             b:parseInt(document.getElementById('eBreak').value,10)||0 };
+  }
+  return h;
+}
+function repeatMatch(rep, dow, baseDow){
+  if(rep==='pp') return dow>=1&&dow<=5;
+  if(rep==='ps') return dow>=1&&dow<=6;
+  if(rep==='vd') return true;
+  if(rep==='td') return dow===baseDow;
+  return false;
+}
+function saveEntry(){
+  var v=entryVal();
+  if(v<=0){ toast('Vpiši število ur'); return; }
+  if(v>24){ toast('Največ 24 h na dan 🙂'); return; }
+  var val=buildValue();
+  S.data[entryKey]=val;
+
+  /* ponovi do konca meseca (preskoči dneve, ki že imajo vnos) */
+  var rep=document.getElementById('eRepeat').value, added=0;
+  if(rep){
+    var p=entryKey.split('-'); var y=+p[0], m=+p[1]-1, d0=+p[2];
+    var baseDow=new Date(y,m,d0).getDay();
+    for(var d=d0+1; d<=dim(y,m); d++){
+      var dt=new Date(y,m,d), k=key(y,m,d);
+      if(!repeatMatch(rep, dt.getDay(), baseDow)) continue;
+      if(S.data[k]!=null) continue;
+      S.data[k]= (typeof val==='object') ? {h:val.h,f:val.f,t:val.t,b:val.b} : val;
+      added++;
+    }
+  }
+  save(); closeOvl('entryOvl'); render();
+  toast(added>0 ? '+'+eur(entH(val)*S.rate)+' · delavnik nastavljen še za '+added+' dni 📅'
+                : '+'+eur(entH(val)*S.rate)+' zabeleženo 💪');
+}
+function delEntry(){
+  delete S.data[entryKey];
+  save(); closeOvl('entryOvl'); render(); toast('Vnos izbrisan');
+}
+
+/* ================= settings ================= */
+var goalMode='h';
+function setGoalMode(m){
+  goalMode=m;
+  document.getElementById('gTabH').classList.toggle('sel',m==='h');
+  document.getElementById('gTabE').classList.toggle('sel',m==='e');
+  document.getElementById('gModeH').style.display = m==='h'?'':'none';
+  document.getElementById('gModeE').style.display = m==='e'?'':'none';
+  setCalc();
+}
+function openSettings(){
+  document.getElementById('sRate').value=S.rate||'';
+  document.getElementById('sGoal').value=S.goalHours||'';
+  document.getElementById('sGoalEur').value=S.goalMoney||'';
+  document.getElementById('sReward').value=S.reward||'';
+  document.getElementById('sRewPrice').value=S.rewPrice||'';
+  setGoalMode(S.goalMode==='e'?'e':'h');
+  renderAcct();
+  document.getElementById('sRate').oninput=setCalc;
+  document.getElementById('sGoal').oninput=setCalc;
+  document.getElementById('sGoalEur').oninput=setCalc;
+  document.getElementById('setOvl').classList.add('on');
+}
+function setCalc(){
+  var r=parseFloat(String(document.getElementById('sRate').value).replace(',','.'))||0;
+  var el=document.getElementById('sCalc');
+  var n=dim(now.getFullYear(),now.getMonth());
+  if(goalMode==='h'){
+    var g=parseFloat(String(document.getElementById('sGoal').value).replace(',','.'))||0;
+    if(r>0&&g>0) el.textContent='Cilj = '+eur(r*g)+' na mesec · ~'+eur(r*g/n)+' na dan';
+    else el.textContent='Vpiši postavko in cilj, da vidiš izračun';
+  } else {
+    var e=parseFloat(String(document.getElementById('sGoalEur').value).replace(',','.'))||0;
+    if(r>0&&e>0){
+      var hh=e/r;
+      el.textContent='Za '+eur(e)+' rabiš '+(Math.round(hh*10)/10).toLocaleString('sl-SI')+' h · ~'+(Math.round(hh/n*10)/10).toLocaleString('sl-SI')+' h na dan';
+    } else el.textContent='Vpiši postavko in znesek, da vidiš potrebne ure';
+  }
+}
+function saveSettings(){
+  var r=parseFloat(String(document.getElementById('sRate').value).replace(',','.'));
+  S.rate=isNaN(r)||r<0?0:r;
+  S.goalMode=goalMode;
+  if(goalMode==='h'){
+    var g=parseFloat(String(document.getElementById('sGoal').value).replace(',','.'));
+    S.goalHours=isNaN(g)||g<0?0:Math.round(g);
+  } else {
+    var e=parseFloat(String(document.getElementById('sGoalEur').value).replace(',','.'));
+    S.goalMoney=isNaN(e)||e<0?0:e;
+  }
+  S.reward=document.getElementById('sReward').value.trim();
+  var rp=parseFloat(String(document.getElementById('sRewPrice').value).replace(',','.'));
+  S.rewPrice=isNaN(rp)||rp<0?0:rp;
+  save(); closeOvl('setOvl'); render(); toast('Nastavitve shranjene ✓');
+}
+
+/* ================= backup ================= */
+function exportData(){
+  var blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  var t=new Date();
+  a.download='ura-plus-kopija-'+t.getFullYear()+pad(t.getMonth()+1)+pad(t.getDate())+'.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('Kopija prenesena ⬇︎');
+}
+function importData(inp){
+  var f=inp.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var o=JSON.parse(rd.result);
+      if(typeof o!=='object'||!o.data) throw 0;
+      S=o; if(!S.celebrated)S.celebrated={};
+      save(); render(); closeOvl('setOvl'); toast('Podatki uvoženi ✓');
+    }catch(e){ toast('Ta datoteka ni veljavna kopija'); }
+  };
+  rd.readAsText(f); inp.value='';
+}
+
+/* ================= misc ================= */
+function closeOvl(id){ document.getElementById(id).classList.remove('on'); }
+
+/* first run: open settings if not configured */
+render();
+if(!S.rate && !S.goalHours && !S.goalMoney){
+  setTimeout(function(){ openSettings(); toast('Dobrodošel! Najprej nastavi postavko in cilj 👇'); },400);
+}
+/* ================= račun & sinhronizacija (Supabase) =================
+   App je offline-first: vse dela brez prijave; s prijavo se stanje
+   sinhronizira med napravami (zadnji zapis zmaga). */
+var SB_URL='https://cgnihdlprjqpawvpznsw.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnbmloZGxwcmpxcGF3dnB6bnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3ODAwODAsImV4cCI6MjEwMTM1NjA4MH0.HQgn-5op-0BYAMllyE3rbhwlLPILxvl1OVnqXau_33g';
+var SESS_KEY='uraplus_sess';
+var memSess=null;
+function loadSess(){
+  try{ var raw= storageOK? localStorage.getItem(SESS_KEY) : memSess; return raw? JSON.parse(raw):null; }
+  catch(e){ return null; }
+}
+function storeSess(s){
+  SESS=s;
+  var raw=s? JSON.stringify(s):null;
+  if(storageOK){ try{ if(raw)localStorage.setItem(SESS_KEY,raw); else localStorage.removeItem(SESS_KEY); }catch(e){} }
+  else memSess=raw;
+}
+var SESS=loadSess();
+var syncState='—', syncTimer=null, lastPull=0;
+
+function setSyncState(t){ syncState=t; renderAcct(); }
+function sbHeaders(auth){
+  var h={'apikey':SB_KEY,'Content-Type':'application/json'};
+  if(auth && SESS) h['Authorization']='Bearer '+SESS.access_token;
+  return h;
+}
+function normSess(d){
+  return { access_token:d.access_token, refresh_token:d.refresh_token,
+           expires_at:d.expires_at || (Math.floor(Date.now()/1000)+(d.expires_in||3600)),
+           user:{ id:(d.user&&d.user.id), email:(d.user&&d.user.email) } };
+}
+function ensureToken(){
+  if(!SESS) return Promise.resolve(false);
+  if(Math.floor(Date.now()/1000) < (SESS.expires_at||0)-60) return Promise.resolve(true);
+  return fetch(SB_URL+'/auth/v1/token?grant_type=refresh_token',{
+    method:'POST',headers:sbHeaders(false),body:JSON.stringify({refresh_token:SESS.refresh_token})
+  }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){ storeSess(normSess(d)); return true; })
+    .catch(function(){ storeSess(null); setSyncState('odjavljen'); return false; });
+}
+function anyLocalData(){
+  return !!(S.rate || S.goalHours || S.goalMoney || Object.keys(S.data).length);
+}
+function syncPush(){
+  if(!SESS) return;
+  ensureToken().then(function(ok){
+    if(!ok) return;
+    return fetch(SB_URL+'/rest/v1/app_state',{
+      method:'POST',
+      headers:Object.assign(sbHeaders(true),{'Prefer':'resolution=merge-duplicates,return=minimal'}),
+      body:JSON.stringify({user_id:SESS.user.id, state:S, updated_at:S._ts||new Date().toISOString()})
+    }).then(function(r){
+      setSyncState(r.ok? 'usklajeno ✓' : 'napaka pri usklajevanju');
+    });
+  }).catch(function(){ setSyncState('offline — uskladim kasneje'); });
+}
+function syncStart(){
+  if(!SESS) return;
+  lastPull=Date.now();
+  ensureToken().then(function(ok){
+    if(!ok) return;
+    return fetch(SB_URL+'/rest/v1/app_state?user_id=eq.'+SESS.user.id+'&select=state,updated_at',{
+      headers:sbHeaders(true)
+    }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(rows){
+        if(rows.length){
+          var remote=rows[0], localTs=S._ts||'1970-01-01';
+          if(!anyLocalData() || remote.updated_at>localTs){
+            var st=remote.state||{};
+            if(!st.data) st.data={};
+            if(!st.celebrated) st.celebrated={};
+            S=st; S._ts=remote.updated_at;
+            persist(); render();
+          } else if(localTs>remote.updated_at){ syncPush(); }
+          setSyncState('usklajeno ✓');
+        } else if(anyLocalData()){ syncPush(); }
+        else setSyncState('usklajeno ✓');
+      });
+  }).catch(function(){ setSyncState('offline — uskladim kasneje'); });
+}
+function queueSync(){
+  if(!SESS) return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(syncPush, 1500);
+}
+/* auth UI */
+function aErr(msg){
+  var e=document.getElementById('aErr');
+  if(msg){ e.textContent=msg; e.style.display='block'; } else e.style.display='none';
+}
+function slErr(m){
+  m=String(m||'');
+  if(m.indexOf('Invalid login credentials')>=0) return 'Napačna e-pošta ali geslo.';
+  if(m.indexOf('already registered')>=0 || m.indexOf('already been registered')>=0) return 'Ta e-pošta že ima račun — uporabi Prijavo.';
+  if(m.indexOf('at least 6')>=0 || m.indexOf('Password should')>=0) return 'Geslo mora imeti vsaj 6 znakov.';
+  if(m.indexOf('valid email')>=0 || m.indexOf('invalid format')>=0) return 'Vpiši veljavno e-pošto.';
+  if(m.indexOf('rate limit')>=0 || m.indexOf('Too many')>=0) return 'Preveč poskusov — poskusi čez minuto.';
+  return 'Ni šlo: '+m;
+}
+function authDone(d){
+  storeSess(normSess(d));
+  closeOvl('authOvl');
+  toast('Prijavljen ✓');
+  renderAcct();
+  syncStart();
+}
+function doLogin(){
+  aErr(null);
+  var em=document.getElementById('aEmail').value.trim(), pw=document.getElementById('aPass').value;
+  if(!em||!pw){ aErr('Vpiši e-pošto in geslo.'); return; }
+  fetch(SB_URL+'/auth/v1/token?grant_type=password',{
+    method:'POST',headers:sbHeaders(false),body:JSON.stringify({email:em,password:pw})
+  }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
+    .then(function(x){
+      if(x.ok && x.d.access_token) authDone(x.d);
+      else aErr(slErr(x.d.error_description||x.d.msg||x.d.message));
+    }).catch(function(){ aErr('Ni povezave — poskusi z internetom.'); });
+}
+function doSignup(){
+  aErr(null);
+  var em=document.getElementById('aEmail').value.trim(), pw=document.getElementById('aPass').value;
+  if(!em||!pw){ aErr('Vpiši e-pošto in geslo.'); return; }
+  if(pw.length<6){ aErr('Geslo mora imeti vsaj 6 znakov.'); return; }
+  fetch(SB_URL+'/auth/v1/signup',{
+    method:'POST',headers:sbHeaders(false),body:JSON.stringify({email:em,password:pw})
+  }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
+    .then(function(x){
+      if(x.ok && x.d.access_token) authDone(x.d);
+      else if(x.ok && x.d.id || (x.d.user&&!x.d.access_token)) aErr('Račun ustvarjen — preveri e-pošto in potrdi, nato se prijavi.');
+      else aErr(slErr(x.d.error_description||x.d.msg||x.d.message));
+    }).catch(function(){ aErr('Ni povezave — poskusi z internetom.'); });
+}
+function logout(){
+  storeSess(null);
+  renderAcct();
+  toast('Odjavljen — podatki ostanejo na napravi');
+}
+function openAuth(){
+  aErr(null);
+  document.getElementById('aPass').value='';
+  document.getElementById('authOvl').classList.add('on');
+}
+function renderAcct(){
+  var box=document.getElementById('acctBox');
+  if(!box) return;
+  if(SESS){
+    box.innerHTML='<p style="margin:0 0 8px;color:var(--muted);font-size:12.5px">Prijavljen: <b style="color:var(--ink)">'+
+      (SESS.user.email||'')+'</b><br>Sinhronizacija: '+syncState+'</p>'+
+      '<button class="btn s" style="margin-top:0" onclick="logout()">Odjava</button>';
+  } else {
+    box.innerHTML='<p style="margin:0 0 8px;color:var(--muted);font-size:12.5px">Nisi prijavljen — podatki so samo na tej napravi.</p>'+
+      '<button class="btn s" style="margin-top:0" onclick="closeOvl(\'setOvl\');openAuth()">Prijava / nov račun</button>';
+  }
+}
+window.addEventListener('online', function(){ if(SESS) syncPush(); });
+document.addEventListener('visibilitychange', function(){
+  if(!document.hidden && SESS && Date.now()-lastPull>60000) syncStart();
+});
+if(SESS) setTimeout(syncStart, 300);
+
+/* PWA: service worker samo, ko app teče prek http(s) — lokalna datoteka dela brez njega */
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+/* refresh "now" if app stays open across midnight */
+setInterval(function(){
+  var t=new Date();
+  if(t.getDate()!==now.getDate()){ now=t; render(); }
+},60000);
+</script>
+</body>
+</html>
