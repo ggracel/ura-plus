@@ -288,6 +288,8 @@
   .sheet .who .av{width:40px;height:40px;border-radius:50%;background:var(--teal);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;font-family:'Poppins';font-weight:800;font-size:17px}
   .sheet .who b{display:block;font-size:14px;word-break:break-all}
   .sheet .who span{font-size:11.5px;color:var(--muted)}
+  .sheet .linkbtn{background:none;border:none;color:var(--teal);font-family:'Inter';font-size:12.5px;font-weight:600;cursor:pointer;padding:10px 2px 0;text-decoration:underline;text-underline-offset:2px}
+  .sheet .linkbtn:hover{color:#fff}
 
   /* ── splash (A+B, 0.9x) ── */
   #splash{position:fixed;inset:0;background:var(--ink2);z-index:200;display:none;align-items:center;justify-content:center;overflow:hidden;
@@ -1168,7 +1170,7 @@ if(S.lastSplash !== TODAY()){
 }
 
 /* ── auth + sync ── */
-let sb = null, user = null;
+let sb = null, user = null, recovery = false;
 function setSyncDot(state){
   const d = $("syncdot");
   d.className = "sy" + (state==="ok" ? " ok" : state==="err" ? " err" : "");
@@ -1185,6 +1187,20 @@ function avatarUI(){
 }
 function sheetUI(msg, cls){
   const sh = $("sheet");
+  if(recovery){
+    sh.innerHTML = `<h3>Set a new password</h3>
+      <div class="sub">You came from a reset link. Choose a new password for your foqs account. It works for both foqs.habit and Ura+.</div>
+      <label>New password</label><input type="password" id="au-new" placeholder="at least 6 characters" autocomplete="new-password" />
+      <div class="row">
+        <button class="btn btn-save" id="au-setpass">Save password</button>
+        <button class="btn btn-ghost" id="au-cancelrec">Cancel</button>
+      </div>
+      <div class="msg ${cls||""}" id="sheetmsg">${msg||""}</div>`;
+    $("au-setpass").addEventListener("click", doSetPassword);
+    $("au-new").addEventListener("keydown", e=>{ if(e.key==="Enter") doSetPassword(); });
+    $("au-cancelrec").addEventListener("click", ()=>{ recovery = false; sheetUI(); });
+    return;
+  }
   if(user){
     sh.innerHTML = `<h3>foqs account</h3>
       <div class="sub">One account for all foqs tools - your habits sync across devices, and it's the same login as Ura+.</div>
@@ -1205,10 +1221,12 @@ function sheetUI(msg, cls){
         <button class="btn btn-save" id="au-login">Log in</button>
         <button class="btn btn-ghost" id="au-signup">Create account</button>
       </div>
+      <button class="linkbtn" id="au-forgot">Forgot password?</button>
       <div class="msg ${cls||""}" id="sheetmsg">${msg|| (sb ? "" : "Sync is unavailable right now - the app still works fully on this device.")}</div>`;
     if(sb){
       $("au-login").addEventListener("click", doLogin);
       $("au-signup").addEventListener("click", doSignup);
+      $("au-forgot").addEventListener("click", doForgot);
       $("au-pass").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
     }
   }
@@ -1228,6 +1246,23 @@ async function doSignup(){
   const {data, error} = await sb.auth.signUp({email, password: pass});
   if(error){ sheetUI(error.message,"err"); return; }
   if(!data.session) sheetUI("Account created - check your email to confirm, then log in.","ok");
+}
+async function doForgot(){
+  const email = $("au-email").value.trim();
+  if(!email){ sheetUI("Type your email above first, then tap Forgot password.","err"); $("au-email").focus(); return; }
+  sheetUI("Sending reset link...");
+  const {error} = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  if(error) sheetUI(error.message,"err");
+  else sheetUI("Reset link sent to " + email + ". Open it on this device, then set a new password.","ok");
+}
+async function doSetPassword(){
+  const pass = $("au-new").value;
+  if(!pass || pass.length < 6){ sheetUI("Password needs at least 6 characters.","err"); return; }
+  sheetUI("Saving...");
+  const {error} = await sb.auth.updateUser({password: pass});
+  if(error){ sheetUI(error.message,"err"); return; }
+  recovery = false;
+  sheetUI("Password updated. You're logged in.","ok");
 }
 function openSheet(){ sheetUI(); $("sheetbg").classList.add("on"); $("sheet").classList.add("on"); }
 function closeSheet(){ $("sheetbg").classList.remove("on"); $("sheet").classList.remove("on"); }
@@ -1260,6 +1295,7 @@ function initAuth(){
   sb.auth.onAuthStateChange(async (event, session)=>{
     user = session ? session.user : null;
     avatarUI();
+    if(event === "PASSWORD_RECOVERY"){ recovery = true; openSheet(); return; }
     if($("sheet").classList.contains("on")) sheetUI(user ? "Logged in ✓" : "", user ? "ok" : "");
     if(user){ await syncPull(); await syncPush(); }
     else setSyncDot("");
