@@ -763,6 +763,9 @@ function wireEditor(ed, hid){
   const del = ed.querySelector(".btn-del");
   if(del) del.addEventListener("click", ()=>{
     S.habits = S.habits.filter(x=>x.id!==hid);
+    /* clear its history too, otherwise dead records pile up forever */
+    Object.keys(S.log).forEach(k=>{ if(S.log[k] && S.log[k].c) delete S.log[k].c[hid]; });
+    S.missLogs = (S.missLogs||[]).filter(m=>m.id!==hid);
     if(S.focus===hid) S.focus = null;
     editing = null; save(); renderAll();
   });
@@ -877,7 +880,7 @@ function restoreCheckin(){
 }
 
 /* ── scoreboard + hero ── */
-let wasWon = false;
+let wasWon = null;   /* null on first render, so reopening a won day does not re-celebrate */
 function render(){
   const tk = TODAY();
   const {n, c, won} = dayStats(tk);
@@ -917,7 +920,7 @@ function render(){
   } else if(won){
     $("heromsg").textContent = "Day won. 🏆";
     $("herosub").textContent = streak + "-day streak. Tomorrow defends it.";
-    if(!wasWon){ showToast("🏆 Day won - streak " + streak); confetti(); }
+    if(wasWon === false){ showToast("🏆 Day won - streak " + streak); confetti(); }
   } else if(c===0){
     $("heromsg").textContent = lostYesterday ? "Never miss twice." : "Win the day.";
     $("herosub").textContent = defend ? defend.n + " was missed yesterday - don't let it become a pattern." : "Every check is a rep. Stack them.";
@@ -1020,15 +1023,31 @@ function renderFeelChart(){
   const WELL = days.map(k=>dayRec(k).well ?? null);
   const x = i => P + i*(W-2*P)/13;
   const y = v => H - P - (v-1)*(H-2*P)/4;
-  const line = arr => arr.map((v,i)=> v===null ? null : `${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(" ");
+  /* Draw each unbroken run of days as its own line. A lone reading becomes a
+     dot, so one check-in is still visible, and missing days are never bridged
+     by a straight line that implies data we do not have. */
+  const series = (arr, color, op) => {
+    let out = "", run = [];
+    const flush = () => {
+      if(run.length > 1){
+        out += `<polyline points="${run.map(i=>x(i).toFixed(1)+","+y(arr[i]).toFixed(1)).join(" ")}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="${op}"/>`;
+      } else if(run.length === 1){
+        out += `<circle cx="${x(run[0]).toFixed(1)}" cy="${y(arr[run[0]]).toFixed(1)}" r="3.2" fill="${color}" opacity="${op}"/>`;
+      }
+      run = [];
+    };
+    arr.forEach((v,i)=>{ if(v===null) flush(); else run.push(i); });
+    flush();
+    return out;
+  };
   const grid = [1,2,3,4,5].map(v=>`<line x1="${P}" y1="${y(v)}" x2="${W-P}" y2="${y(v)}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`).join("");
   const dotP = PROD[13]!==null ? `<circle cx="${x(13)}" cy="${y(PROD[13])}" r="4.5" fill="#46BEC5" stroke="#1a1718" stroke-width="2"/>` : "";
   const dotW = WELL[13]!==null ? `<circle cx="${x(13)}" cy="${y(WELL[13])}" r="4.5" fill="#e8b24a" stroke="#1a1718" stroke-width="2"/>` : "";
   const hasAny = PROD.some(v=>v!==null) || WELL.some(v=>v!==null);
   $("feelchart").innerHTML = hasAny ? `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
     ${grid}<line x1="${x(13)}" y1="${P}" x2="${x(13)}" y2="${H-P}" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 4"/>
-    <polyline points="${line(WELL)}" fill="none" stroke="#e8b24a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
-    <polyline points="${line(PROD)}" fill="none" stroke="#46BEC5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${series(WELL, "#e8b24a", ".85")}
+    ${series(PROD, "#46BEC5", "1")}
     ${dotW}${dotP}
     <text x="${P}" y="${H-1}" fill="#6b6667" font-size="8" font-family="Poppins">${fmtShort(days[0])}</text>
     <text x="${W-P}" y="${H-1}" fill="#6b6667" font-size="8" font-family="Poppins" text-anchor="end">today</text>
@@ -1067,7 +1086,7 @@ function renderStats(){
   $("wbars").innerHTML = weeks.map((w,i)=>`
     <div class="wbar ${i===3?'cur':''}">
       <div class="bv">${w.denom? w.pct+"%" : "-"}</div>
-      <div class="bar" data-h="${w.denom? Math.max(6,(w.pct-40)*1.5) : 4}"></div>
+      <div class="bar" data-h="${w.denom? Math.max(4, Math.round(w.pct*0.78)) : 3}"></div>
       <div class="bl">${i===3?'now':'w'+(i+1)}</div>
     </div>`).join("");
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -1360,6 +1379,20 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
 /* ── go ── */
 function renderAll(){ renderToday(); renderMiss(); restoreCheckin(); render(); }
 renderAll();
+
+/* If the app is left open past midnight, roll over to the new day instead of
+   showing stale numbers. */
+let curDay = TODAY();
+function checkRollover(){
+  if(TODAY() !== curDay){
+    curDay = TODAY();
+    Object.keys(shown).forEach(k=>delete shown[k]);
+    wasWon = null;
+    renderAll();
+  }
+}
+setInterval(checkRollover, 60000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) checkRollover(); });
 </script>
 </body>
 </html>
