@@ -496,6 +496,32 @@ let S = blank();
 try { const raw = localStorage.getItem(LS); if(raw) S = Object.assign(blank(), JSON.parse(raw)); } catch(e){}
 if(!S.firstDay) S.firstDay = TODAY();
 
+/* Migration: every habit gets a start date, so it is never judged on days
+   before it existed. Habits with history start at their first ever check;
+   habits with no history start today. */
+function migrateSince(){
+  let changed = false;
+  (S.habits||[]).forEach(h=>{
+    if(h.since) return;
+    let first = null;
+    Object.keys(S.log||{}).forEach(k=>{
+      const c = S.log[k] && S.log[k].c;
+      if(c && c[h.id] && (first === null || k < first)) first = k;
+    });
+    h.since = first || TODAY();
+    changed = true;
+  });
+  if(changed){
+    /* drop any miss logged against a habit that did not exist yet */
+    S.missLogs = (S.missLogs||[]).filter(m=>{
+      const h = (S.habits||[]).find(x=>x.id===m.id);
+      return !h || m.dk >= h.since;
+    });
+    try { localStorage.setItem(LS, JSON.stringify(S)); } catch(e){}
+  }
+}
+migrateSince();
+
 let pushT = null;
 function save(bump=true){
   if(bump) S.updatedAt = Date.now();
@@ -507,7 +533,7 @@ const uid = () => 'h' + Math.random().toString(36).slice(2,9);
 /* ── data helpers ── */
 const dayRec = k => S.log[k] || {};
 function ensureDay(k){ if(!S.log[k]) S.log[k] = {c:{}}; if(!S.log[k].c) S.log[k].c = {}; return S.log[k]; }
-const schedOn = (h,k) => !!h.days[dow(k)];
+const schedOn = (h,k) => !!h.days[dow(k)] && k >= (h.since || S.firstDay);
 const isChecked = (h,k) => !!(dayRec(k).c && dayRec(k).c[h.id]);
 const checkOpt = (h,k) => { const c = dayRec(k).c && dayRec(k).c[h.id]; return c ? c.o : null; };
 
@@ -666,7 +692,7 @@ function renderStarter(){
     <div class="schips">${remaining.map(i=>`<button class="schip" data-si="${i}">+ ${esc(STARTERS[i].n)}</button>`).join("")}</div></div>`;
   el.querySelectorAll(".schip").forEach(b=>b.addEventListener("click", ()=>{
     const s = STARTERS[+b.dataset.si];
-    S.habits.push({id:uid(), n:s.n, d:s.d||"daily", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1]});
+    S.habits.push({id:uid(), n:s.n, d:s.d||"daily", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1], since:TODAY()});
     save(); renderAll();
   }));
 }
@@ -722,7 +748,7 @@ function wireEditor(ed, hid){
     if(!days.some(Boolean)) days = [1,1,1,1,1,1,1];
     if(hid === null){
       const alts = alt ? [n, alt] : null;
-      S.habits.push({id:uid(), n, d, alts, days});
+      S.habits.push({id:uid(), n, d, alts, days, since:TODAY()});
     } else {
       const h = S.habits.find(x=>x.id===hid);
       const alts = alt ? [ h.alts ? h.alts[0] : n, alt ] : null;
@@ -1276,6 +1302,7 @@ async function syncPull(force){
     if(error){ setSyncDot("err"); return; }
     if(data && data.state && (data.state.updatedAt||0) > (S.updatedAt||0)){
       S = Object.assign(blank(), data.state);
+      migrateSince();
       try { localStorage.setItem(LS, JSON.stringify(S)); } catch(e){}
       renderAll();
     }
