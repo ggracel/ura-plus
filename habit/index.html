@@ -106,6 +106,7 @@
   .habit .hname{flex:1;min-width:0}
   .habit .hname b{display:block;font-family:'Poppins';font-weight:600;font-size:15px;transition:color .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .habit .hname span{font-size:11.5px;color:var(--muted)}
+  .habit .hname span:empty{display:none}
   .altchips{display:flex;gap:6px;margin-top:6px}
   .altchip{font-family:'Poppins';font-size:11px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .altchip:hover{border-color:rgba(70,190,197,.5)}
@@ -116,6 +117,11 @@
   .habit.off .hname b{color:var(--muted)}
   .habit .star{color:var(--teal);margin-right:4px}
   .habit .streakchip{font-size:11.5px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:4px 9px;border-radius:999px;white-space:nowrap;transition:all .25s}
+  .habit .grip{width:22px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:grab;color:var(--muted2);opacity:.55;touch-action:none;background:none;border:none;padding:0}
+  .habit .grip:active{cursor:grabbing;opacity:1}
+  .habit .grip svg{width:11px;height:16px;fill:currentColor}
+  .habit.dragging{opacity:.95;box-shadow:0 12px 34px rgba(0,0,0,.5);position:relative;z-index:5;border-color:rgba(70,190,197,.5);transition:none}
+  .btn-del.armed{background:rgba(226,86,74,.18);color:#ff8e84}
   .habit .editbtn{width:28px;height:28px;border-radius:9px;border:none;background:none;color:var(--muted2);font-size:16px;line-height:1;cursor:pointer;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
   .habit .editbtn:hover{background:rgba(255,255,255,.08);color:#fff}
   .habit.done{border-color:rgba(70,190,197,.45);background:rgba(70,190,197,.07)}
@@ -338,7 +344,7 @@
       <h3>Why four scoreboards? More ways you track = more ways you win.</h3>
       <div class="way"><div class="ic">🎯</div><div><b>Day</b><span>Check every habit and the day is won. One tap per habit - that's the whole job.</span></div></div>
       <div class="way"><div class="ic">🔥</div><div><b>Streak</b><span>Consecutive won days. The number you'll defend once it gets big.</span></div></div>
-      <div class="way"><div class="ic">📅</div><div><b>Week</b><span>Hit 80% of all checks and the week is won - a lost day can't kill a good week.</span></div></div>
+      <div class="way"><div class="ic">📅</div><div><b>7 days</b><span>Your win-rate across the last seven days, always rolling. One bad day can't sink it. The Week tab tracks the calendar week and hands out the Week won badge at 80%.</span></div></div>
       <div class="way"><div class="ic">🗓</div><div><b>Month</b><span>The consistency heatmap. One miss disappears in it; a pattern of misses can't hide.</span></div></div>
     </div>
   </div>
@@ -346,7 +352,7 @@
   <div class="board">
     <div class="stat win"><div class="v" id="s-day">0<small>%</small></div><div class="l">Day</div></div>
     <div class="stat" id="st-streak"><div class="v"><span class="flame">🔥</span><span id="s-streak">0</span></div><div class="l">Streak</div></div>
-    <div class="stat"><div class="v" id="s-week">0<small>%</small></div><div class="l">Week</div></div>
+    <div class="stat"><div class="v" id="s-week">0<small>%</small></div><div class="l">7 days</div></div>
     <div class="stat"><div class="v" id="s-month">0<small>%</small></div><div class="l">Month</div></div>
   </div>
 
@@ -434,7 +440,7 @@
     </div>
 
     <div class="statcard" style="animation-delay:.08s">
-      <h3>Habit win-rates · this week</h3>
+      <h3>Habit win-rates · last 7 days</h3>
       <div class="sub">which habits are carrying you - and which need attention</div>
       <div id="hbars"></div>
     </div>
@@ -511,6 +517,10 @@ function migrateSince(){
     h.since = first || TODAY();
     changed = true;
   });
+  /* "daily" was auto-filled by an older build; it was never typed by hand */
+  (S.habits||[]).forEach(h=>{
+    if(h.d === "daily"){ h.d = ""; changed = true; }
+  });
   if(changed){
     /* drop any miss logged against a habit that did not exist yet */
     S.missLogs = (S.missLogs||[]).filter(m=>{
@@ -583,6 +593,26 @@ function weekStats(offset=0){
     S.habits.forEach(h=>{ if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; } });
   }
   return {hits, denom, pct: denom? Math.round(hits/denom*100) : 0};
+}
+/* Rolling last 7 days. Unlike the calendar week it never resets to nothing,
+   so the number always means something - including first thing on a Monday. */
+function rolling7(){
+  let hits=0, denom=0;
+  for(let i=0;i<7;i++){
+    const k = addD(TODAY(), -i);
+    if(k < S.firstDay) continue;
+    S.habits.forEach(h=>{ if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; } });
+  }
+  return {hits, denom, pct: denom? Math.round(hits/denom*100) : 0};
+}
+function habitRoll7(h){
+  let hits=0, denom=0;
+  for(let i=0;i<7;i++){
+    const k = addD(TODAY(), -i);
+    if(k < S.firstDay) continue;
+    if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; }
+  }
+  return {r: denom? Math.round(hits/denom*100) : null, denom};
 }
 function habitWeekRate(h){
   const mon = monday(TODAY());
@@ -661,10 +691,11 @@ function habitRowHTML(h, off){
   if(h.alts) sub = `<span class="altchips">${h.alts.map((a,ai)=>`<button class="altchip ${isChecked(h,TODAY())&&checkOpt(h,TODAY())===ai?'sel':''}" data-ai="${ai}">${esc(a)}</button>`).join("")}</span>`;
   else if(off) sub = `<span>not scheduled today</span>`;
   else if(missedYesterday(h) && !isChecked(h,TODAY())) sub = `<span class="nmt">missed yesterday · never miss twice</span>`;
-  else sub = `<span>${esc(h.d||"daily")}</span>`;
+  else sub = `<span>${esc(h.d||"")}</span>`;
   return `<div class="chk"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></svg></div>
     <div class="hname"><b>${focused?'<span class="star">★</span>':''}${esc(h.n)}</b>${sub}</div>
     <span class="streakchip">🔥 ${habitStreak(h)}</span>
+    <button class="grip" title="Drag to reorder"><svg viewBox="0 0 6 16"><circle cx="1.5" cy="3" r="1.3"/><circle cx="4.5" cy="3" r="1.3"/><circle cx="1.5" cy="8" r="1.3"/><circle cx="4.5" cy="8" r="1.3"/><circle cx="1.5" cy="13" r="1.3"/><circle cx="4.5" cy="13" r="1.3"/></svg></button>
     <button class="editbtn" title="Edit habit">✎</button>`;
 }
 function editorHTML(h){
@@ -692,7 +723,7 @@ function renderStarter(){
     <div class="schips">${remaining.map(i=>`<button class="schip" data-si="${i}">+ ${esc(STARTERS[i].n)}</button>`).join("")}</div></div>`;
   el.querySelectorAll(".schip").forEach(b=>b.addEventListener("click", ()=>{
     const s = STARTERS[+b.dataset.si];
-    S.habits.push({id:uid(), n:s.n, d:s.d||"daily", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1], since:TODAY()});
+    S.habits.push({id:uid(), n:s.n, d:s.d||"", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1], since:TODAY()});
     save(); renderAll();
   }));
 }
@@ -720,8 +751,10 @@ function renderToday(){
     el.className = "habit" + (isChecked(h,tk) ? " done" : "") + (off ? " off" : "") + (!off && missedYesterday(h) && !isChecked(h,tk) ? " defend" : "");
     el.style.animationDelay = (delay*0.055)+"s"; delay++;
     el.innerHTML = habitRowHTML(h, off);
+    el.dataset.hid = h.id;
+    wireDrag(el);
     el.addEventListener("click", e=>{
-      if(e.target.closest(".editbtn")) return;
+      if(e.target.closest(".editbtn") || e.target.closest(".grip")) return;
       if(off) return;
       const chip = e.target.closest(".altchip");
       if(chip){ pickAlt(h, el, +chip.dataset.ai); return; }
@@ -738,11 +771,58 @@ function renderToday(){
   }
   $("addbtn").style.display = editing==="new" ? "none" : "";
 }
+/* Drag a row by its grip to reorder. The grip has touch-action:none so it never
+   fights with page scrolling, and the rest of the row still taps normally. */
+let dragEl = null, dragStartY = 0;
+function wireDrag(el){
+  const grip = el.querySelector(".grip");
+  if(!grip) return;
+  grip.addEventListener("pointerdown", e=>{
+    e.preventDefault();
+    dragEl = el; dragStartY = e.clientY;
+    el.classList.add("dragging");
+    try { grip.setPointerCapture(e.pointerId); } catch(_){}
+    document.addEventListener("pointermove", onDragMove);
+    document.addEventListener("pointerup", onDragUp, {once:true});
+    document.addEventListener("pointercancel", onDragUp, {once:true});
+  });
+}
+function onDragMove(e){
+  if(!dragEl) return;
+  const list = $("habitlist");
+  dragEl.style.transform = `translateY(${e.clientY - dragStartY}px)`;
+  const rect = dragEl.getBoundingClientRect();
+  const mid = rect.top + rect.height/2;
+  for(const o of [...list.querySelectorAll(".habit")]){
+    if(o === dragEl) continue;
+    const r = o.getBoundingClientRect();
+    const om = r.top + r.height/2;
+    const after = !!(o.compareDocumentPosition(dragEl) & Node.DOCUMENT_POSITION_FOLLOWING);
+    if((mid < om && after) || (mid > om && !after)){
+      const before = dragEl.getBoundingClientRect().top;
+      list.insertBefore(dragEl, after ? o : o.nextSibling);
+      dragStartY += dragEl.getBoundingClientRect().top - before;   /* rebase so it does not jump */
+      dragEl.style.transform = `translateY(${e.clientY - dragStartY}px)`;
+      break;
+    }
+  }
+}
+function onDragUp(){
+  if(!dragEl) return;
+  document.removeEventListener("pointermove", onDragMove);
+  dragEl.classList.remove("dragging");
+  dragEl.style.transform = "";
+  const ids = [...$("habitlist").querySelectorAll(".habit")].map(x=>x.dataset.hid);
+  S.habits.sort((a,b)=> ids.indexOf(a.id) - ids.indexOf(b.id));
+  dragEl = null;
+  save(); renderAll();
+}
+
 function wireEditor(ed, hid){
   const save_ = ()=>{
     const n = ed.querySelector(".ed-name").value.trim();
     if(!n){ ed.querySelector(".ed-name").style.borderColor = "var(--red)"; return; }
-    const d = ed.querySelector(".ed-detail").value.trim() || "daily";
+    const d = ed.querySelector(".ed-detail").value.trim();
     const alt = ed.querySelector(".ed-alt").value.trim();
     let days = [...ed.querySelectorAll(".dp")].map(b=>b.classList.contains("on")?1:0);
     if(!days.some(Boolean)) days = [1,1,1,1,1,1,1];
@@ -761,7 +841,17 @@ function wireEditor(ed, hid){
   ed.querySelectorAll("input").forEach(inp => inp.addEventListener("keydown", e=>{ if(e.key==="Enter") save_(); }));
   ed.querySelector(".btn-ghost").addEventListener("click", ()=>{ editing = null; renderToday(); });
   const del = ed.querySelector(".btn-del");
+  let armed = false, armT = null;
   if(del) del.addEventListener("click", ()=>{
+    /* two taps to delete, so a stray tap can never wipe a habit and its history */
+    if(!armed){
+      armed = true;
+      del.textContent = "Tap again to delete";
+      del.classList.add("armed");
+      armT = setTimeout(()=>{ armed = false; del.textContent = "Delete"; del.classList.remove("armed"); }, 4000);
+      return;
+    }
+    clearTimeout(armT);
     S.habits = S.habits.filter(x=>x.id!==hid);
     /* clear its history too, otherwise dead records pile up forever */
     Object.keys(S.log).forEach(k=>{ if(S.log[k] && S.log[k].c) delete S.log[k].c[hid]; });
@@ -800,7 +890,7 @@ function syncRowUI(h, el){
     const sp = el.querySelector(".hname span:not(.star)");
     if(sp){
       if(missedYesterday(h) && !on){ sp.className = "nmt"; sp.textContent = "missed yesterday · never miss twice"; }
-      else { sp.className = ""; sp.textContent = h.d || "daily"; }
+      else { sp.className = ""; sp.textContent = h.d || ""; }
     }
   }
   el.querySelector(".streakchip").textContent = "🔥 " + habitStreak(h);
@@ -808,18 +898,31 @@ function syncRowUI(h, el){
 
 /* ── miss prompt ── */
 const RCHOICES = [["😮‍💨","Too tired"],["⏰","No time"],["🤷","Forgot"],["🙈","Made an excuse"],["🤒","Sick"],["✍️","Something else"]];
+/* Look back up to 3 days for a day we have not asked about yet, so misses are
+   still explained when the app goes unopened for a couple of days. */
+function pendingMiss(){
+  for(let i=1;i<=3;i++){
+    const k = addD(TODAY(),-i);
+    if(k < S.firstDay) return null;
+    if(S.missAsked[k]) continue;
+    const missed = S.habits.filter(h=>schedOn(h,k) && !isChecked(h,k));
+    if(missed.length) return {k, missed, i};
+  }
+  return null;
+}
+const DAYSFULL = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 function renderMiss(){
   const mount = $("missmount");
   mount.innerHTML = "";
-  const y = addD(TODAY(),-1);
-  if(y < S.firstDay || S.missAsked[y]) return;
-  const missed = S.habits.filter(h=>missedYesterday(h));
-  if(!missed.length) return;
+  const pend = pendingMiss();
+  if(!pend) return;
+  const y = pend.k, missed = pend.missed;
+  const when = pend.i === 1 ? "Yesterday you missed" : "On " + DAYSFULL[dow(y)] + " you missed";
   const names = missed.map(h=>h.n);
   const label = names.length===1 ? names[0] : names.slice(0,-1).join(", ") + " and " + names[names.length-1];
   const card = document.createElement("div");
   card.className = "misscard"; card.id = "misscard";
-  card.innerHTML = `<div class="mc-head"><div><b>💭 Yesterday you missed <span class="hlm">${esc(label)}</span></b><span>No judgement - what got in the way? Your answers become patterns in Stats.</span></div></div>
+  card.innerHTML = `<div class="mc-head"><div><b>💭 ${when} <span class="hlm">${esc(label)}</span></b><span>No judgement - what got in the way? Your answers become patterns in Stats.</span></div></div>
     <div class="rchips"></div>
     <div class="mc-other" style="display:none">
       <input type="text" maxlength="60" placeholder="What happened?" />
@@ -898,8 +1001,9 @@ function render(){
   const lostYesterday = y >= S.firstDay && dayStats(y).n > 0 && !dayStats(y).won;
   $("st-streak").classList.toggle("warn", lostYesterday && !won);
 
+  const roll = rolling7();
+  countTo("s-week", roll.pct, "<small>%</small>");
   const ws = weekStats(0);
-  countTo("s-week", ws.pct, "<small>%</small>");
   $("wkrate").textContent = ws.pct + "%";
   const needed = Math.max(0, Math.ceil(0.8*ws.denom) - ws.hits);
   $("wkneed").textContent = ws.denom===0 ? "no scheduled checks yet" : (ws.pct >= 80 ? "target hit 🎯" : needed + " checks to win the week");
@@ -1056,7 +1160,7 @@ function renderFeelChart(){
 function renderStats(){
   renderFeelChart();
   /* habit win-rates */
-  const rows = S.habits.map(h=>({n:h.n, ...habitWeekRate(h)})).filter(x=>x.r!==null).sort((a,b)=>b.r-a.r);
+  const rows = S.habits.map(h=>({n:h.n, ...habitRoll7(h)})).filter(x=>x.r!==null).sort((a,b)=>b.r-a.r);
   $("hbars").innerHTML = rows.length ? rows.map(h=>`
     <div class="hbar ${h.r<70?'low':''}">
       <div class="top"><b>${esc(h.n)}</b><span>${h.r}%</span></div>
@@ -1097,8 +1201,8 @@ function renderStats(){
   const ins = [];
   if(rows.length){
     const best = rows[0], worst = rows[rows.length-1];
-    ins.push({ic:"🏆", b:`${esc(best.n)} is carrying you`, s:`<span class="hl">${best.r}%</span> win-rate this week - your most reliable habit.`});
-    if(worst !== best && worst.r < 80) ins.push({ic:"⚠️", b:`${esc(worst.n)} needs attention`, s:`Only <span class="hl">${worst.r}%</span> this week. Shrink it until it's too easy to skip.`});
+    ins.push({ic:"🏆", b:`${esc(best.n)} is carrying you`, s:`<span class="hl">${best.r}%</span> over the last 7 days - your most reliable habit.`});
+    if(worst !== best && worst.r < 80) ins.push({ic:"⚠️", b:`${esc(worst.n)} needs attention`, s:`Only <span class="hl">${worst.r}%</span> over the last 7 days. Shrink it until it's too easy to skip.`});
   }
   const wonP=[], lostP=[];
   Object.keys(S.log).forEach(k=>{
