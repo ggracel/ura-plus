@@ -100,6 +100,7 @@
   .sechead h2{font-size:15px;font-weight:700}
   .sechead span{font-size:12px;color:var(--muted)}
   .habit{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 14px 16px;margin-bottom:9px;cursor:pointer;user-select:none;transition:border-color .25s,background .25s,transform .12s;animation:riseIn .5s cubic-bezier(.22,1,.36,1) backwards}
+  .habit{position:relative}
   .habit:active{transform:scale(.985)}
   .habit .chk{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.22);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(.34,1.56,.64,1);position:relative}
   .habit .chk svg{width:15px;height:15px;stroke:var(--teal-deep);stroke-width:3.4;fill:none;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .3s ease .05s}
@@ -117,9 +118,19 @@
   .habit.off .hname b{color:var(--muted)}
   .habit .star{color:var(--teal);margin-right:4px}
   .habit .streakchip{font-size:11.5px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:4px 9px;border-radius:999px;white-space:nowrap;transition:all .25s}
-  .habit .grip{width:22px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:grab;color:var(--muted2);opacity:.55;touch-action:none;background:none;border:none;padding:0}
-  .habit .grip:active{cursor:grabbing;opacity:1}
-  .habit .grip svg{width:11px;height:16px;fill:currentColor}
+  /* The grip only exists in reorder mode, so nothing draggable sits under your
+     thumb during normal use. In that mode it is a big, obvious target. */
+  .habit .grip{width:44px;height:46px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:grab;color:var(--teal);opacity:.8;touch-action:none;background:rgba(70,190,197,.08);border:1px solid rgba(70,190,197,.22);border-radius:12px;padding:0;margin-left:2px}
+  .habit .grip:active{cursor:grabbing;opacity:1;background:rgba(70,190,197,.18)}
+  .habit .grip svg{width:13px;height:19px;fill:currentColor}
+  .habit.reord{cursor:default;background:rgba(255,255,255,.055)}
+  .habit.reord:active{transform:none}
+  .habit.reord .chk{opacity:.3}
+  .reordrow{margin-top:10px}
+  .reordhint{font-size:11.5px;color:var(--muted);text-align:center;margin-bottom:10px}
+  .reordrow .btn{width:100%;padding:13px}
+  .linkbtn2{width:100%;background:none;border:none;color:var(--muted2);font-family:'Poppins';font-weight:600;font-size:12.5px;cursor:pointer;padding:13px;transition:color .2s}
+  .linkbtn2:hover{color:var(--teal)}
   .habit.dragging{opacity:.95;box-shadow:0 12px 34px rgba(0,0,0,.5);position:relative;z-index:5;border-color:rgba(70,190,197,.5);transition:none}
   .btn-del.armed{background:rgba(226,86,74,.18);color:#ff8e84}
   .habit .editbtn{width:28px;height:28px;border-radius:9px;border:none;background:none;color:var(--muted2);font-size:16px;line-height:1;cursor:pointer;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
@@ -129,6 +140,20 @@
   .habit.done .chk svg{stroke-dashoffset:0}
   .habit.done .hname b{color:var(--teal)}
   .habit.done .streakchip{color:var(--teal);border-color:rgba(70,190,197,.4);background:rgba(70,190,197,.1)}
+  /* both alternatives done: a richer, deeper wash instead of the flat tint */
+  .habit.both{
+    border-color:rgba(70,190,197,.62);
+    background:linear-gradient(115deg,rgba(70,190,197,.22),rgba(70,190,197,.06) 52%,rgba(70,190,197,.17));
+    box-shadow:0 6px 24px rgba(70,190,197,.16);
+  }
+  .habit.both .chk{box-shadow:0 0 0 6px rgba(70,190,197,.2),0 4px 18px rgba(70,190,197,.55)}
+  .habit.both .streakchip{color:#bdf1f4;border-color:rgba(70,190,197,.55);background:rgba(70,190,197,.18)}
+  .habit.justboth::after{
+    content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
+    background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.15) 50%,transparent 65%);
+    background-size:250% 100%;animation:sheen .9s ease-out;
+  }
+  @keyframes sheen{from{background-position:150% 0}to{background-position:-150% 0}}
   .habit .chk .burst{position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--teal);opacity:0;pointer-events:none}
   .habit.justdone .chk .burst{animation:burst .55s ease-out}
   @keyframes burst{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.1)}}
@@ -254,6 +279,16 @@
   .insight b{display:block;font-family:'Poppins';font-size:12.5px;font-weight:600}
   .insight span{font-size:11.5px;color:var(--muted);line-height:1.45;display:block}
   .insight .hl{color:var(--teal);font-weight:700;display:inline}
+  .split{margin-bottom:17px}
+  .split:last-child{margin-bottom:2px}
+  .split .stop{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:6px}
+  .split .stop b{font-family:'Poppins';font-weight:600;color:#ddd}
+  .split .stop span{color:var(--muted);font-size:11px}
+  .sbar{height:10px;border-radius:5px;overflow:hidden;display:flex;background:rgba(255,255,255,.07)}
+  .sbar i{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.22,1,.36,1)}
+  .slegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:8px;font-size:10.5px;color:var(--muted)}
+  .slegend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+  .slegend b{color:#ddd;font-weight:700}
   .fchip{font-family:'Poppins';font-size:11.5px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .fchip:hover{border-color:rgba(70,190,197,.5)}
   .fchip.sel{background:var(--teal);border-color:var(--teal);color:var(--teal-deep)}
@@ -384,6 +419,7 @@
     <div id="starter"></div>
     <div id="habitlist"></div>
     <button class="addbtn" id="addbtn">+ Add habit</button>
+    <div class="reordrow" id="reordrow"></div>
 
     <div class="checkin" id="checkincard">
       <h3>Daily check-in</h3>
@@ -443,6 +479,12 @@
       <h3>Habit win-rates · last 7 days</h3>
       <div class="sub">which habits are carrying you - and which need attention</div>
       <div id="hbars"></div>
+    </div>
+
+    <div class="statcard" style="animation-delay:.1s" id="splitcard">
+      <h3>Either / or · last 30 days</h3>
+      <div class="sub">which door you actually walk through</div>
+      <div id="splits"></div>
     </div>
 
     <div class="statcard" style="animation-delay:.11s">
@@ -546,6 +588,15 @@ function ensureDay(k){ if(!S.log[k]) S.log[k] = {c:{}}; if(!S.log[k].c) S.log[k]
 const schedOn = (h,k) => !!h.days[dow(k)] && k >= (h.since || S.firstDay);
 const isChecked = (h,k) => !!(dayRec(k).c && dayRec(k).c[h.id]);
 const checkOpt = (h,k) => { const c = dayRec(k).c && dayRec(k).c[h.id]; return c ? c.o : null; };
+/* Which alternatives were completed on day k. Tolerates the old format where
+   only a single option index was stored. */
+function optsDone(h,k){
+  const c = dayRec(k).c && dayRec(k).c[h.id];
+  if(!c) return [];
+  if(Array.isArray(c.os)) return c.os;
+  return (c.o == null) ? [] : [c.o];
+}
+const bothDone = (h,k) => !!(h.alts && optsDone(h,k).length >= h.alts.length);
 
 function dayStats(k){
   const sched = S.habits.filter(h=>schedOn(h,k));
@@ -679,6 +730,7 @@ function countTo(id, target, suffix){
 
 /* ── today list ── */
 let editing = null;
+let reorder = false;
 const STARTERS = [
   {n:"Movement", d:"gym or a walk - either counts", alts:["Gym","Walk"]},
   {n:"Deep work block", d:"2h, no phone"},
@@ -688,14 +740,19 @@ const STARTERS = [
 function habitRowHTML(h, off){
   const focused = S.focus === h.id;
   let sub;
-  if(h.alts) sub = `<span class="altchips">${h.alts.map((a,ai)=>`<button class="altchip ${isChecked(h,TODAY())&&checkOpt(h,TODAY())===ai?'sel':''}" data-ai="${ai}">${esc(a)}</button>`).join("")}</span>`;
+  if(reorder) sub = `<span>${esc(h.d||"")}</span>`;   /* keep the reorder list quiet */
+  else if(h.alts) sub = `<span class="altchips">${h.alts.map((a,ai)=>`<button class="altchip ${optsDone(h,TODAY()).includes(ai)?'sel':''}" data-ai="${ai}">${esc(a)}</button>`).join("")}</span>`;
   else if(off) sub = `<span>not scheduled today</span>`;
   else if(missedYesterday(h) && !isChecked(h,TODAY())) sub = `<span class="nmt">missed yesterday · never miss twice</span>`;
   else sub = `<span>${esc(h.d||"")}</span>`;
-  return `<div class="chk"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></svg></div>
-    <div class="hname"><b>${focused?'<span class="star">★</span>':''}${esc(h.n)}</b>${sub}</div>
-    <span class="streakchip">🔥 ${habitStreak(h)}</span>
-    <button class="grip" title="Drag to reorder"><svg viewBox="0 0 6 16"><circle cx="1.5" cy="3" r="1.3"/><circle cx="4.5" cy="3" r="1.3"/><circle cx="1.5" cy="8" r="1.3"/><circle cx="4.5" cy="8" r="1.3"/><circle cx="1.5" cy="13" r="1.3"/><circle cx="4.5" cy="13" r="1.3"/></svg></button>
+  const chk = `<div class="chk"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></svg></div>`;
+  const name = `<div class="hname"><b>${focused?'<span class="star">★</span>':''}${esc(h.n)}</b>${sub}</div>`;
+  if(reorder){
+    return chk + name +
+      `<button class="grip" title="Drag to reorder"><svg viewBox="0 0 6 16"><circle cx="1.5" cy="3" r="1.3"/><circle cx="4.5" cy="3" r="1.3"/><circle cx="1.5" cy="8" r="1.3"/><circle cx="4.5" cy="8" r="1.3"/><circle cx="1.5" cy="13" r="1.3"/><circle cx="4.5" cy="13" r="1.3"/></svg></button>`;
+  }
+  return chk + name +
+    `<span class="streakchip">🔥 ${habitStreak(h)}</span>
     <button class="editbtn" title="Edit habit">✎</button>`;
 }
 function editorHTML(h){
@@ -741,26 +798,29 @@ function renderToday(){
   let delay = 0;
   order.forEach(i=>{
     const h = S.habits[i];
-    if(editing === h.id){
+    if(!reorder && editing === h.id){
       const ed = document.createElement("div");
       ed.className = "editor"; ed.innerHTML = editorHTML(h);
       wireEditor(ed, h.id); list.appendChild(ed); return;
     }
     const off = !schedOn(h,tk);
     const el = document.createElement("div");
-    el.className = "habit" + (isChecked(h,tk) ? " done" : "") + (off ? " off" : "") + (!off && missedYesterday(h) && !isChecked(h,tk) ? " defend" : "");
+    el.className = "habit" + (reorder ? " reord" : "") + (isChecked(h,tk) ? " done" : "") + (!reorder && bothDone(h,tk) ? " both" : "") + (off ? " off" : "") + (!off && !reorder && missedYesterday(h) && !isChecked(h,tk) ? " defend" : "");
     el.style.animationDelay = (delay*0.055)+"s"; delay++;
     el.innerHTML = habitRowHTML(h, off);
     el.dataset.hid = h.id;
-    wireDrag(el);
-    el.addEventListener("click", e=>{
-      if(e.target.closest(".editbtn") || e.target.closest(".grip")) return;
-      if(off) return;
-      const chip = e.target.closest(".altchip");
-      if(chip){ pickAlt(h, el, +chip.dataset.ai); return; }
-      toggle(h, el);
-    });
-    el.querySelector(".editbtn").addEventListener("click", ()=>{ editing = h.id; renderToday(); });
+    if(reorder){
+      wireDrag(el);
+    } else {
+      el.addEventListener("click", e=>{
+        if(e.target.closest(".editbtn")) return;
+        if(off) return;
+        const chip = e.target.closest(".altchip");
+        if(chip){ pickAlt(h, el, +chip.dataset.ai); return; }
+        toggle(h, el);
+      });
+      el.querySelector(".editbtn").addEventListener("click", ()=>{ editing = h.id; renderToday(); });
+    }
     list.appendChild(el);
   });
   if(editing === "new"){
@@ -769,7 +829,18 @@ function renderToday(){
     wireEditor(ed, null); list.appendChild(ed);
     ed.querySelector(".ed-name").focus();
   }
-  $("addbtn").style.display = editing==="new" ? "none" : "";
+  $("addbtn").style.display = (editing === "new" || reorder) ? "none" : "";
+  const rr = $("reordrow");
+  if(reorder){
+    rr.innerHTML = `<div class="reordhint">Drag the handles on the right to reorder</div>
+      <button class="btn btn-save" id="reorddone">Done</button>`;
+    $("reorddone").addEventListener("click", ()=>{ reorder = false; renderAll(); });
+  } else if(S.habits.length >= 2 && editing === null){
+    rr.innerHTML = `<button class="linkbtn2" id="reordstart">⇅ Reorder habits</button>`;
+    $("reordstart").addEventListener("click", ()=>{ reorder = true; renderAll(); });
+  } else {
+    rr.innerHTML = "";
+  }
 }
 /* Drag a row by its grip to reorder. The grip has touch-action:none so it never
    fights with page scrolling, and the rest of the row still taps normally. */
@@ -815,7 +886,7 @@ function onDragUp(){
   const ids = [...$("habitlist").querySelectorAll(".habit")].map(x=>x.dataset.hid);
   S.habits.sort((a,b)=> ids.indexOf(a.id) - ids.indexOf(b.id));
   dragEl = null;
-  save(); renderAll();
+  save(); renderToday();
 }
 
 function wireEditor(ed, hid){
@@ -860,23 +931,35 @@ function wireEditor(ed, hid){
     editing = null; save(); renderAll();
   });
 }
-function setCheck(h, on, opt){
+function setCheck(h, on, opts){
   const rec = ensureDay(TODAY());
-  if(on) rec.c[h.id] = {d:1, o: opt ?? null};
-  else delete rec.c[h.id];
+  if(on){
+    const os = Array.isArray(opts) ? [...new Set(opts)].sort() : (opts == null ? [] : [opts]);
+    rec.c[h.id] = {d:1, o: os.length ? os[0] : null, os};   /* o kept for older data */
+  } else delete rec.c[h.id];
   save();
 }
 function toggle(h, el){
-  const on = !isChecked(h,TODAY());
-  setCheck(h, on, h.alts ? (checkOpt(h,TODAY()) ?? 0) : null);
+  const tk = TODAY();
+  const on = !isChecked(h,tk);
+  if(!on) setCheck(h, false);
+  else if(h.alts){ const os = optsDone(h,tk); setCheck(h, true, os.length ? os : [0]); }
+  else setCheck(h, true, null);
   syncRowUI(h, el);
   render();
 }
+/* Each chip toggles on its own, so you can log one, the other, or both. */
 function pickAlt(h, el, ai){
   const tk = TODAY();
-  if(isChecked(h,tk) && checkOpt(h,tk)===ai) setCheck(h,false);
-  else setCheck(h,true,ai);
+  const was = bothDone(h,tk);
+  let os = optsDone(h,tk).slice();
+  os = os.includes(ai) ? os.filter(x=>x!==ai) : os.concat(ai);
+  if(os.length) setCheck(h, true, os); else setCheck(h, false);
   syncRowUI(h, el);
+  if(!was && bothDone(h,tk)){          /* one-off sheen the moment both land */
+    el.classList.remove("justboth"); void el.offsetWidth; el.classList.add("justboth");
+    setTimeout(()=>el.classList.remove("justboth"), 950);   /* clean up after it plays */
+  }
   render();
 }
 function syncRowUI(h, el){
@@ -885,7 +968,9 @@ function syncRowUI(h, el){
   el.classList.toggle("defend", missedYesterday(h) && !on);
   el.classList.remove("justdone");
   if(on){ void el.offsetWidth; el.classList.add("justdone"); }
-  el.querySelectorAll(".altchip").forEach((c,ci)=>c.classList.toggle("sel", on && checkOpt(h,tk)===ci));
+  const done = optsDone(h,tk);
+  el.querySelectorAll(".altchip").forEach((c,ci)=>c.classList.toggle("sel", done.includes(ci)));
+  el.classList.toggle("both", bothDone(h,tk));
   if(!h.alts){
     const sp = el.querySelector(".hname span:not(.star)");
     if(sp){
@@ -1157,8 +1242,56 @@ function renderFeelChart(){
     <text x="${W-P}" y="${H-1}" fill="#6b6667" font-size="8" font-family="Poppins" text-anchor="end">today</text>
   </svg>` : `<div style="font-size:12.5px;color:var(--muted2);padding:8px 0">Log your first check-in on the Today tab and the chart starts here.</div>`;
 }
+/* For an either/or habit: how often each door was used, and how often both. */
+function altSplit(h){
+  let a=0, b=0, both=0, total=0;
+  for(let i=0;i<30;i++){
+    const k = addD(TODAY(),-i);
+    if(k < S.firstDay) break;
+    if(!schedOn(h,k)) continue;
+    const os = optsDone(h,k);
+    if(!os.length) continue;
+    total++;
+    if(os.length >= h.alts.length) both++;
+    else if(os.includes(0)) a++;
+    else b++;
+  }
+  return {a,b,both,total};
+}
+function renderSplits(){
+  const card = $("splitcard");
+  const alts = S.habits.filter(h=>h.alts && h.alts.length>=2);
+  if(!alts.length){ card.style.display = "none"; return; }
+  card.style.display = "";
+  $("splits").innerHTML = alts.map(h=>{
+    const s = altSplit(h);
+    if(!s.total){
+      return `<div class="split"><div class="stop"><b>${esc(h.n)}</b><span>nothing logged yet</span></div>
+        <div class="sbar"></div></div>`;
+    }
+    const pc = v => (v/s.total*100).toFixed(1);
+    return `<div class="split">
+      <div class="stop"><b>${esc(h.n)}</b><span>${s.total} day${s.total===1?"":"s"} done</span></div>
+      <div class="sbar">
+        <i data-w="${pc(s.a)}" style="background:#46BEC5"></i>
+        <i data-w="${pc(s.b)}" style="background:#1f6f78"></i>
+        <i data-w="${pc(s.both)}" style="background:#bdf1f4"></i>
+      </div>
+      <div class="slegend">
+        <span><i style="background:#46BEC5"></i>${esc(h.alts[0])} <b>${s.a}</b></span>
+        <span><i style="background:#1f6f78"></i>${esc(h.alts[1])} <b>${s.b}</b></span>
+        <span><i style="background:#bdf1f4"></i>Both <b>${s.both}</b></span>
+      </div>
+    </div>`;
+  }).join("");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll("#splits .sbar i").forEach(el=>el.style.width = el.dataset.w + "%");
+  }));
+}
+
 function renderStats(){
   renderFeelChart();
+  renderSplits();
   /* habit win-rates */
   const rows = S.habits.map(h=>({n:h.n, ...habitRoll7(h)})).filter(x=>x.r!==null).sort((a,b)=>b.r-a.r);
   $("hbars").innerHTML = rows.length ? rows.map(h=>`
@@ -1278,7 +1411,7 @@ $("exportbtn").addEventListener("click", ()=>{
     S.habits.forEach(h=>{
       const sched = schedOn(h,k) ? 1 : 0;
       const chk = r.c && r.c[h.id] ? 1 : 0;
-      const opt = (r.c && r.c[h.id] && h.alts && r.c[h.id].o!=null) ? h.alts[r.c[h.id].o] : "";
+      const opt = h.alts ? optsDone(h,k).map(i=>h.alts[i]).filter(Boolean).join(" + ") : "";
       const q = s => '"' + String(s).replace(/"/g,'""') + '"';
       lines.push([k, q(h.n), sched, chk, q(opt), r.prod??"", r.well??"", q(missBy[k+"|"+h.id]||"")].join(","));
     });
