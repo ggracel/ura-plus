@@ -1339,7 +1339,22 @@ if(document.readyState === "complete") initAuth();
 
 /* ── service worker ── */
 if("serviceWorker" in navigator && location.protocol !== "file:"){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
+  /* updateViaCache:'none' stops the browser serving a stale sw.js from its
+     HTTP cache, which would otherwise delay every deploy. */
+  navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(reg=>{
+    reg.update().catch(()=>{});
+    /* check for a new version whenever the app comes back to the foreground */
+    document.addEventListener("visibilitychange", ()=>{
+      if(!document.hidden) reg.update().catch(()=>{});
+    });
+  }).catch(()=>{});
+
+  /* When a new service worker takes over, reload once so the user is always
+     on the newest build. Guarded so it can never loop. */
+  let hadController = !!navigator.serviceWorker.controller, reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+    if(hadController && !reloaded){ reloaded = true; location.reload(); }
+  });
 }
 
 /* ── go ── */

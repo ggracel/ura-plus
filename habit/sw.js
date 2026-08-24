@@ -1,7 +1,7 @@
 /* foqs.habit service worker
    Served from /habit/ on GitHub Pages. Scope is /habit/ only.
    Cache name is unique so it never collides with the Ura+ app on the same origin. */
-const CACHE = 'foqs-habit-v1';
+const CACHE = 'foqs-habit-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -43,9 +43,17 @@ self.addEventListener('fetch', e => {
   const scope = new URL('./', self.location.href).pathname;
   if (!url.pathname.startsWith(scope)) return;
 
+  /* The page itself must never come from the browser's HTTP cache, otherwise
+     a deploy can take up to 10 minutes to show up. Assets may use it. */
+  const isPage = req.mode === 'navigate'
+    || url.pathname.endsWith('/')
+    || url.pathname.endsWith('.html');
+
+  const netReq = isPage ? new Request(req.url, { cache: 'no-store' }) : req;
+
   /* Network first, fall back to cache when offline. */
   e.respondWith(
-    fetch(req)
+    fetch(netReq)
       .then(r => {
         if (r && r.ok) {
           const copy = r.clone();
