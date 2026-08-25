@@ -51,7 +51,7 @@
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
   .explain{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.22,1,.36,1),margin .3s;margin:0}
-  .explain.open{max-height:420px;margin:10px 0 4px}
+  .explain.open{max-height:560px;margin:10px 0 4px}
   .explain-in{background:var(--card);border:1px solid rgba(70,190,197,.25);border-radius:18px;padding:16px 18px}
   .explain-in h3{font-size:13.5px;font-weight:700;margin-bottom:10px;color:var(--teal);line-height:1.4}
   .way{display:flex;gap:12px;align-items:flex-start;padding:7px 0}
@@ -140,6 +140,9 @@
   .habit.done .chk svg{stroke-dashoffset:0}
   .habit.done .hname b{color:var(--teal)}
   .habit.done .streakchip{color:var(--teal);border-color:rgba(70,190,197,.4);background:rgba(70,190,197,.1)}
+  .habit .streakchip.qfull{color:var(--teal);border-color:rgba(70,190,197,.4);background:rgba(70,190,197,.1)}
+  .habit .qmet{color:var(--teal);display:inline}
+  .habit .qopt{color:var(--muted2);display:inline}
   /* both alternatives done: a richer, deeper wash instead of the flat tint */
   .habit.both{
     border-color:rgba(70,190,197,.62);
@@ -174,6 +177,11 @@
   .daypick{display:flex;gap:6px;margin-bottom:11px}
   .dp{flex:1;height:30px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins';font-weight:700;font-size:10.5px;cursor:pointer;transition:all .2s}
   .dp.on{background:rgba(70,190,197,.18);border-color:rgba(70,190,197,.5);color:var(--teal)}
+  .segrow{display:flex;gap:6px;margin-bottom:9px}
+  .seg{flex:1;height:32px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins';font-weight:700;font-size:11px;cursor:pointer;transition:all .2s}
+  .seg.on{background:rgba(70,190,197,.18);border-color:rgba(70,190,197,.5);color:var(--teal)}
+  .mblk[hidden]{display:none}
+  .qhint{font-size:11.5px;color:var(--muted2);line-height:1.5;margin:-3px 0 11px}
 
   .addbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins';font-weight:600;font-size:14px;color:var(--muted);background:none;border:1.5px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px;cursor:pointer;transition:all .25s;margin-top:4px}
   .addbtn:hover{color:var(--teal);border-color:rgba(70,190,197,.5)}
@@ -226,6 +234,9 @@
   .cell.future{background:rgba(255,255,255,.03)}
   .cell.offday{background:none}
   .cell.offday::after{content:"";width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .cell.pend{background:rgba(255,255,255,.035)}
+  .cell.pend::after{content:"";width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.22)}
+  .qtag{font-size:9.5px;font-weight:700;color:var(--muted2);letter-spacing:.03em;margin-left:5px}
   td.rate{font-size:11.5px;font-weight:700;text-align:center;color:var(--muted)}
   td.rate.good{color:var(--teal)}
   .weekfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 2px}
@@ -381,6 +392,7 @@
       <div class="way"><div class="ic">🔥</div><div><b>Streak</b><span>Consecutive won days. The number you'll defend once it gets big.</span></div></div>
       <div class="way"><div class="ic">📅</div><div><b>7 days</b><span>Your win-rate across the last seven days, always rolling. One bad day can't sink it. The Week tab tracks the calendar week and hands out the Week won badge at 80%.</span></div></div>
       <div class="way"><div class="ic">🗓</div><div><b>Month</b><span>The consistency heatmap. One miss disappears in it; a pattern of misses can't hide.</span></div></div>
+      <div class="way"><div class="ic">🔁</div><div><b>Times a week</b><span>A habit set to "3 times a week" never counts against you while there are still enough days left to hit it. Do it and it scores; skip it early and it simply sits out of the maths.</span></div></div>
     </div>
   </div>
 
@@ -585,7 +597,47 @@ const uid = () => 'h' + Math.random().toString(36).slice(2,9);
 /* ── data helpers ── */
 const dayRec = k => S.log[k] || {};
 function ensureDay(k){ if(!S.log[k]) S.log[k] = {c:{}}; if(!S.log[k].c) S.log[k].c = {}; return S.log[k]; }
-const schedOn = (h,k) => !!h.days[dow(k)] && k >= (h.since || S.firstDay);
+const isQuota = h => !!h.quota;
+/* A quota habit ("3x a week") is available every day; a day habit only on its days. */
+const schedOn = (h,k) => k >= (h.since || S.firstDay) && (isQuota(h) ? true : !!h.days[dow(k)]);
+
+/* How many times a quota habit was done in the calendar week containing k.
+   includeK=false counts only the days before k. */
+function quotaDone(h,k,includeK){
+  const mon = monday(k);
+  let n = 0;
+  for(let j=0;j<7;j++){
+    const d = addD(mon,j);
+    if(includeK ? (d > k) : (d >= k)) break;
+    if(d < (h.since || S.firstDay)) continue;
+    if(isChecked(h,d)) n++;
+  }
+  return n;
+}
+/* Where a quota habit stands on day k:
+   met      - the week's quota is already filled, nothing owed
+   optional - still enough days left, so skipping today costs nothing
+   required - remaining == days left, so it must happen today
+   blown    - more remaining than days left, the week can no longer be saved */
+function quotaState(h,k){
+  const remaining = h.quota - quotaDone(h,k,false);
+  const daysLeft = 7 - dow(k);            /* including k itself */
+  if(remaining <= 0) return "met";
+  if(remaining > daysLeft) return "blown";
+  if(remaining === daysLeft) return "required";
+  return "optional";
+}
+/* The single rule every percentage uses: does this habit/day pair count, and was it hit.
+   A quota habit only enters the denominator once it is actually owed - or when you
+   do it, which always counts in your favour. */
+function slot(h,k){
+  if(!schedOn(h,k)) return {counts:false, hit:false};
+  const done = isChecked(h,k);
+  if(!isQuota(h)) return {counts:true, hit:done};
+  if(done) return {counts:true, hit:true};
+  const st = quotaState(h,k);
+  return {counts: st === "required" || st === "blown", hit:false};
+}
 const isChecked = (h,k) => !!(dayRec(k).c && dayRec(k).c[h.id]);
 const checkOpt = (h,k) => { const c = dayRec(k).c && dayRec(k).c[h.id]; return c ? c.o : null; };
 /* Which alternatives were completed on day k. Tolerates the old format where
@@ -598,12 +650,47 @@ function optsDone(h,k){
 }
 const bothDone = (h,k) => !!(h.alts && optsDone(h,k).length >= h.alts.length);
 
+/* Wording for the quota row, from today's point of view. daysAvail counts the
+   days still available for the remaining reps (today included, unless it is
+   already ticked). */
+function quotaInfo(h){
+  const k = TODAY(), q = h.quota, done = quotaDone(h,k,true);
+  const remaining = q - done;
+  const daysAvail = (7 - dow(k)) - (isChecked(h,k) ? 1 : 0);
+  const head = done + "/" + q + " this week";
+  if(remaining <= 0)          return {cls:"qmet", t:head + " - quota met", urgent:false};
+  if(remaining > daysAvail)   return {cls:"nmt",  t:head + " - out of days", urgent:true};
+  if(remaining === daysAvail) return {cls:"nmt",  t:head + (isChecked(h,k) ? " - every day left counts" : " - do it today"), urgent:!isChecked(h,k)};
+  return {cls:"qopt", t:head + " - " + daysAvail + (daysAvail===1?" day":" days") + " left", urgent:false};
+}
 function dayStats(k){
-  const sched = S.habits.filter(h=>schedOn(h,k));
-  const done = sched.filter(h=>isChecked(h,k));
-  return {n:sched.length, c:done.length, won: sched.length>0 && done.length===sched.length};
+  let n=0, c=0, avail=0;
+  S.habits.forEach(h=>{
+    if(schedOn(h,k)) avail++;
+    const s = slot(h,k); if(s.counts){ n++; if(s.hit) c++; }
+  });
+  return {n, c, avail, won: n>0 && c===n};
+}
+/* How many of the last N finished weeks a quota habit hit its number.
+   The current week is excluded - it is not over yet. */
+function quotaWeeksHit(h, n){
+  let hit=0, weeks=0;
+  for(let w=1; w<=n; w++){
+    const mon = addD(monday(TODAY()), -7*w);
+    if(addD(mon,6) < (h.since || S.firstDay)) break;
+    weeks++;
+    let c=0;
+    for(let j=0;j<7;j++){ const k = addD(mon,j); if(k >= (h.since||S.firstDay) && isChecked(h,k)) c++; }
+    if(c >= h.quota) hit++;
+  }
+  return {hit, weeks};
+}
+/* Quota habits you could still do today but are not owed yet. */
+function openQuota(k){
+  return S.habits.filter(h=>isQuota(h) && schedOn(h,k) && !isChecked(h,k) && quotaDone(h,k,true) < h.quota).length;
 }
 function habitStreak(h){
+  if(isQuota(h)) return quotaDone(h,TODAY(),true);   /* progress, shown as x/quota */
   let n=0, k=TODAY();
   if(!(schedOn(h,k) && isChecked(h,k))){ k = addD(k,-1); }
   for(let i=0;i<3700;i++){
@@ -641,7 +728,7 @@ function weekStats(offset=0){
     const k = addD(mon,j);
     if(k > TODAY()) break;
     if(k < S.firstDay) continue;
-    S.habits.forEach(h=>{ if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; } });
+    S.habits.forEach(h=>{ const s = slot(h,k); if(s.counts){ denom++; if(s.hit) hits++; } });
   }
   return {hits, denom, pct: denom? Math.round(hits/denom*100) : 0};
 }
@@ -652,7 +739,7 @@ function rolling7(){
   for(let i=0;i<7;i++){
     const k = addD(TODAY(), -i);
     if(k < S.firstDay) continue;
-    S.habits.forEach(h=>{ if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; } });
+    S.habits.forEach(h=>{ const s = slot(h,k); if(s.counts){ denom++; if(s.hit) hits++; } });
   }
   return {hits, denom, pct: denom? Math.round(hits/denom*100) : 0};
 }
@@ -661,7 +748,7 @@ function habitRoll7(h){
   for(let i=0;i<7;i++){
     const k = addD(TODAY(), -i);
     if(k < S.firstDay) continue;
-    if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; }
+    const s = slot(h,k); if(s.counts){ denom++; if(s.hit) hits++; }
   }
   return {r: denom? Math.round(hits/denom*100) : null, denom};
 }
@@ -672,7 +759,7 @@ function habitWeekRate(h){
     const k = addD(mon,j);
     if(k > TODAY()) break;
     if(k < S.firstDay) continue;
-    if(schedOn(h,k)){ denom++; if(isChecked(h,k)) hits++; }
+    const s = slot(h,k); if(s.counts){ denom++; if(s.hit) hits++; }
   }
   return {r: denom? Math.round(hits/denom*100) : null, denom};
 }
@@ -701,7 +788,9 @@ function monthPct(){
 }
 function missedYesterday(h){
   const y = addD(TODAY(),-1);
-  return y >= S.firstDay && schedOn(h,y) && !isChecked(h,y);
+  if(y < S.firstDay) return false;
+  const s = slot(h,y);
+  return s.counts && !s.hit;
 }
 
 /* ── header ── */
@@ -733,6 +822,7 @@ let editing = null;
 let reorder = false;
 const STARTERS = [
   {n:"Movement", d:"gym or a walk - either counts", alts:["Gym","Walk"]},
+  {n:"Train", d:"", quota:3},
   {n:"Deep work block", d:"2h, no phone"},
   {n:"Read 20 min", d:"non-fiction"},
   {n:"No sugar", d:"weekdays", days:[1,1,1,1,1,0,0]},
@@ -742,6 +832,7 @@ function habitRowHTML(h, off){
   let sub;
   if(reorder) sub = `<span>${esc(h.d||"")}</span>`;   /* keep the reorder list quiet */
   else if(h.alts) sub = `<span class="altchips">${h.alts.map((a,ai)=>`<button class="altchip ${optsDone(h,TODAY()).includes(ai)?'sel':''}" data-ai="${ai}">${esc(a)}</button>`).join("")}</span>`;
+  else if(isQuota(h)){ const qi = quotaInfo(h); sub = `<span class="${qi.cls}">${qi.t}</span>`; }
   else if(off) sub = `<span>not scheduled today</span>`;
   else if(missedYesterday(h) && !isChecked(h,TODAY())) sub = `<span class="nmt">missed yesterday · never miss twice</span>`;
   else sub = `<span>${esc(h.d||"")}</span>`;
@@ -751,20 +842,36 @@ function habitRowHTML(h, off){
     return chk + name +
       `<button class="grip" title="Drag to reorder"><svg viewBox="0 0 6 16"><circle cx="1.5" cy="3" r="1.3"/><circle cx="4.5" cy="3" r="1.3"/><circle cx="1.5" cy="8" r="1.3"/><circle cx="4.5" cy="8" r="1.3"/><circle cx="1.5" cy="13" r="1.3"/><circle cx="4.5" cy="13" r="1.3"/></svg></button>`;
   }
+  const chip = isQuota(h)
+    ? `<span class="streakchip qchip${quotaDone(h,TODAY(),true) >= h.quota ? ' qfull' : ''}">${quotaDone(h,TODAY(),true)}/${h.quota}</span>`
+    : `<span class="streakchip">🔥 ${habitStreak(h)}</span>`;
   return chk + name +
-    `<span class="streakchip">🔥 ${habitStreak(h)}</span>
+    `${chip}
     <button class="editbtn" title="Edit habit">✎</button>`;
 }
+const qhint = q => `Any ${q} ${q===1?"day":"days"} a week, your pick. It only counts as missed once there are just enough days left in the week to still hit it.`;
 function editorHTML(h){
   const days = h ? h.days : [1,1,1,1,1,1,1];
+  const qmode = !!(h && h.quota);
+  const q = (h && h.quota) || 3;
   return `<label>Habit name</label>
     <input type="text" class="ed-name" maxlength="40" placeholder="e.g. Cold shower" value="${h?esc(h.n):""}" />
     <label>Detail <span style="text-transform:none;letter-spacing:0;color:var(--muted2)">(optional)</span></label>
     <input type="text" class="ed-detail" maxlength="60" placeholder="e.g. 2 min, every morning" value="${h?esc(h.d):""}" />
     <label>Either / or <span style="text-transform:none;letter-spacing:0;color:var(--muted2)">(optional - completing either one counts)</span></label>
     <input type="text" class="ed-alt" maxlength="40" placeholder="e.g. Stretching" value="${h&&h.alts?esc(h.alts[1]):""}" />
-    <label>Days</label>
-    <div class="daypick">${["M","T","W","T","F","S","S"].map((d,di)=>`<button type="button" class="dp ${days[di]?'on':''}" data-di="${di}">${d}</button>`).join("")}</div>
+    <label>Repeat</label>
+    <div class="segrow">
+      <button type="button" class="seg ${qmode?'':'on'}" data-mode="days">Specific days</button>
+      <button type="button" class="seg ${qmode?'on':''}" data-mode="quota">Times a week</button>
+    </div>
+    <div class="mblk" data-blk="days" ${qmode?'hidden':''}>
+      <div class="daypick">${["M","T","W","T","F","S","S"].map((d,di)=>`<button type="button" class="dp ${days[di]?'on':''}" data-di="${di}">${d}</button>`).join("")}</div>
+    </div>
+    <div class="mblk" data-blk="quota" ${qmode?'':'hidden'}>
+      <div class="daypick">${[1,2,3,4,5,6,7].map(qn=>`<button type="button" class="dp qn ${qn===q?'on':''}" data-qn="${qn}">${qn}</button>`).join("")}</div>
+      <p class="qhint">${qhint(q)}</p>
+    </div>
     <div class="edrow">
       <button class="btn btn-save">Save</button>
       <button class="btn btn-ghost">Cancel</button>
@@ -780,7 +887,7 @@ function renderStarter(){
     <div class="schips">${remaining.map(i=>`<button class="schip" data-si="${i}">+ ${esc(STARTERS[i].n)}</button>`).join("")}</div></div>`;
   el.querySelectorAll(".schip").forEach(b=>b.addEventListener("click", ()=>{
     const s = STARTERS[+b.dataset.si];
-    S.habits.push({id:uid(), n:s.n, d:s.d||"", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1], since:TODAY()});
+    S.habits.push({id:uid(), n:s.n, d:s.d||"", alts:s.alts||null, days:s.days||[1,1,1,1,1,1,1], quota:s.quota||null, since:TODAY()});
     save(); renderAll();
   }));
 }
@@ -805,7 +912,8 @@ function renderToday(){
     }
     const off = !schedOn(h,tk);
     const el = document.createElement("div");
-    el.className = "habit" + (reorder ? " reord" : "") + (isChecked(h,tk) ? " done" : "") + (!reorder && bothDone(h,tk) ? " both" : "") + (off ? " off" : "") + (!off && !reorder && missedYesterday(h) && !isChecked(h,tk) ? " defend" : "");
+    const urge = !off && !reorder && !isChecked(h,tk) && (isQuota(h) ? quotaInfo(h).urgent : missedYesterday(h));
+    el.className = "habit" + (reorder ? " reord" : "") + (isChecked(h,tk) ? " done" : "") + (!reorder && bothDone(h,tk) ? " both" : "") + (off ? " off" : "") + (urge ? " defend" : "");
     el.style.animationDelay = (delay*0.055)+"s"; delay++;
     el.innerHTML = habitRowHTML(h, off);
     el.dataset.hid = h.id;
@@ -895,19 +1003,31 @@ function wireEditor(ed, hid){
     if(!n){ ed.querySelector(".ed-name").style.borderColor = "var(--red)"; return; }
     const d = ed.querySelector(".ed-detail").value.trim();
     const alt = ed.querySelector(".ed-alt").value.trim();
-    let days = [...ed.querySelectorAll(".dp")].map(b=>b.classList.contains("on")?1:0);
-    if(!days.some(Boolean)) days = [1,1,1,1,1,1,1];
+    const qmode = ed.querySelector('.seg[data-mode="quota"]').classList.contains("on");
+    const qsel = ed.querySelector(".qn.on");
+    const quota = qmode ? (+(qsel && qsel.dataset.qn) || 3) : null;
+    let days = [...ed.querySelectorAll('[data-blk="days"] .dp')].map(b=>b.classList.contains("on")?1:0);
+    if(quota || !days.some(Boolean)) days = [1,1,1,1,1,1,1];
     if(hid === null){
       const alts = alt ? [n, alt] : null;
-      S.habits.push({id:uid(), n, d, alts, days, since:TODAY()});
+      S.habits.push({id:uid(), n, d, alts, days, quota, since:TODAY()});
     } else {
       const h = S.habits.find(x=>x.id===hid);
       const alts = alt ? [ h.alts ? h.alts[0] : n, alt ] : null;
-      h.n = n; h.d = d; h.alts = alts; h.days = days;
+      h.n = n; h.d = d; h.alts = alts; h.days = days; h.quota = quota;
     }
     editing = null; save(); renderAll();
   };
-  ed.querySelectorAll(".dp").forEach(b=>b.addEventListener("click", ()=>b.classList.toggle("on")));
+  ed.querySelectorAll('[data-blk="days"] .dp').forEach(b=>b.addEventListener("click", ()=>b.classList.toggle("on")));
+  ed.querySelectorAll(".seg").forEach(b=>b.addEventListener("click", ()=>{
+    ed.querySelectorAll(".seg").forEach(x=>x.classList.toggle("on", x===b));
+    ed.querySelectorAll(".mblk").forEach(x=>{ x.hidden = x.dataset.blk !== b.dataset.mode; });
+  }));
+  ed.querySelectorAll(".qn").forEach(b=>b.addEventListener("click", ()=>{
+    ed.querySelectorAll(".qn").forEach(x=>x.classList.toggle("on", x===b));
+    const hint = ed.querySelector(".qhint");
+    if(hint) hint.textContent = qhint(+b.dataset.qn);
+  }));
   ed.querySelector(".btn-save").addEventListener("click", save_);
   ed.querySelectorAll("input").forEach(inp => inp.addEventListener("keydown", e=>{ if(e.key==="Enter") save_(); }));
   ed.querySelector(".btn-ghost").addEventListener("click", ()=>{ editing = null; renderToday(); });
@@ -965,7 +1085,7 @@ function pickAlt(h, el, ai){
 function syncRowUI(h, el){
   const tk = TODAY(), on = isChecked(h,tk);
   el.classList.toggle("done", on);
-  el.classList.toggle("defend", missedYesterday(h) && !on);
+  el.classList.toggle("defend", !on && (isQuota(h) ? quotaInfo(h).urgent : missedYesterday(h)));
   el.classList.remove("justdone");
   if(on){ void el.offsetWidth; el.classList.add("justdone"); }
   const done = optsDone(h,tk);
@@ -974,11 +1094,17 @@ function syncRowUI(h, el){
   if(!h.alts){
     const sp = el.querySelector(".hname span:not(.star)");
     if(sp){
-      if(missedYesterday(h) && !on){ sp.className = "nmt"; sp.textContent = "missed yesterday · never miss twice"; }
+      if(isQuota(h)){ const qi = quotaInfo(h); sp.className = qi.cls; sp.textContent = qi.t; }
+      else if(missedYesterday(h) && !on){ sp.className = "nmt"; sp.textContent = "missed yesterday · never miss twice"; }
       else { sp.className = ""; sp.textContent = h.d || ""; }
     }
   }
-  el.querySelector(".streakchip").textContent = "🔥 " + habitStreak(h);
+  const chip = el.querySelector(".streakchip");
+  if(isQuota(h)){
+    const dn = quotaDone(h,tk,true);
+    chip.textContent = dn + "/" + h.quota;
+    chip.classList.toggle("qfull", dn >= h.quota);
+  } else chip.textContent = "🔥 " + habitStreak(h);
 }
 
 /* ── miss prompt ── */
@@ -990,7 +1116,7 @@ function pendingMiss(){
     const k = addD(TODAY(),-i);
     if(k < S.firstDay) return null;
     if(S.missAsked[k]) continue;
-    const missed = S.habits.filter(h=>schedOn(h,k) && !isChecked(h,k));
+    const missed = S.habits.filter(h=>{ const s = slot(h,k); return s.counts && !s.hit; });
     if(missed.length) return {k, missed, i};
   }
   return null;
@@ -1072,13 +1198,16 @@ let wasWon = null;   /* null on first render, so reopening a won day does not re
 function render(){
   const tk = TODAY();
   const {n, c, won} = dayStats(tk);
-  const dayPct = n ? Math.round(c/n*100) : 0;
+  /* n===0 with habits on the board means nothing is owed today - every weekly
+     habit still has room. That is a clear day, not a 0% day. */
+  const clear = n===0 && S.habits.length > 0;
+  const dayPct = n ? Math.round(c/n*100) : (clear ? 100 : 0);
 
   countTo("s-day", dayPct, "<small>%</small>");
-  $("ringnum").textContent = c + "/" + n;
-  $("ringfg").style.strokeDashoffset = CIRC * (1 - (n?c/n:0));
+  $("ringnum").textContent = n ? (c + "/" + n) : (clear ? "clear" : "0/0");
+  $("ringfg").style.strokeDashoffset = CIRC * (1 - (n ? c/n : (clear?1:0)));
   $("ringwrap").classList.toggle("glow", won);
-  $("todaycount").textContent = n ? (c + " of " + n + " done") : "";
+  $("todaycount").textContent = n ? (c + " of " + n + " done") : (clear ? "nothing owed today" : "");
 
   const streak = currentStreak();
   $("s-streak").textContent = streak;
@@ -1091,7 +1220,7 @@ function render(){
   const ws = weekStats(0);
   $("wkrate").textContent = ws.pct + "%";
   const needed = Math.max(0, Math.ceil(0.8*ws.denom) - ws.hits);
-  $("wkneed").textContent = ws.denom===0 ? "no scheduled checks yet" : (ws.pct >= 80 ? "target hit 🎯" : needed + " checks to win the week");
+  $("wkneed").textContent = ws.denom===0 ? (S.habits.length ? "nothing owed yet this week" : "no scheduled checks yet") : (ws.pct >= 80 ? "target hit 🎯" : needed + " checks to win the week");
   $("wkbadge").style.display = (ws.denom>0 && ws.pct >= 80) ? "inline-block" : "none";
 
   countTo("s-month", monthPct(), "<small>%</small>");
@@ -1103,9 +1232,13 @@ function render(){
   const hero = $("hero");
   hero.classList.toggle("won", won);
   const defend = S.habits.find(h=>schedOn(h,tk) && missedYesterday(h) && !isChecked(h,tk));
-  if(n===0){
+  if(n===0 && !clear){
     $("heromsg").textContent = "Build your board.";
     $("herosub").textContent = "Add the habits you refuse to skip.";
+  } else if(clear){
+    const op = openQuota(tk);
+    $("heromsg").textContent = "Nothing owed today.";
+    $("herosub").textContent = op ? op + (op===1 ? " weekly habit is" : " weekly habits are") + " still open - get ahead while it's cheap." : "Your weekly quotas are already covered.";
   } else if(won){
     $("heromsg").textContent = "Day won. 🏆";
     $("herosub").textContent = streak + "-day streak. Tomorrow defends it.";
@@ -1160,20 +1293,23 @@ function renderWeek(){
   $("weekrange").textContent = `${fmtShort(mon)} - ${fmtShort(sun)} ${MONTHS[fromKey(sun).getMonth()].slice(0,3)}`;
   let html = "<tr><th></th>" + DAYS3.map((d,j)=>`<th class="${addD(mon,j)===tk?'today':''}">${d}</th>`).join("") + "<th>rate</th></tr>";
   S.habits.forEach(h=>{
-    let hits=0, sdays=0, row = `<tr><td class="hlabel">${esc(h.n)}</td>`;
+    let hits=0, sdays=0;
+    let row = `<tr><td class="hlabel">${esc(h.n)}${isQuota(h)?`<span class="qtag">${h.quota}/wk</span>`:""}</td>`;
     for(let j=0;j<7;j++){
       const k = addD(mon,j);
       if(!schedOn(h,k)){ row += `<td><div class="cell offday"></div></td>`; continue; }
       if(k > tk){ row += `<td><div class="cell future"></div></td>`; continue; }
       if(k < S.firstDay){ row += `<td><div class="cell future"></div></td>`; continue; }
-      sdays++;
-      const hit = isChecked(h,k);
-      if(hit){ hits++;
+      const s = slot(h,k);
+      if(s.counts){ sdays++; if(s.hit) hits++; }
+      if(s.hit){
         row += `<td><div class="cell hit"><svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></svg></div></td>`;
       } else if(k===tk){
         row += `<td><div class="cell"></div></td>`;
-      } else {
+      } else if(s.counts){
         row += `<td><div class="cell miss"></div></td>`;
+      } else {
+        row += `<td><div class="cell pend" title="Not owed that day"></div></td>`;
       }
     }
     const r = sdays? Math.round(hits/sdays*100) : 0;
@@ -1293,10 +1429,10 @@ function renderStats(){
   renderFeelChart();
   renderSplits();
   /* habit win-rates */
-  const rows = S.habits.map(h=>({n:h.n, ...habitRoll7(h)})).filter(x=>x.r!==null).sort((a,b)=>b.r-a.r);
+  const rows = S.habits.map(h=>({n:h.n, q:h.quota||0, ...habitRoll7(h)})).filter(x=>x.r!==null).sort((a,b)=>b.r-a.r);
   $("hbars").innerHTML = rows.length ? rows.map(h=>`
     <div class="hbar ${h.r<70?'low':''}">
-      <div class="top"><b>${esc(h.n)}</b><span>${h.r}%</span></div>
+      <div class="top"><b>${esc(h.n)}${h.q?`<span class="qtag">${h.q}/wk</span>`:""}</b><span>${h.r}%</span></div>
       <div class="track"><div class="fill" data-w="${h.r}"></div></div>
     </div>`).join("") : '<div style="font-size:12.5px;color:var(--muted2)">No data yet this week.</div>';
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -1347,6 +1483,13 @@ function renderStats(){
     const avg = a => (a.reduce((x,y)=>x+y,0)/a.length).toFixed(1);
     ins.push({ic:"⚡", b:"Habits move your mood", s:`On days you won, productivity averaged <span class="hl">${avg(wonP)}</span> vs <span class="hl">${avg(lostP)}</span> on lost days.`});
   }
+  S.habits.filter(isQuota).forEach(h=>{
+    const {hit, weeks} = quotaWeeksHit(h, 4);
+    if(weeks < 2) return;
+    ins.push(hit === weeks
+      ? {ic:"🔁", b:`${esc(h.n)} never missed its number`, s:`Quota hit in <span class="hl">${hit} of ${weeks}</span> finished weeks. That is the streak that matters here.`}
+      : {ic:"🔁", b:`${esc(h.n)} quota: ${hit}/${weeks} weeks`, s:`You hit <span class="hl">${h.quota}× a week</span> in ${hit} of the last ${weeks} weeks. Front-load it and the last days stop being a scramble.`});
+  });
   if(rs.length) ins.push({ic:"💭", b:"Top miss reason: "+esc(rs[0].r), s:`<span class="hl">${rs[0].c}×</span> in the last 30 days - this is the thing to fix.`});
   if(!ins.length) ins.push({ic:"📈", b:"Insights build themselves", s:"Track for a few days and this card starts telling you what the data says."});
   $("insights").innerHTML = ins.map(i=>`<div class="insight"><div class="ic">${i.ic}</div><div><b>${i.b}</b><span>${i.s}</span></div></div>`).join("");
