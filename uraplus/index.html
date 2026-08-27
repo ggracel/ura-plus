@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#231F20">
+<meta name="theme-color" content="#231F20" id="metaTheme">
 <title>Ura+</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -15,17 +15,31 @@
     --green:#2C9AA1; --green-d:#1D7A80; --green2:#46BEC5; --green-soft:#D8F1F3;
     --ink:#231F20; --muted:#6E6A6B; --line:#E7E5E5; --bg:#F6F5F5; --card:#fff;
     --amber:#d97706; --red:#dc2626;
+    --daybg:#f8fafc; --dayfut:#94a3b8; --planbg:#EFFAFB; --planbd:#8BD7DC; --planink:#46BEC5;
+    --hasbd:#B9E7EB; --chipbg:#F1EFEE; --tealwash:#EFFAFB; --tealbd:#C9ECEF;
+    --ring-a:#46BEC5; --ring-b:#B5E6EA; --ring-t:#E7E5E5;
+    --hdr1:#181516; --hdr2:#332E2F;
+    --hm0:#ECEAE9; --hm1:#C8EAEC; --hm2:#8FD8DC; --hm3:#46BEC5; --hm4:#22868D;
+    --shadow:0 1px 3px rgba(15,23,42,.05); --shadow2:0 10px 30px rgba(15,23,42,.10);
+  }
+  :root[data-theme="dark"]{
+    --green:#5FC5CC; --green-d:#8FD8DC; --green2:#46BEC5; --green-soft:#20393B;
+    --ink:#F2F0EF; --muted:#A5A0A1; --line:#3A3536; --bg:#1C1919; --card:#262223;
+    --amber:#E2A24E; --red:#f87171;
+    --daybg:#2B2728; --dayfut:#6E6A6B; --planbg:#20393B; --planbd:#2F6D72; --planink:#6FCFD6;
+    --hasbd:#2F6D72; --chipbg:#312D2E; --tealwash:#20393B; --tealbd:#2F6D72;
+    --ring-a:#46BEC5; --ring-b:#2F6D72; --ring-t:#3A3536;
+    --hdr1:#141112; --hdr2:#262223;
+    --hm0:#2B2728; --hm1:#25494C; --hm2:#2F6D72; --hm3:#46BEC5; --hm4:#8FD8DC;
+    --shadow:0 1px 3px rgba(0,0,0,.35); --shadow2:0 10px 30px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--bg);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased;
     padding-bottom:env(safe-area-inset-bottom)}
-  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
-    box-shadow:0 0 40px rgba(15,23,42,.08)}
-
-  /* ===== header ===== */
-  .hdr{background:linear-gradient(150deg,#181516,#332E2F);color:#fff;
+  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);box-shadow:0 0 40px rgba(15,23,42,.08)}
+  .hdr{background:linear-gradient(150deg,var(--hdr1),var(--hdr2));color:#fff;
     padding:calc(14px + env(safe-area-inset-top)) 18px 60px;border-radius:0 0 30px 30px;position:relative}
   .hdr-top{display:flex;align-items:center;justify-content:space-between}
   .logo{font-weight:800;font-size:19px;letter-spacing:.3px}
@@ -33,8 +47,70 @@
   .icon-btn{background:rgba(255,255,255,.16);border:none;color:#fff;width:38px;height:38px;
     border-radius:12px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .streakb{background:rgba(255,255,255,.14);padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700}
-  .ach{background:var(--card);margin:12px 16px 0;border-radius:16px;padding:12px 14px;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  .timerb{background:rgba(70,190,197,.22);border:1px solid rgba(70,190,197,.55);padding:7px 12px;border-radius:999px;
+    font-size:12.5px;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums}
+  .mo-nav{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px}
+  .mo-nav > button{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;border-radius:10px;font-size:16px;cursor:pointer}
+  .mo-nav .mo{font-size:15px;font-weight:700;flex:1;max-width:150px;min-width:0;text-align:center;text-transform:capitalize;white-space:nowrap;overflow:hidden}
+  .viewt{display:flex;gap:2px;background:rgba(255,255,255,.12);border-radius:11px;padding:3px;margin-left:4px;flex:none}
+  .viewt button{flex:none;background:transparent;border:none;color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;letter-spacing:.02em;border-radius:8px;cursor:pointer;opacity:.7;white-space:nowrap}
+  .viewt button.on{background:rgba(255,255,255,.92);color:#231F20;opacity:1}
+
+  @media(max-width:389px){
+    .mo-nav > button{width:29px;height:29px;font-size:14px}
+    .mo-nav .mo{font-size:13.5px}
+    .logo{font-size:17px}
+  }
+  /* day (ritual) card */
+  .daycard{margin:-44px 16px 0;background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow2);position:relative;z-index:3}
+  .daycard .dtit{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--green)}
+  .daycard .dmsg{font-size:15px;font-weight:700;margin:3px 0 10px}
+  .daycard .dmsg small{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:1px}
+  .drow{display:flex;gap:8px}
+  .dbtn{flex:1;border:none;border-radius:12px;padding:11px 6px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+  .dbtn.p{background:var(--green2);color:#141112}
+  .dbtn.s{background:var(--chipbg);color:var(--ink)}
+  .dbtn.g{background:var(--ink);color:var(--bg)}
+  .dchip{font-size:11.5px;color:var(--muted);margin-top:9px}
+  .dchip b{color:var(--green)}
+
+  .ring-card{background:var(--card);margin:12px 16px 0;border-radius:22px;padding:20px 18px 14px;box-shadow:var(--shadow2);position:relative;z-index:2}
+  .ring-flex{display:flex;align-items:center;gap:18px}
+  .ring{width:138px;height:138px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center}
+  .ring .in{width:106px;height:106px;background:var(--card);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 6px}
+  .ring .in b{font-size:20px;line-height:1.08;font-variant-numeric:tabular-nums;letter-spacing:-.01em;white-space:nowrap}
+  .ring .in small{color:var(--muted);font-size:10px;line-height:1.25;margin-top:2px;white-space:nowrap}
+  .ring .in .pct{color:var(--green);font-weight:800;font-size:11.5px;line-height:1.2;margin-top:3px;white-space:nowrap}
+  .ring-side{flex:1;min-width:0}
+  .ks{padding:5px 0;border-bottom:1px dashed var(--line)}
+  .ks:last-child{border-bottom:none}
+  .ks small{display:block;color:var(--muted);font-size:11px}
+  .ks b{font-size:13.5px;line-height:1.35}
+  .ks b.g{color:var(--green)}
+  .neto{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px}
+  .reward{margin-top:12px;background:var(--tealwash);border:1px solid var(--tealbd);border-radius:12px;padding:8px 12px;font-size:13px;display:none}
+  .reward.on{display:block}
+  .reward .bar{height:6px;background:var(--line);border-radius:99px;margin-top:6px;overflow:hidden}
+  .reward .bar i{display:block;height:100%;background:var(--green2);border-radius:99px;transition:width .4s}
+  .goal-hit{margin-top:12px;background:linear-gradient(135deg,#231F20,#2C9AA1);color:#fff;border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:700;text-align:center;display:none;animation:pop .5s}
+  .goal-hit.on{display:block}
+  @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+  .pacechip{margin-top:12px;border-radius:12px;padding:9px 12px;font-size:13px;font-weight:600;display:none}
+  .pacechip.on{display:block}
+  .pc-ok{background:var(--tealwash);color:var(--green-d);border:1px solid var(--tealbd)}
+  .pc-warn{background:rgba(217,119,6,.12);color:var(--amber);border:1px solid rgba(217,119,6,.35)}
+
+  .strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 16px 0}
+  .tile{background:var(--card);border-radius:14px;padding:10px 8px;text-align:center;box-shadow:var(--shadow)}
+  .tile small{display:block;color:var(--muted);font-size:10px;letter-spacing:.3px;text-transform:uppercase;font-weight:600}
+  .tile b{font-size:12.5px;line-height:1.35;font-variant-numeric:tabular-nums;display:block;padding:0 2px}
+
+  .ach{background:var(--card);margin:12px 16px 0;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow)}
   .ach .at{font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:8px}
+  .xrow{display:flex;gap:8px}
+  .xc{flex:1;background:var(--bg);border-radius:10px;padding:9px 6px;text-align:center}
+  .xc small{display:block;color:var(--muted);font-size:10px;font-weight:700;margin-bottom:2px}
+  .xc b{color:var(--green);font-size:14px}
   .bdgs{display:flex;justify-content:space-between;gap:4px}
   .bdg{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1;min-width:0}
   .bdg .bi{font-size:19px;line-height:1.2}
@@ -42,131 +118,103 @@
   .bdg.lock{opacity:.28;filter:grayscale(1)}
   .recrow{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--muted)}
   .recrow b{color:var(--ink)}
-  .wchart{display:flex;gap:8px;align-items:flex-end;height:118px;padding-top:16px}
-  .wcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
-  .wval{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700;white-space:nowrap}
-  .wbar{width:100%;max-width:46px;border-radius:7px 7px 0 0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
-  .wa{background:#46BEC5}
-  .wp{background:#B5E6EA}
-  .wlab{font-size:9px;color:var(--muted);margin-top:5px;white-space:nowrap}
-  .wempty{color:var(--muted);font-size:12.5px;text-align:center;padding:18px 0}
-  .mo-nav{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px}
-  .mo-nav button{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;
-    border-radius:10px;font-size:16px;cursor:pointer}
-  .mo-nav .mo{font-size:16px;font-weight:700;min-width:170px;text-align:center;text-transform:capitalize}
 
-  /* ===== ring card ===== */
-  .ring-card{background:var(--card);margin:-44px 16px 0;border-radius:22px;padding:20px 18px 14px;
-    box-shadow:0 10px 30px rgba(15,23,42,.10);position:relative;z-index:2}
-  .ring-flex{display:flex;align-items:center;gap:18px}
-  .ring{width:138px;height:138px;border-radius:50%;flex:none;position:relative;
-    display:flex;align-items:center;justify-content:center;transition:background .4s}
-  .ring .in{width:106px;height:106px;background:var(--card);border-radius:50%;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  .ring .in b{font-size:21px;line-height:1.05}
-  .ring .in small{color:var(--muted);font-size:10.5px;margin-top:2px}
-  .ring .in .pct{color:var(--green);font-weight:800;font-size:12px;margin-top:3px}
-  .ring-side{flex:1;min-width:0}
-  .ks{padding:5px 0;border-bottom:1px dashed var(--line)}
-  .ks:last-child{border-bottom:none}
-  .ks small{display:block;color:var(--muted);font-size:11px}
-  .ks b{font-size:14.5px}
-  .ks b.g{color:var(--green)}
-  .reward{margin-top:12px;background:#EFFAFB;border:1px solid #C9ECEF;border-radius:12px;
-    padding:8px 12px;font-size:13px;display:none}
-  .reward.on{display:block}
-  .reward .bar{height:6px;background:#DFF4F6;border-radius:99px;margin-top:6px;overflow:hidden}
-  .reward .bar i{display:block;height:100%;background:var(--green2);border-radius:99px;transition:width .4s}
-  .goal-hit{margin-top:12px;background:linear-gradient(135deg,#231F20,#2C9AA1);color:#fff;border-radius:12px;
-    padding:10px 12px;font-size:13.5px;font-weight:700;text-align:center;display:none;animation:pop .5s}
-  .goal-hit.on{display:block}
-  .pacechip{margin-top:12px;border-radius:12px;padding:9px 12px;font-size:13px;font-weight:600;display:none}
-  .pacechip.on{display:block}
-  .pc-ok{background:#EFFAFB;color:#1D7A80;border:1px solid #C9ECEF}
-  .pc-warn{background:#FFF8EB;color:#92400E;border:1px solid #FDE6B8}
-  .xrow{display:flex;gap:8px}
-  .xc{flex:1;background:#F6F5F5;border-radius:10px;padding:9px 6px;text-align:center}
-  .xc small{display:block;color:var(--muted);font-size:10px;font-weight:700;margin-bottom:2px}
-  .xc b{color:var(--green);font-size:14px}
-  @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
-
-  /* ===== stats strip ===== */
-  .strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 16px 0}
-  .tile{background:var(--card);border-radius:14px;padding:10px 8px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.05)}
-  .tile small{display:block;color:var(--muted);font-size:10px;letter-spacing:.3px;text-transform:uppercase;font-weight:600}
-  .tile b{font-size:14px}
-
-  /* ===== calendar ===== */
-  .cal-card{background:var(--card);margin:12px 16px;border-radius:20px;padding:14px 12px 12px;box-shadow:0 1px 3px rgba(15,23,42,.05)}
-  .dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;color:var(--muted);
-    font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-  .dow .we{color:#46BEC5}
+  .cal-card{background:var(--card);margin:12px 16px;border-radius:20px;padding:14px 12px 12px;box-shadow:var(--shadow)}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;color:var(--muted);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+  .dow .we{color:var(--green2)}
   .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-  .day{aspect-ratio:.82;border-radius:12px;border:1px solid transparent;background:#f8fafc;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
-    font-size:13px;position:relative;transition:transform .08s}
+  .day{aspect-ratio:.82;border-radius:12px;border:1px solid transparent;background:var(--daybg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:transform .08s}
   .day:active{transform:scale(.93)}
   .day.blank{background:transparent;cursor:default}
   .day .dn{font-weight:600;color:var(--ink)}
   .day .hh{font-size:9.5px;font-weight:800;color:var(--green);line-height:1.1}
   .day .ee{font-size:8.5px;color:var(--muted);line-height:1.1}
-  .day.has{background:var(--green-soft);border-color:#B9E7EB}
+  .day.has{background:var(--green-soft);border-color:var(--hasbd)}
+  .day.plan{background:var(--planbg);border:1.5px dashed var(--planbd)}
+  .day.plan .hh{color:var(--planink)}
+  .day.wait{background:var(--planbg);border:1.5px solid var(--amber)}
   .day.today{border:2px solid var(--green);font-weight:800}
-  .day.future .dn{color:#94a3b8}
-  .cal-sum{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
-    font-size:12.5px;color:var(--muted)}
+  .day.future .dn{color:var(--dayfut)}
+  .cal-sum{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
   .cal-sum b{color:var(--ink)}
+  .wchart{display:flex;gap:8px;align-items:flex-end;height:118px;padding-top:16px}
+  .wcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+  .wval{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700;white-space:nowrap}
+  .wbar{width:100%;max-width:46px;border-radius:7px 7px 0 0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+  .wa{background:var(--ring-a)} .wp{background:var(--ring-b)}
+  .wlab{font-size:9px;color:var(--muted);margin-top:5px;white-space:nowrap}
+  .wempty{color:var(--muted);font-size:12.5px;text-align:center;padding:18px 0}
 
-  /* ===== FAB ===== */
+  /* year view */
+  #yearView{display:none}
+  .ynav{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 2px}
+  .ynav button{background:var(--chipbg);border:none;color:var(--ink);width:32px;height:32px;border-radius:10px;font-size:15px;cursor:pointer}
+  .ynav b{font-size:16px}
+  .hmwrap{overflow-x:auto;padding-bottom:4px}
+  .hmgrid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,10px);gap:2px;width:max-content}
+  .hmc{width:10px;height:10px;border-radius:2px;background:var(--hm0)}
+  .hmleg{display:flex;align-items:center;gap:4px;justify-content:flex-end;font-size:9.5px;color:var(--muted);margin-top:8px}
+  .hmleg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .report{background:var(--tealwash);border:1px solid var(--tealbd);border-radius:14px;padding:12px 14px;font-size:13px;margin:12px 16px 0}
+  .report b{color:var(--green-d)}
+  .arch{display:grid;gap:8px;margin-top:10px}
+  .arow{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+  .arow .an b{font-size:14px;text-transform:capitalize}
+  .arow .an small{display:block;color:var(--muted);font-size:11px}
+  .arow .av{text-align:right}
+  .arow .av b{color:var(--green);font-size:14px;font-variant-numeric:tabular-nums}
+  .arow .av small{display:block;font-size:10px;color:var(--muted)}
+
   .fab{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
-    background:var(--ink);color:#fff;border:none;border-radius:999px;padding:14px 26px;font-size:15px;
-    font-weight:700;box-shadow:0 10px 24px rgba(35,31,32,.38);cursor:pointer;z-index:5;white-space:nowrap}
+    background:var(--ink);color:var(--bg);border:none;border-radius:999px;padding:14px 26px;font-size:15px;font-weight:700;
+    box-shadow:0 10px 24px rgba(20,17,18,.38);cursor:pointer;z-index:5;white-space:nowrap}
   .fab .plus{color:#46BEC5;font-weight:800}
-  .fab:active{transform:translateX(-50%) scale(.96)}
   .spacer{height:90px}
-
-  /* ===== sheet / modal ===== */
+  .syncline{text-align:center;font-size:10.5px;color:var(--muted);padding:0 0 4px}
+  .powered{text-align:center;padding:2px 0 4px;font-size:10.5px;letter-spacing:.6px;color:var(--muted);opacity:.75;font-weight:600}
+  .powered span{color:#46BEC5}
   .ovl{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:10;display:none;align-items:flex-end;justify-content:center}
   .ovl.on{display:flex}
-  .sheet{background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));
-    animation:up .22s ease-out;max-height:88vh;overflow:auto}
+  .sheet{background:var(--card);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));
+    animation:up .22s ease-out;max-height:88vh;overflow:auto;color:var(--ink)}
   @keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:translateY(0);opacity:1}}
   .sheet h3{margin:0 0 2px;font-size:18px}
   .sheet .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-  .chip{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 0;font-size:15px;
-    font-weight:700;cursor:pointer;flex:1 1 28%;text-align:center;min-width:70px}
+  .chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 0;font-size:15px;font-weight:700;cursor:pointer;flex:1 1 28%;text-align:center;min-width:70px}
   .chip small{display:block;font-weight:600;color:var(--muted);font-size:10.5px}
-  .chip.sel{border-color:var(--green);background:var(--green-soft);color:var(--green-d)}
-  .mtabs{display:flex;gap:6px;background:#f1f5f9;border-radius:12px;padding:4px;margin:4px 0 2px}
-  .mt{flex:1;border:none;background:transparent;border-radius:9px;padding:9px 0;font-size:13.5px;font-weight:700;
-    color:var(--muted);cursor:pointer;font-family:inherit}
-  .mt.sel{background:#fff;color:var(--green-d);box-shadow:0 1px 3px rgba(15,23,42,.12)}
-  select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:15px;
-    font-family:inherit;background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
-  select:focus{outline:none;border-color:var(--green)}
-  input[type=time]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;
-    font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
-  input[type=time]:focus{outline:none;border-color:var(--green)}
-  .day.plan{background:#EFFAFB;border:1.5px dashed #8BD7DC}
-  .day.plan .hh{color:#46BEC5}
+  .chip.sel{border-color:var(--green2);background:var(--green-soft);color:var(--green-d)}
+  .mtabs{display:flex;gap:6px;background:var(--chipbg);border-radius:12px;padding:4px;margin:4px 0 2px}
+  .mt{flex:1;border:none;background:transparent;border-radius:9px;padding:9px 0;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit}
+  .mt.sel{background:var(--card);color:var(--green-d);box-shadow:0 1px 3px rgba(15,23,42,.12)}
   label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin:12px 0 4px;letter-spacing:.2px}
-  input[type=number],input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:12px;
-    padding:12px 12px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
-  input:focus{outline:none;border-color:var(--green)}
+  input[type=number],input[type=text],input[type=time],select{width:100%;border:1.5px solid var(--line);border-radius:12px;
+    padding:12px;font-size:16px;font-family:inherit;background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none}
+  input:focus,select:focus{outline:none;border-color:var(--green2)}
   .row2{display:flex;gap:10px}
   .row2>*{flex:1}
   .btn{width:100%;border:none;border-radius:14px;padding:14px;font-size:15.5px;font-weight:700;cursor:pointer;margin-top:14px;font-family:inherit}
-  .btn.p{background:var(--green);color:#fff}
-  .btn.s{background:#f1f5f9;color:var(--ink);margin-top:8px}
-  .btn.d{background:#fef2f2;color:var(--red);margin-top:8px}
-  .live-calc{background:#f0fdf4;border-radius:12px;padding:10px 12px;font-size:13.5px;margin-top:12px;color:var(--green-d);text-align:center;font-weight:600}
+  .btn.p{background:var(--green2);color:#141112}
+  .btn.s{background:var(--chipbg);color:var(--ink);margin-top:8px}
+  .btn.d{background:rgba(220,38,38,.1);color:var(--red);margin-top:8px}
+  .live-calc{background:var(--tealwash);border-radius:12px;padding:10px 12px;font-size:13.5px;margin-top:12px;color:var(--green-d);text-align:center;font-weight:600}
   .set-sec{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}
   .set-sec h4{margin:0 0 2px;font-size:14px}
   .set-sec p{margin:0 0 8px;color:var(--muted);font-size:12.5px}
-  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
-    padding:10px 18px;border-radius:12px;font-size:14px;z-index:50;display:none;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-  .warn{display:none;margin:10px 16px 0;background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:12px;padding:10px 12px;font-size:12.5px}
+  .seg{display:flex;gap:6px;background:var(--chipbg);border-radius:12px;padding:4px}
+  .seg button{flex:1;border:none;background:transparent;border-radius:9px;padding:9px 0;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit}
+  .seg button.sel{background:var(--card);color:var(--green-d);box-shadow:0 1px 3px rgba(15,23,42,.12)}
+  .loglist{font-size:11.5px;color:var(--muted);max-height:140px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:none}
+  .loglist div{padding:2px 0;border-bottom:1px dashed var(--line)}
+  .loglist div:last-child{border-bottom:none}
+  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#231F20;color:#fff;
+    padding:10px 18px;border-radius:12px;font-size:14px;z-index:50;display:none;box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:90vw}
+  .toast button{background:none;border:none;color:#46BEC5;font-weight:800;font-size:14px;margin-left:12px;cursor:pointer;font-family:inherit}
+  .warn{display:none;margin:10px 16px 0;background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.4);color:var(--amber);border-radius:12px;padding:10px 12px;font-size:12.5px}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -176,17 +224,22 @@
     <div class="hdr-top">
       <div class="logo">Ura<span style="color:#46BEC5">+</span><small>ure → denar</small></div>
       <div style="display:flex;gap:8px;align-items:center">
+        <button class="timerb" id="timerB" style="display:none" onclick="stopTimer()">⏱ 0:00</button>
         <div class="streakb" id="streakB" style="display:none"></div>
         <button class="icon-btn" onclick="openSettings()" title="Nastavitve">⚙︎</button>
       </div>
     </div>
     <div class="mo-nav">
-      <button onclick="chMonth(-1)">‹</button>
+      <button onclick="chMonth(-1)" id="navL">‹</button>
       <div class="mo" id="moLabel"></div>
-      <button onclick="chMonth(1)">›</button>
+      <button onclick="chMonth(1)" id="navR">›</button>
+      <div class="viewt"><button id="vMes" class="on" onclick="setView('m')">Mesec</button><button id="vLet" onclick="setView('y')">Leto</button></div>
     </div>
   </div>
 
+  <div class="daycard" id="dayCard" style="display:none"></div>
+
+  <div id="monthView">
   <div class="ring-card">
     <div class="ring-flex">
       <div class="ring" id="ring">
@@ -204,6 +257,7 @@
         <div class="ks" id="kCmpRow" style="display:none"><small>Prejšnji mesec do danes</small><b id="kCmp">—</b></div>
       </div>
     </div>
+    <div class="neto" id="netoLine" style="display:none"></div>
     <div class="reward" id="rewardBox">
       Delam za 🎯 <b id="rewName"></b>
       <div class="bar"><i id="rewBar"></i></div>
@@ -230,13 +284,13 @@
     <div class="recrow" id="recRow" style="display:none"></div>
   </div>
 
-  <div class="warn" id="storWarn">⚠️ Ta brskalnik ne dovoli trajnega shranjevanja — podatki bodo izgubljeni ob zaprtju. Odpri datoteko v Chrome/Edge/Firefox ali uporabi “Izvozi kopijo”.</div>
+  <div class="warn" id="storWarn">⚠️ Ta brskalnik ne dovoli trajnega shranjevanja — podatki bodo izgubljeni ob zaprtju. Uporabi Chrome/Safari ali izvozi kopijo.</div>
 
   <div class="cal-card">
     <div class="dow"><span>Pon</span><span>Tor</span><span>Sre</span><span>Čet</span><span>Pet</span><span class="we">Sob</span><span class="we">Ned</span></div>
     <div class="grid" id="calGrid"></div>
     <div class="cal-sum">
-      <span>Delovnih vnosov: <b id="sumDays">0</b></span>
+      <span>Vnosov: <b id="sumDays">0</b></span>
       <span>Skupaj: <b id="sumH">0 h</b> · <b id="sumE" style="color:var(--green)">0 €</b></span>
     </div>
   </div>
@@ -245,14 +299,30 @@
     <div class="at" style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted)">Zaslužek po tednih</div>
     <div class="wchart" id="wchart"></div>
   </div>
+  </div><!-- /monthView -->
 
-  <div style="text-align:center;padding:2px 0 4px;font-size:10.5px;letter-spacing:.6px;color:#B7B4B5;font-weight:600">
-    powered by foqs<span style="color:#46BEC5">.</span>
+  <div id="yearView">
+    <div class="cal-card" style="margin-top:14px">
+      <div class="ynav"><button onclick="chYear(-1)">‹</button><b id="yLabel">2026</b><button onclick="chYear(1)">›</button></div>
+      <div class="at" style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted);margin:6px 0 8px">Zaslužek po dneh</div>
+      <div class="hmwrap"><div class="hmgrid" id="hmGrid"></div></div>
+      <div class="hmleg">manj <i style="background:var(--hm0)"></i><i style="background:var(--hm1)"></i><i style="background:var(--hm2)"></i><i style="background:var(--hm3)"></i><i style="background:var(--hm4)"></i> več</div>
+    </div>
+    <div class="report" id="repBox" style="display:none"></div>
+    <div class="cal-card">
+      <div class="at" style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;color:var(--muted)">Arhiv mesecev</div>
+      <div class="arch" id="archList"></div>
+      <button class="btn s" onclick="exportCsvYear()">⬇︎ Izvozi CSV leta</button>
+    </div>
   </div>
+
   <div class="spacer"></div>
+  <div class="syncline" id="syncLine" style="display:none"></div>
+  <div class="powered">powered by foqs<span>.</span></div>
+  <div style="height:8px"></div>
   <button class="fab" onclick="openEntry(todayKey())"><span class="plus">+</span> Dodaj ure za danes</button>
 
-  <!-- ===== entry sheet ===== -->
+  <!-- entry sheet -->
   <div class="ovl" id="entryOvl" onclick="if(event.target===this)closeOvl('entryOvl')">
     <div class="sheet">
       <h3 id="eTitle">Vnos ur</h3>
@@ -289,7 +359,7 @@
     </div>
   </div>
 
-  <!-- ===== settings sheet ===== -->
+  <!-- settings sheet -->
   <div class="ovl" id="setOvl" onclick="if(event.target===this)closeOvl('setOvl')">
     <div class="sheet">
       <h3>Nastavitve</h3>
@@ -313,19 +383,42 @@
       <label>Za kaj delaš ta mesec? 🎯 (neobvezno)</label>
       <input type="text" id="sReward" placeholder="npr. nov telefon" maxlength="40">
       <div class="row2" style="margin-top:8px">
-        <div><label style="margin-top:0">Cena nagrade (€, neobvezno)</label>
+        <div><label style="margin-top:0">Cena nagrade (€)</label>
         <input type="number" id="sRewPrice" inputmode="decimal" min="0" placeholder="npr. 600"></div>
       </div>
+
+      <div class="set-sec">
+        <h4>Videz</h4>
+        <div class="seg" id="themeSeg">
+          <button data-t="auto" onclick="setThemePref('auto')">Samodejno</button>
+          <button data-t="light" onclick="setThemePref('light')">Svetla</button>
+          <button data-t="dark" onclick="setThemePref('dark')">Temna</button>
+        </div>
+      </div>
+
+      <div class="set-sec">
+        <h4>Denar</h4>
+        <div class="row2">
+          <div><label style="margin-top:0">»Na roke« (% bruto, 0 = izklop)</label>
+          <input type="number" id="sNet" inputmode="numeric" min="0" max="100" placeholder="npr. 78"></div>
+          <div><label style="margin-top:0">Vikend faktor (npr. 1,5)</label>
+          <input type="number" id="sWkx" inputmode="decimal" step="0.05" min="1" placeholder="1"></div>
+        </div>
+        <button class="btn s" onclick="exportCsvMonth()">⬇︎ Izvozi CSV meseca na zaslonu</button>
+      </div>
+
       <button class="btn p" onclick="saveSettings()">Shrani nastavitve</button>
 
       <div class="set-sec">
         <h4>Račun in sinhronizacija</h4>
         <div id="acctBox"></div>
+        <p style="margin-top:8px"><a href="#" onclick="toggleLog(event)" style="color:var(--green)">Zadnje spremembe ›</a></p>
+        <div class="loglist" id="logList"></div>
       </div>
 
       <div class="set-sec">
         <h4>Varnostna kopija</h4>
-        <p>Podatki so shranjeni samo na tej napravi. Občasno izvozi kopijo — z njo lahko podatke preneseš tudi na drugo napravo.</p>
+        <p>Podatki so na tej napravi (in v oblaku, če si prijavljen). Kopija pride prav ob menjavi naprave.</p>
         <button class="btn s" style="margin-top:0" onclick="exportData()">⬇︎ Izvozi kopijo (.json)</button>
         <button class="btn s" onclick="document.getElementById('impFile').click()">⬆︎ Uvozi kopijo</button>
         <input type="file" id="impFile" accept=".json,application/json" style="display:none" onchange="importData(this)">
@@ -334,7 +427,7 @@
     </div>
   </div>
 
-  <!-- ===== auth sheet ===== -->
+  <!-- auth sheet -->
   <div class="ovl" id="authOvl" onclick="if(event.target===this)closeOvl('authOvl')">
     <div class="sheet">
       <h3>Račun</h3>
@@ -343,39 +436,86 @@
       <input type="text" id="aEmail" inputmode="email" autocomplete="username" placeholder="ime@primer.si">
       <label>Geslo (vsaj 6 znakov)</label>
       <input type="password" id="aPass" autocomplete="current-password" placeholder="••••••••">
-      <div id="aErr" style="display:none;margin-top:10px;background:#fef2f2;color:var(--red);border-radius:10px;padding:9px 12px;font-size:13px"></div>
+      <div id="aErr" style="display:none;margin-top:10px;background:rgba(220,38,38,.1);color:var(--red);border-radius:10px;padding:9px 12px;font-size:13px"></div>
       <button class="btn p" id="aLoginBtn" onclick="doLogin()">Prijava</button>
       <button class="btn s" id="aSignupBtn" onclick="doSignup()">Ustvari nov račun</button>
       <button class="btn s" onclick="closeOvl('authOvl')">Nazaj</button>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast"><span id="toastMsg"></span><button id="toastBtn" style="display:none"></button></div>
 </div>
 
 <script>
 'use strict';
-/* ================= state ================= */
+/* ================= stanje ================= */
 var KEY='uraplus_v1';
 var memStore=null, storageOK=true;
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }
 catch(e){ storageOK=false; }
 
+function lsGet(k){ try{ return storageOK? localStorage.getItem(k):null; }catch(e){ return null; } }
+function lsSet(k,v){ try{ if(storageOK) localStorage.setItem(k,v); }catch(e){} }
+
+function defState(){
+  return {rate:0, goalHours:0, goalMode:'h', goalMoney:0, reward:'', rewPrice:0,
+          theme:'auto', netPct:0, wkx:1, data:{}, celebrated:{}, msDone:0,
+          meta:{perDay:{}, del:{}, settingsTs:0, log:[]}, _v:5};
+}
 var S=load();
 function load(){
-  var def={rate:0, goalHours:0, goalMode:'h', goalMoney:0, reward:'', rewPrice:0, data:{}, celebrated:{}, msDone:0};
+  var def=defState();
   try{
     var raw= storageOK? localStorage.getItem(KEY) : memStore;
     if(!raw) return def;
     var o=JSON.parse(raw);
-    for(var k in def) if(!(k in o)) o[k]=def[k];
-    return o;
+    if(!('_v' in o)) o._v=0;
+    for(var k in def) if(!(k in o) && k!=='_v') o[k]=def[k];
+    if(!o.meta) o.meta={perDay:{},del:{},settingsTs:0,log:[]};
+    ['perDay','del','log'].forEach(function(f){ if(!o.meta[f]) o.meta[f]= f==='log'? []:{}; });
+    return migrate(o);
   }catch(e){ return def; }
+}
+/* migracija v5: obstojeci prihodnji vnosi postanejo eksplicitno planirani */
+function migrate(o){
+  if(o._v>=5) return o;
+  var tk=todayKey();
+  for(var k in o.data){
+    if(k>tk){
+      var v=o.data[k];
+      if(typeof v==='number') o.data[k]={h:v,p:1};
+      else if(v && typeof v==='object' && !v.p) v.p=1;
+    }
+  }
+  o._v=5;
+  return o;
 }
 function persist(){
   var raw=JSON.stringify(S);
   if(storageOK){ try{ localStorage.setItem(KEY,raw); }catch(e){} }
   else memStore=raw;
+}
+function devName(){
+  var u=navigator.userAgent;
+  if(/iPhone|iPad/.test(u)) return 'iPhone';
+  if(/Android/.test(u)) return 'Android';
+  if(/Mac/.test(u)) return 'Mac';
+  if(/Win/.test(u)) return 'PC';
+  return 'naprava';
+}
+function markDay(k){
+  var now=Date.now();
+  S.meta.perDay[k]=now; delete S.meta.del[k];
+  logChange(k,'vnos');
+}
+function tombDay(k){
+  var now=Date.now();
+  S.meta.del[k]=now; delete S.meta.perDay[k];
+  logChange(k,'izbris');
+}
+function logChange(k,op){
+  S.meta.log.unshift({k:k,op:op,ts:Date.now(),dev:devName()});
+  if(S.meta.log.length>25) S.meta.log.length=25;
 }
 function save(){
   S._ts=new Date().toISOString();
@@ -383,124 +523,351 @@ function save(){
   queueSync();
 }
 
-/* view month */
-var now=new Date();
-var vy=now.getFullYear(), vm=now.getMonth();
-
-/* ================= utils ================= */
+/* ================= util ================= */
 var MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
+var DNI=['nedelja','ponedeljek','torek','sreda','četrtek','petek','sobota'];
 function pad(n){return (n<10?'0':'')+n;}
 function key(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d);}
 function todayKey(){var t=new Date();return key(t.getFullYear(),t.getMonth(),t.getDate());}
 function dim(y,m){return new Date(y,m+1,0).getDate();}
+function kDate(k){ return new Date(+k.slice(0,4), +k.slice(5,7)-1, +k.slice(8,10)); }
 function eur(n){
-  var s=(Math.round(n*100)/100).toLocaleString('sl-SI',{minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2});
-  return s+' €';
+  var s=(Math.round(n*100)/100).toLocaleString('sl-SI',{minimumFractionDigits:(Math.round(n*100)%100?2:0),maximumFractionDigits:2});
+  return s+'\u00A0€';
 }
-function hrs(n){return (Math.round(n*100)/100).toLocaleString('sl-SI')+' h';}
-function toast(msg){
+function hrs(n){return (Math.round(n*100)/100).toLocaleString('sl-SI')+'\u00A0h';}
+function haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||10); }catch(e){} }
+var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* toast z opcijskim gumbom (undo) */
+var toastT=null;
+function toastU(msg, btnLabel, btnFn, ms){
   var t=document.getElementById('toast');
-  t.textContent=msg; t.style.display='block';
-  clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2200);
+  document.getElementById('toastMsg').textContent=msg;
+  var b=document.getElementById('toastBtn');
+  if(btnLabel){ b.style.display=''; b.textContent=btnLabel; b.onclick=function(){ t.style.display='none'; btnFn(); }; }
+  else b.style.display='none';
+  t.style.display='block';
+  clearTimeout(toastT); toastT=setTimeout(function(){t.style.display='none';}, ms|| (btnLabel?5000:2200));
 }
-/* entry can be a number (hours) or {h,f,t,b} (from-to). */
+function toast(m){ toastU(m); }
+
+/* undo: en korak, lahko vec dni hkrati */
+var undoBuf=null;
+function snapDays(keys){
+  var s={};
+  keys.forEach(function(k){ s[k]= (k in S.data)? JSON.parse(JSON.stringify(S.data[k])) : undefined; });
+  undoBuf=s;
+}
+function doUndo(){
+  if(!undoBuf) return;
+  for(var k in undoBuf){
+    if(undoBuf[k]===undefined){ delete S.data[k]; tombDay(k); }
+    else { S.data[k]=undoBuf[k]; markDay(k); }
+  }
+  undoBuf=null;
+  save(); render(); toast('Razveljavljeno ↩');
+}
+
+/* ================= vnosi: pomozne ================= */
 function entH(v){ if(v==null) return 0; return typeof v==='number' ? v : (v.h||0); }
 function entRange(v){ return (v && typeof v==='object' && v.f && v.t) ? v.f+'–'+v.t : null; }
-/* derived goal: hours & money, from whichever mode is set */
-function goalH(){
-  if(S.goalMode==='e') return S.rate>0 ? S.goalMoney/S.rate : 0;
-  return S.goalHours;
+function isPlan(v){ return !!(v && typeof v==='object' && v.p); }
+function dayRate(k){
+  var dow=kDate(k).getDay();
+  var wx=(dow===0||dow===6)? (S.wkx||1) : 1;
+  return (S.rate||0)*wx;
 }
-function goalE(){
-  if(S.goalMode==='e') return S.goalMoney;
-  return S.goalHours*S.rate;
+function entEur(k,v){ return entH(v)*dayRate(k); }
+function netOf(n){ return n*(S.netPct||0)/100; }
+
+function goalH(){ if(S.goalMode==='e') return S.rate>0 ? S.goalMoney/S.rate : 0; return S.goalHours; }
+function goalE(){ if(S.goalMode==='e') return S.goalMoney; return S.goalHours*S.rate; }
+
+/* mesec: a=dejansko, p=planirano naprej, c=caka potrditev (pretecen plan) */
+function monthCalc(y,m){
+  var tk=todayKey();
+  var r={aH:0,aD:0,aE:0,pH:0,pD:0,pE:0,cH:0,cD:0,cE:0};
+  var n=dim(y,m);
+  for(var d=1;d<=n;d++){
+    var k=key(y,m,d), v=S.data[k]; if(v==null) continue;
+    var h=entH(v), e=entEur(k,v);
+    if(isPlan(v)){ if(k<=tk){ r.cH+=h;r.cD++;r.cE+=e; } else { r.pH+=h;r.pD++;r.pE+=e; } }
+    else { r.aH+=h;r.aD++;r.aE+=e; }
+  }
+  return r;
 }
-/* streak: zaporedni delovni dnevi z vnosom; prazen vikend ne prekine niza,
-   današnji (še ne vpisan) dan tudi ne */
+function pendingKeys(){
+  var tk=todayKey();
+  return Object.keys(S.data).filter(function(k){ return isPlan(S.data[k]) && k<=tk; }).sort();
+}
 function calcStreak(){
   var t=new Date(); var d=new Date(t.getFullYear(),t.getMonth(),t.getDate());
   var k=key(d.getFullYear(),d.getMonth(),d.getDate());
-  if(!S.data[k]) d.setDate(d.getDate()-1);
+  var v0=S.data[k];
+  if(!v0 || isPlan(v0)) d.setDate(d.getDate()-1);
   var s=0;
   for(var i=0;i<730;i++){
     var kk=key(d.getFullYear(),d.getMonth(),d.getDate());
-    if(S.data[kk]!=null && entH(S.data[kk])>0){ s++; }
+    var v=S.data[kk];
+    if(v!=null && !isPlan(v) && entH(v)>0){ s++; }
     else { var dow=d.getDay(); if(dow!==0 && dow!==6) break; }
     d.setDate(d.getDate()-1);
   }
   return s;
 }
 function allTimeEarned(){
-  var tk=todayKey(), tot=0;
-  for(var k in S.data){ if(k<=tk) tot+=entH(S.data[k]); }
-  return tot*S.rate;
+  var tot=0;
+  for(var k in S.data){ var v=S.data[k]; if(!isPlan(v)) tot+=entEur(k,v); }
+  return tot;
 }
 var MILES=[1000,2000,2500,3000,4000,5000];
 var MICON=['💶','🥉','🥈','🥇','🏆','👑'];
 var MLAB=['1k €','2k €','2,5k €','3k €','4k €','5k+ €'];
 function bestMonth(){
-  var tk=todayKey(), agg={};
-  for(var k in S.data){ if(k<=tk){ var mk=k.slice(0,7); agg[mk]=(agg[mk]||0)+entH(S.data[k]); } }
-  var best=null;
-  for(var mk in agg){ if(!best || agg[mk]>agg[best]) best=mk; }
-  return best? {mk:best, h:agg[best]} : null;
-}
-function monthCalc(y,m){
-  var tk=todayKey();
-  var aH=0,aD=0,pH=0,pD=0, n=dim(y,m);
-  for(var d=1;d<=n;d++){
-    var k=key(y,m,d), v=S.data[k]; if(v==null) continue;
-    var h=entH(v);
-    if(k<=tk){ aH+=h; aD++; } else { pH+=h; pD++; }
+  var agg={};
+  for(var k in S.data){ var v=S.data[k]; if(isPlan(v)) continue;
+    var mk=k.slice(0,7); if(!agg[mk]) agg[mk]={h:0,e:0};
+    agg[mk].h+=entH(v); agg[mk].e+=entEur(k,v);
   }
-  return {aH:aH,aD:aD,pH:pH,pD:pD};
+  var best=null;
+  for(var mk2 in agg){ if(!best || agg[mk2].e>agg[best].e) best=mk2; }
+  return best? {mk:best, h:agg[best].h, e:agg[best].e} : null;
 }
 
-/* ================= render ================= */
+/* ================= tema ================= */
+var mmDark = window.matchMedia? matchMedia('(prefers-color-scheme: dark)') : null;
+function isDark(){
+  if(S.theme==='dark') return true;
+  if(S.theme==='light') return false;
+  return !!(mmDark && mmDark.matches);
+}
+function applyTheme(){
+  var r=document.documentElement;
+  if(S.theme==='dark') r.setAttribute('data-theme','dark');
+  else if(S.theme==='light') r.removeAttribute('data-theme');
+  else { if(mmDark && mmDark.matches) r.setAttribute('data-theme','dark'); else r.removeAttribute('data-theme'); }
+  document.getElementById('metaTheme').setAttribute('content', isDark()? '#141112':'#231F20');
+}
+function setThemePref(t){
+  S.theme=t; S.meta.settingsTs=Date.now();
+  applyTheme(); paintThemeSeg(); save(); render();
+}
+function paintThemeSeg(){
+  var seg=document.getElementById('themeSeg'); if(!seg) return;
+  Array.prototype.forEach.call(seg.children,function(b){ b.classList.toggle('sel', b.getAttribute('data-t')===S.theme); });
+}
+if(mmDark && mmDark.addEventListener) mmDark.addEventListener('change', function(){ if(S.theme==='auto'){ applyTheme(); render(); } });
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+/* ================= pogledi ================= */
+var now=new Date();
+var vy=now.getFullYear(), vm=now.getMonth();
+var yView=now.getFullYear();
+var curView='m';
+function setView(v){
+  curView=v;
+  document.getElementById('monthView').style.display = v==='m'?'block':'none';
+  document.getElementById('yearView').style.display  = v==='y'?'block':'none';
+  document.getElementById('vMes').classList.toggle('on',v==='m');
+  document.getElementById('vLet').classList.toggle('on',v==='y');
+  document.getElementById('navL').style.visibility = v==='m'?'':'hidden';
+  document.getElementById('navR').style.visibility = v==='m'?'':'hidden';
+  document.getElementById('moLabel').textContent = v==='m'? (MESECI[vm]+' '+vy) : 'Tvoje leto';
+  if(v==='y') renderYear();
+}
+function chMonth(d){ vm+=d; if(vm<0){vm=11;vy--;} if(vm>11){vm=0;vy++;} render(); }
+function chYear(d){ yView+=d; renderYear(); }
+
+/* animiran prikaz zneska + obroca */
+var animMoney=null, shownMoney=0, shownPct=0;
+function animateRing(targetE, goalTxt, pctA, pctB, pctTxt, pctSize){
+  var rm=document.getElementById('rMoney'), rp=document.getElementById('rPct');
+  document.getElementById('rGoal').textContent=goalTxt;
+  rp.textContent=pctTxt; rp.style.fontSize=pctSize;
+  var ring=document.getElementById('ring');
+  var A=cssVar('--ring-a')||'#46BEC5', B=cssVar('--ring-b')||'#B5E6EA', T=cssVar('--ring-t')||'#E7E5E5';
+  function paint(e,a){
+    var txt=eur(e);
+    rm.textContent=txt;
+    rm.style.fontSize = txt.length>9 ? '16.5px' : '20px';
+    var b=a+(pctB-pctA);
+    ring.style.background='conic-gradient('+A+' 0% '+a+'%, '+B+' '+a+'% '+b+'%, '+T+' '+b+'% 100%)';
+  }
+  if(reduceMotion || Math.abs(targetE-shownMoney)<0.01){ paint(targetE,pctA); shownMoney=targetE; shownPct=pctA; return; }
+  var fromE=shownMoney, fromP=shownPct, t0=performance.now();
+  cancelAnimationFrame(animMoney);
+  (function step(t){
+    var x=Math.min(1,(t-t0)/450); var ease=1-Math.pow(1-x,3);
+    paint(fromE+(targetE-fromE)*ease, fromP+(pctA-fromP)*ease);
+    if(x<1) animMoney=requestAnimationFrame(step);
+    else { shownMoney=targetE; shownPct=pctA; }
+  })(t0);
+}
+
+/* ================= dnevna kartica (ritual) ================= */
+function fmtDayShort(k){
+  var d=kDate(k);
+  return DNI[d.getDay()]+', '+d.getDate()+'. '+(d.getMonth()+1)+'.';
+}
+function lastActualBefore(k, maxBack){
+  var d=kDate(k);
+  for(var i=0;i<(maxBack||7);i++){
+    d.setDate(d.getDate()-1);
+    var kk=key(d.getFullYear(),d.getMonth(),d.getDate());
+    var v=S.data[kk];
+    if(v!=null && !isPlan(v)) return {k:kk,v:v};
+  }
+  return null;
+}
+function renderDayCard(){
+  var el=document.getElementById('dayCard');
+  var tk=todayKey();
+  var pend=pendingKeys();
+  var timer=getTimer();
+  var html='';
+  if(pend.length){
+    var k0=pend[0], v0=S.data[k0], rng=entRange(v0);
+    html='<div class="dtit">Zaključi dan</div>'+
+      '<div class="dmsg">'+fmtDayShort(k0)+': plan '+hrs(entH(v0))+' · '+eur(entEur(k0,v0))+(rng?' ('+rng+')':'')+
+      '<small>Si delal po planu?'+(pend.length>1?' · čaka še '+(pend.length-1)+' dni':'')+'</small></div>'+
+      '<div class="drow">'+
+        '<button class="dbtn p" onclick="confirmDay(\''+k0+'\')">✓ Potrdi</button>'+
+        '<button class="dbtn s" onclick="openEntry(\''+k0+'\')">Popravi</button>'+
+        (pend.length>1? '<button class="dbtn s" onclick="confirmAll()">Potrdi vse ('+pend.length+')</button>':'')+
+      '</div>';
+  } else if(timer){
+    html='<div class="dtit">Štoparica teče</div>'+
+      '<div class="dmsg" id="dTimerLive">⏱ …</div>'+
+      '<div class="drow"><button class="dbtn p" onclick="stopTimer()">■ Ustavi in vpiši</button>'+
+      '<button class="dbtn s" onclick="discardTimer()">Prekliči</button></div>';
+  } else {
+    var tv=S.data[tk];
+    if(tv==null){
+      var last=lastActualBefore(tk,7);
+      html='<div class="dtit">Danes</div><div class="dmsg">Še brez vnosa.<small>En tap in je.</small></div><div class="drow">';
+      if(last) html+='<button class="dbtn g" onclick="repeatLast()">↻ Ponovi '+(last.k===yestKey()?'včeraj':'zadnje')+' · '+hrs(entH(last.v))+'</button>';
+      html+='<button class="dbtn s" onclick="startTimer()">⏱ Štartaj</button>'+
+            '<button class="dbtn s" onclick="openEntry(todayKey())">Drugače…</button></div>';
+    } else {
+      html='<div class="dtit">Danes</div>'+
+        '<div class="dmsg">'+hrs(entH(tv))+' · '+eur(entEur(tk,tv))+' <span style="color:var(--green)">✓</span>'+
+        '<small>Vpisano. Lahko še dodaš ali popraviš.</small></div>'+
+        '<div class="drow"><button class="dbtn s" onclick="openEntry(todayKey())">Uredi</button>'+
+        '<button class="dbtn s" onclick="startTimer()">⏱ Štartaj</button></div>';
+    }
+  }
+  el.innerHTML=html;
+  el.style.display='block';
+  tickTimerUI();
+}
+function yestKey(){ var d=new Date(); d.setDate(d.getDate()-1); return key(d.getFullYear(),d.getMonth(),d.getDate()); }
+function confirmDay(k){
+  var v=S.data[k]; if(!isPlan(v)) return;
+  snapDays([k]);
+  if(typeof v==='object'){ delete v.p; var ks=Object.keys(v); if(ks.length===1 && ks[0]==='h') S.data[k]=v.h; }
+  markDay(k); save(); haptic(15); render();
+  toastU('Dan potrjen ✓ +'+eur(entEur(k,S.data[k])),'Razveljavi',doUndo);
+}
+function confirmAll(){
+  var pend=pendingKeys(); if(!pend.length) return;
+  snapDays(pend);
+  var tot=0;
+  pend.forEach(function(k){
+    var v=S.data[k];
+    if(typeof v==='object'){ delete v.p; var ks=Object.keys(v); if(ks.length===1&&ks[0]==='h') S.data[k]=v.h; }
+    markDay(k); tot+=entEur(k,S.data[k]);
+  });
+  save(); haptic(25); render();
+  toastU(pend.length+' dni potrjenih ✓ +'+eur(tot),'Razveljavi',doUndo);
+}
+function repeatLast(){
+  var tk=todayKey(); var last=lastActualBefore(tk,7); if(!last) return;
+  snapDays([tk]);
+  var v=JSON.parse(JSON.stringify(last.v));
+  S.data[tk]=v; markDay(tk); save(); haptic(12); render();
+  toastU('+'+eur(entEur(tk,v))+' zabeleženo 💪','Razveljavi',doUndo);
+}
+
+/* ================= stoparica ================= */
+function getTimer(){ var r=lsGet('uraplus_timer'); try{ return r? JSON.parse(r):null; }catch(e){ return null; } }
+function startTimer(){
+  lsSet('uraplus_timer', JSON.stringify({s:Date.now()}));
+  haptic(12); render(); toast('Štoparica teče ⏱');
+}
+function discardTimer(){ try{ localStorage.removeItem('uraplus_timer'); }catch(e){} render(); toast('Štoparica preklicana'); }
+var timerInt=null;
+function tickTimerUI(){
+  clearInterval(timerInt);
+  var t=getTimer();
+  var chip=document.getElementById('timerB');
+  if(!t){ chip.style.display='none'; return; }
+  chip.style.display='';
+  function upd(){
+    var t2=getTimer(); if(!t2){ clearInterval(timerInt); chip.style.display='none'; return; }
+    var sec=Math.floor((Date.now()-t2.s)/1000);
+    var hh=Math.floor(sec/3600), mm=Math.floor(sec%3600/60);
+    var money=sec/3600*dayRate(todayKey());
+    var txt='⏱ '+hh+':'+pad(mm)+' · '+eur(money);
+    chip.textContent=txt;
+    var live=document.getElementById('dTimerLive');
+    if(live) live.innerHTML=txt+'<small>Merim od '+new Date(t2.s).toTimeString().slice(0,5)+'. Ustavi, ko končaš.</small>';
+  }
+  upd(); timerInt=setInterval(upd,1000);
+}
+function stopTimer(){
+  var t=getTimer(); if(!t) return;
+  var mins=Math.round((Date.now()-t.s)/60000/5)*5;
+  try{ localStorage.removeItem('uraplus_timer'); }catch(e){}
+  if(mins<5){ render(); toast('Manj kot 5 minut — nič vpisano.'); return; }
+  if(mins>16*60){ render(); toast('Štoparica je tekla predolgo — preklicana.'); return; }
+  var from=new Date(t.s), to=new Date(t.s+mins*60000);
+  openEntry(todayKey());
+  setMode('t');
+  document.getElementById('eFrom').value=pad(from.getHours())+':'+pad(from.getMinutes());
+  document.getElementById('eTo').value=pad(to.getHours())+':'+pad(to.getMinutes());
+  document.getElementById('eBreak').value='';
+  liveCalc(); render();
+}
+
+/* ================= glavni izris (mesec) ================= */
 function render(){
   var isCur = (vy===now.getFullYear() && vm===now.getMonth());
-  document.getElementById('moLabel').textContent = MESECI[vm]+' '+vy;
+  if(curView==='m') document.getElementById('moLabel').textContent = MESECI[vm]+' '+vy;
+
+  renderDayCard();
 
   var mh=monthCalc(vy,vm);
-  var earned=mh.aH*S.rate;            /* dejansko (do vključno danes) */
-  var planEur=mh.pH*S.rate;           /* planirano naprej */
+  var earned=mh.aE, planEur=mh.pE+mh.cE, planH=mh.pH+mh.cH;
   var gH=goalH(), gE=goalE();
   var pctA = gE>0 ? Math.min(100, earned/gE*100) : 0;
   var pctB = gE>0 ? Math.min(100, (earned+planEur)/gE*100) : 0;
+  var pctTxt=Math.round(pctA)+'%'+(planH>0?' · plan '+Math.round(pctB)+'%':'');
+  animateRing(earned, gE>0?'od '+eur(gE)+' cilja':'nastavi cilj ⚙︎', pctA, pctB, pctTxt, planH>0?'9.5px':'12px');
 
-  /* ring: polno = zasluženo, svetlo = planirano */
-  document.getElementById('rMoney').textContent=eur(earned);
-  document.getElementById('rGoal').textContent = gE>0 ? 'od '+eur(gE)+' cilja' : 'nastavi cilj ⚙︎';
-  var rp=document.getElementById('rPct');
-  rp.textContent = Math.round(pctA)+'%'+(mh.pH>0?' · plan '+Math.round(pctB)+'%':'');
-  rp.style.fontSize = mh.pH>0 ? '9.5px' : '12px';
-  rp.style.letterSpacing = mh.pH>0 ? '.1px' : '';
-  document.getElementById('ring').style.background =
-    'conic-gradient(#46BEC5 0% '+pctA+'%, #B5E6EA '+pctA+'% '+pctB+'%, #E7E5E5 '+pctB+'% 100%)';
+  var nl=document.getElementById('netoLine');
+  if(S.netPct>0 && earned>0){ nl.style.display=''; nl.textContent='≈ '+eur(netOf(earned))+' na roke ('+S.netPct+'%)'; }
+  else nl.style.display='none';
 
-  /* side stats */
-  document.getElementById('kHours').textContent = hrs(mh.aH)+(gH?' / '+(Math.round(gH*10)/10).toLocaleString('sl-SI')+' h':'');
+  document.getElementById('kHours').textContent = hrs(mh.aH)+(gH?' / '+(Math.round(gH*10)/10).toLocaleString('sl-SI')+'\u00A0h':'');
   var leftH = Math.max(0, gH-mh.aH);
   var leftEl=document.getElementById('kLeft');
-  if(!gH){ leftEl.textContent='—'; }
+  if(!gH){ leftEl.textContent='—'; leftEl.className=''; }
   else if(leftH<=0){ leftEl.textContent='Cilj dosežen! 🎉'; leftEl.className='g'; }
   else{
     var txt=hrs(leftH)+' · '+eur(leftH*S.rate);
     if(isCur){
       var daysLeft = dim(vy,vm)-now.getDate()+1;
-      if(daysLeft>0) txt+=' · '+ (Math.round(leftH/daysLeft*10)/10).toLocaleString('sl-SI')+' h/dan';
+      if(daysLeft>0) txt+=' · '+ (Math.round(leftH/daysLeft*10)/10).toLocaleString('sl-SI')+'\u00A0h/dan';
     }
     leftEl.textContent=txt; leftEl.className='';
   }
-
-  /* planirano naprej */
   var planRow=document.getElementById('kPlanRow');
   if(mh.pH>0){
     planRow.style.display='';
-    document.getElementById('kPlan').textContent = hrs(mh.pH)+' · '+eur(planEur)+' → skupaj '+eur(earned+planEur);
+    document.getElementById('kPlan').textContent = hrs(mh.pH)+' · '+eur(mh.pE)+' → skupaj '+eur(earned+planEur);
   } else planRow.style.display='none';
 
-  /* pace projection — only current month */
   var paceRow=document.getElementById('kPaceRow');
   if(isCur && mh.aH>0){
     paceRow.style.display='';
@@ -508,83 +875,24 @@ function render(){
     document.getElementById('kPace').textContent='~'+eur(proj);
   } else paceRow.style.display='none';
 
-  /* reward */
-  var rb=document.getElementById('rewardBox');
-  if(S.reward){
-    rb.classList.add('on');
-    document.getElementById('rewName').textContent=S.reward;
-    var bar=document.getElementById('rewBar'), rt=document.getElementById('rewTxt');
-    if(S.rewPrice>0){
-      var rp=Math.min(100, earned/S.rewPrice*100);
-      bar.style.width=rp+'%';
-      rt.textContent= earned>=S.rewPrice ? 'Imaš jo! 🎉' : eur(Math.max(0,S.rewPrice-earned))+' še manjka ('+Math.round(rp)+'%)';
-      bar.parentElement.style.display='';
-    } else { bar.parentElement.style.display='none'; rt.textContent=''; }
-  } else rb.classList.remove('on');
-
-  /* goal hit banner + one-time celebration (samo dejanske ure) */
-  var hit = gH>0 && mh.aH>=gH;
-  document.getElementById('goalHit').classList.toggle('on',hit);
-  var mk=vy+'-'+vm;
-  if(hit && !S.celebrated[mk]){ S.celebrated[mk]=1; save(); confetti(); }
-
-  /* strip tiles */
-  var tv=entH(S.data[todayKey()]);
-  document.getElementById('tToday').textContent = isCur? (tv? hrs(tv)+' · +'+eur(tv*S.rate):'—') : '—';
-  /* week (mon-sun) of today, only up to today */
-  var wtot=0;
-  if(isCur){
-    var t=new Date(); var off=(t.getDay()+6)%7; var tk2=todayKey();
-    for(var i=0;i<7;i++){
-      var d=new Date(t.getFullYear(),t.getMonth(),t.getDate()-off+i);
-      var kk=key(d.getFullYear(),d.getMonth(),d.getDate());
-      if(kk<=tk2) wtot += entH(S.data[kk]);
-    }
-    document.getElementById('tWeek').textContent = wtot? hrs(wtot)+' · '+eur(wtot*S.rate) : '—';
-  } else document.getElementById('tWeek').textContent='—';
-  document.getElementById('tAvg').textContent = mh.aD? hrs(mh.aH/mh.aD) : '—';
-
-  /* calendar */
-  var g=document.getElementById('calGrid'); g.innerHTML='';
-  var first=new Date(vy,vm,1); var offset=(first.getDay()+6)%7;
-  var n=dim(vy,vm);
-  for(var b=0;b<offset;b++){var e=document.createElement('div');e.className='day blank';g.appendChild(e);}
-  var tk=todayKey();
-  for(var d=1;d<=n;d++){
-    var k=key(vy,vm,d), v=S.data[k], h=entH(v);
-    var el=document.createElement('div');
-    var isFut = k>tk;
-    el.className='day'+(v!=null?(isFut?' plan':' has'):'')+(k===tk?' today':'')+(isFut&&v==null?' future':'');
-    el.innerHTML='<span class="dn">'+d+'</span>'+
-      (v!=null? '<span class="hh">'+(Math.round(h*100)/100).toLocaleString('sl-SI')+'h</span><span class="ee">'+eur(h*S.rate)+'</span>':'');
-    (function(kk){ el.onclick=function(){openEntry(kk);}; })(k);
-    g.appendChild(el);
-  }
-  document.getElementById('sumDays').textContent=mh.aD+mh.pD;
-  document.getElementById('sumH').textContent=hrs(mh.aH+mh.pH);
-  document.getElementById('sumE').textContent=eur(earned+planEur);
-
-  /* primerjava z istim dnem prejšnjega meseca (tekma s sabo) */
+  /* primerjava z istim dnem prejsnjega meseca (dejanske ure) */
   var cmpRow=document.getElementById('kCmpRow');
   if(isCur){
     var py=vm===0?vy-1:vy, pm=vm===0?11:vm-1;
-    var lim=Math.min(now.getDate(), dim(py,pm)), prevH=0, hadPrev=false;
-    for(var pd=1; pd<=lim; pd++){
+    var lim=Math.min(now.getDate(), dim(py,pm)), prevH=0, hadAnyPrev=false;
+    for(var pd=1; pd<=dim(py,pm); pd++){
       var pv=S.data[key(py,pm,pd)];
-      if(pv!=null){ prevH+=entH(pv); hadPrev=true; }
+      if(pv!=null && !isPlan(pv)){ hadAnyPrev=true; if(pd<=lim) prevH+=entH(pv); }
     }
-    /* pokaži tudi, če je imel prejšnji mesec karkoli vnešeno */
-    var hadAnyPrev=false;
-    for(var pd2=1; pd2<=dim(py,pm); pd2++){ if(S.data[key(py,pm,pd2)]!=null){ hadAnyPrev=true; break; } }
     if(hadAnyPrev){
       cmpRow.style.display='';
       var diff=mh.aH-prevH, cEl=document.getElementById('kCmp');
-      if(diff>=0){ cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--green)">+'+hrs(diff)+' 💪</span>'; }
-      else { cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--amber)">'+hrs(diff).replace('-','−')+'</span>'; }
+      if(diff>=0) cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--green)">+'+hrs(diff)+' 💪</span>';
+      else cEl.innerHTML=hrs(prevH)+' → zdaj <span style="color:var(--amber)">'+hrs(diff).replace('-','−')+'</span>';
     } else cmpRow.style.display='none';
   } else cmpRow.style.display='none';
 
-  /* semafor tempa: me trenutni tempo pripelje do cilja? */
+  /* semafor tempa */
   var pc=document.getElementById('paceChip');
   pc.classList.remove('on','pc-ok','pc-warn');
   if(isCur && gH>0 && mh.aH>0 && leftH>0){
@@ -592,18 +900,51 @@ function render(){
     var proj2 = mh.aH/now.getDate()*dim(vy,vm);
     var needPerDay = daysLeft2>0 ? leftH/daysLeft2 : 0;
     var curPerDay = mh.aH/now.getDate();
-    if(proj2>=gH){
-      pc.classList.add('on','pc-ok');
-      pc.textContent='✅ Na poti do cilja — ta tempo ti prinese ~'+hrs(Math.round(proj2))+'.';
-    } else {
-      pc.classList.add('on','pc-warn');
-      pc.textContent='⚠️ Ta tempo ti da le ~'+hrs(Math.round(proj2))+'. Za cilj od zdaj: '+
-        (Math.round(needPerDay*10)/10).toLocaleString('sl-SI')+' h/dan (zdaj delaš ~'+
-        (Math.round(curPerDay*10)/10).toLocaleString('sl-SI')+' h/dan).';
-    }
+    if(proj2>=gH){ pc.classList.add('on','pc-ok'); pc.textContent='✅ Na poti do cilja — ta tempo ti prinese ~'+hrs(Math.round(proj2))+'.'; }
+    else { pc.classList.add('on','pc-warn'); pc.textContent='⚠️ Ta tempo ti da le ~'+hrs(Math.round(proj2))+'. Za cilj od zdaj: '+
+      (Math.round(needPerDay*10)/10).toLocaleString('sl-SI')+'\u00A0h/dan (zdaj ~'+(Math.round(curPerDay*10)/10).toLocaleString('sl-SI')+' h/dan).'; }
   }
 
-  /* vsaka dodatna ura šteje — do konca meseca */
+  /* rewards */
+  var rb=document.getElementById('rewardBox');
+  if(S.reward){
+    rb.classList.add('on');
+    document.getElementById('rewName').textContent=S.reward;
+    var bar=document.getElementById('rewBar'), rt=document.getElementById('rewTxt');
+    if(S.rewPrice>0){
+      var rp2=Math.min(100, earned/S.rewPrice*100);
+      bar.style.width=rp2+'%';
+      rt.textContent= earned>=S.rewPrice ? 'Imaš jo! 🎉' : eur(Math.max(0,S.rewPrice-earned))+' še manjka ('+Math.round(rp2)+'%)';
+      bar.parentElement.style.display='';
+    } else { bar.parentElement.style.display='none'; rt.textContent=''; }
+  } else rb.classList.remove('on');
+
+  var hit = gH>0 && mh.aH>=gH;
+  document.getElementById('goalHit').classList.toggle('on',hit);
+  var mk=vy+'-'+vm;
+  if(hit && !S.celebrated[mk]){ S.celebrated[mk]=1; save(); confetti(); haptic(30); }
+
+  /* tiles */
+  var tk=todayKey(), tv=S.data[tk];
+  document.getElementById('tToday').textContent = isCur? (tv!=null? hrs(entH(tv))+(isPlan(tv)?' · plan':' · +'+eur(entEur(tk,tv))):'—') : '—';
+  var wtot=0;
+  if(isCur){
+    var t=new Date(); var off=(t.getDay()+6)%7;
+    for(var i=0;i<7;i++){
+      var d2=new Date(t.getFullYear(),t.getMonth(),t.getDate()-off+i);
+      var kk=key(d2.getFullYear(),d2.getMonth(),d2.getDate());
+      var vv2=S.data[kk];
+      if(kk<=tk && vv2!=null && !isPlan(vv2)) wtot+=entH(vv2);
+    }
+    document.getElementById('tWeek').textContent = wtot? hrs(wtot):'—';
+  } else document.getElementById('tWeek').textContent='—';
+  document.getElementById('tAvg').textContent = mh.aD? hrs(mh.aH/mh.aD) : '—';
+
+  /* streak */
+  var st=calcStreak(), sb=document.getElementById('streakB');
+  if(st>=2){ sb.style.display=''; sb.textContent='🔥 '+st+' dni'; } else sb.style.display='none';
+
+  /* vsaka ura steje */
   var xc=document.getElementById('extraCard');
   if(isCur && S.rate>0){
     var dl=dim(vy,vm)-now.getDate()+1;
@@ -617,12 +958,7 @@ function render(){
     });
   } else xc.style.display='none';
 
-  /* streak badge */
-  var st=calcStreak(), sb=document.getElementById('streakB');
-  if(st>=2){ sb.style.display=''; sb.textContent='🔥 '+st+' dni'; }
-  else sb.style.display='none';
-
-  /* dosežki: mejniki + rekord */
+  /* dosezki */
   var ate=allTimeEarned();
   var bd=document.getElementById('badges'); bd.innerHTML='';
   var topHit=0;
@@ -633,68 +969,188 @@ function render(){
     be.innerHTML='<span class="bi">'+MICON[mi]+'</span><span class="bl">'+MLAB[mi]+'</span>';
     bd.appendChild(be);
   }
-  if(topHit>S.msDone){ S.msDone=topHit; save(); confetti(); toast('🏅 Mejnik dosežen: '+eur(topHit)+'!'); }
+  if(topHit>S.msDone){ S.msDone=topHit; save(); confetti(); haptic(30); toast('🏅 Mejnik dosežen: '+eur(topHit)+'!'); }
   var bm=bestMonth(), rr=document.getElementById('recRow');
   if(bm && S.rate>0){
     rr.style.display='';
     var bp=bm.mk.split('-');
-    rr.innerHTML='🏆 Najboljši mesec: <b>'+MESECI[+bp[1]-1]+' '+bp[0]+'</b> · <b>'+hrs(bm.h)+'</b> · <b style="color:var(--green)">'+eur(bm.h*S.rate)+'</b>';
+    rr.innerHTML='🏆 Najboljši mesec: <b>'+MESECI[+bp[1]-1]+' '+bp[0]+'</b> · <b>'+hrs(bm.h)+'</b> · <b style="color:var(--green)">'+eur(bm.e)+'</b>';
   } else rr.style.display='none';
 
-  /* graf po tednih (pogledani mesec) */
+  /* koledar */
+  var g=document.getElementById('calGrid'); g.innerHTML='';
+  var first=new Date(vy,vm,1); var offset=(first.getDay()+6)%7;
+  var n=dim(vy,vm);
+  for(var b=0;b<offset;b++){var e2=document.createElement('div');e2.className='day blank';g.appendChild(e2);}
+  for(var d=1;d<=n;d++){
+    var k=key(vy,vm,d), v=S.data[k], h=entH(v);
+    var el2=document.createElement('div');
+    var cls='day';
+    if(v!=null){
+      if(isPlan(v)) cls+= k<=tk ? ' wait' : ' plan';
+      else cls+=' has';
+    } else if(k>tk) cls+=' future';
+    if(k===tk) cls+=' today';
+    el2.className=cls;
+    el2.innerHTML='<span class="dn">'+d+'</span>'+
+      (v!=null? '<span class="hh">'+(Math.round(h*100)/100).toLocaleString('sl-SI')+'h</span><span class="ee">'+eur(entEur(k,v))+'</span>':'');
+    (function(kk2){ el2.onclick=function(){openEntry(kk2);}; })(k);
+    g.appendChild(el2);
+  }
+  document.getElementById('sumDays').textContent=mh.aD+mh.pD+mh.cD;
+  document.getElementById('sumH').textContent=hrs(mh.aH+planH);
+  document.getElementById('sumE').textContent=eur(earned+planEur);
+
+  /* tedenski graf */
   var wc=document.getElementById('wchart'); wc.innerHTML='';
-  var weeks=[]; /* {a,p,from,to} */
+  var weeks=[];
   for(var dd=1; dd<=n; dd++){
     var wi=Math.floor((dd+offset-1)/7);
     if(!weeks[wi]) weeks[wi]={a:0,p:0,from:dd,to:dd};
     weeks[wi].to=dd;
     var vv=S.data[key(vy,vm,dd)]; if(vv==null) continue;
-    var hh2=entH(vv)*S.rate;
-    if(key(vy,vm,dd)<=tk) weeks[wi].a+=hh2; else weeks[wi].p+=hh2;
+    var ee=entEur(key(vy,vm,dd),vv);
+    if(isPlan(vv)) weeks[wi].p+=ee; else weeks[wi].a+=ee;
   }
   var wmax=0; weeks.forEach(function(w){ wmax=Math.max(wmax,w.a+w.p); });
-  if(wmax<=0){
-    wc.innerHTML='<div class="wempty" style="width:100%">Ko vneseš ure, se tukaj pokaže graf 📊</div>';
-  } else {
-    weeks.forEach(function(w){
-      var col=document.createElement('div'); col.className='wcol';
-      var tot=w.a+w.p;
-      var barH=Math.round(tot/wmax*82);
-      var aH2 = tot>0? Math.round(barH*(w.a/tot)) : 0;
-      col.innerHTML='<div class="wval">'+(tot>0?eur(Math.round(tot)):'')+'</div>'+
-        '<div class="wbar" style="height:'+Math.max(barH,tot>0?4:0)+'px">'+
-          '<div class="wp" style="height:'+(barH-aH2)+'px"></div>'+
-          '<div class="wa" style="height:'+aH2+'px"></div>'+
-        '</div>'+
-        '<div class="wlab">'+w.from+'.–'+w.to+'.</div>';
-      wc.appendChild(col);
-    });
-  }
+  if(wmax<=0){ wc.innerHTML='<div class="wempty" style="width:100%">Ko vneseš ure, se tukaj pokaže graf 📊</div>'; }
+  else weeks.forEach(function(w){
+    var col=document.createElement('div'); col.className='wcol';
+    var tot=w.a+w.p, barH=Math.round(tot/wmax*82);
+    var aH2 = tot>0? Math.round(barH*(w.a/tot)) : 0;
+    col.innerHTML='<div class="wval">'+(tot>0?eur(Math.round(tot)):'')+'</div>'+
+      '<div class="wbar" style="height:'+Math.max(barH,tot>0?4:0)+'px">'+
+      '<div class="wp" style="height:'+(barH-aH2)+'px"></div><div class="wa" style="height:'+aH2+'px"></div></div>'+
+      '<div class="wlab">'+w.from+'.–'+w.to+'.</div>';
+    wc.appendChild(col);
+  });
 
   if(!storageOK) document.getElementById('storWarn').style.display='block';
+  renderSyncLine();
+  if(curView==='y') renderYear();
 }
 
-/* tiny confetti */
 function confetti(){
+  if(reduceMotion) return;
   for(var i=0;i<36;i++){
     var p=document.createElement('div');
     p.style.cssText='position:fixed;z-index:99;top:-10px;width:9px;height:9px;border-radius:2px;pointer-events:none;'+
       'left:'+(Math.random()*100)+'vw;background:'+['#46BEC5','#231F20','#2C9AA1','#B5E6EA','#8BD7DC'][i%5]+';'+
       'transition:transform 2.4s ease-in,opacity 2.4s;transform:translateY(0) rotate(0)';
     document.body.appendChild(p);
-    (function(p){
+    (function(pp){
       requestAnimationFrame(function(){requestAnimationFrame(function(){
-        p.style.transform='translateY(110vh) rotate('+(360+Math.random()*720)+'deg)'; p.style.opacity='0';
+        pp.style.transform='translateY(110vh) rotate('+(360+Math.random()*720)+'deg)'; pp.style.opacity='0';
       });});
-      setTimeout(function(){p.remove();},2600);
+      setTimeout(function(){pp.remove();},2600);
     })(p);
   }
 }
 
-/* ================= month nav ================= */
-function chMonth(d){ vm+=d; if(vm<0){vm=11;vy--;} if(vm>11){vm=0;vy++;} render(); }
+/* ================= letni pogled ================= */
+function yearAgg(y){
+  var days={}, months={}, maxDay=0;
+  for(var k in S.data){
+    if(+k.slice(0,4)!==y) continue;
+    var v=S.data[k]; if(isPlan(v)) continue;
+    var e=entEur(k,v);
+    days[k]=e; if(e>maxDay) maxDay=e;
+    var m=+k.slice(5,7)-1;
+    if(!months[m]) months[m]={h:0,e:0,d:0};
+    months[m].h+=entH(v); months[m].e+=e; months[m].d++;
+  }
+  return {days:days, months:months, maxDay:maxDay};
+}
+function renderYear(){
+  document.getElementById('yLabel').textContent=yView;
+  var agg=yearAgg(yView);
+  /* heatmap: stolpci = tedni, vrstice = pon..ned */
+  var g=document.getElementById('hmGrid'); g.innerHTML='';
+  var start=new Date(yView,0,1);
+  var lead=(start.getDay()+6)%7;
+  var tones=['--hm0','--hm1','--hm2','--hm3','--hm4'];
+  for(var i=0;i<lead;i++){ var sp=document.createElement('span'); sp.className='hmc'; sp.style.opacity='0'; g.appendChild(sp); }
+  var d=new Date(yView,0,1);
+  while(d.getFullYear()===yView){
+    var k=key(yView,d.getMonth(),d.getDate());
+    var e=agg.days[k]||0;
+    var lvl=0;
+    if(e>0 && agg.maxDay>0){ lvl=Math.min(4, 1+Math.floor(e/agg.maxDay*3.999)); }
+    var c=document.createElement('span'); c.className='hmc';
+    c.style.background='var('+tones[lvl]+')';
+    if(e>0){
+      (function(kk,ee){ c.onclick=function(){ toast(fmtDayShort(kk)+' · '+hrs(entH(S.data[kk]))+' · '+eur(ee)); }; })(k,e);
+      c.style.cursor='pointer';
+    }
+    g.appendChild(c);
+    d.setDate(d.getDate()+1);
+  }
+  /* porocilo za zadnji zakljucen mesec */
+  var rep=document.getElementById('repBox');
+  var lm=now.getMonth()===0? {y:now.getFullYear()-1,m:11} : {y:now.getFullYear(),m:now.getMonth()-1};
+  if(yView===lm.y && agg.months[lm.m]){
+    var cur=agg.months[lm.m];
+    var pm=lm.m===0? {y:lm.y-1,m:11}:{y:lm.y,m:lm.m-1};
+    var pAgg=(pm.y===yView)? agg : yearAgg(pm.y);
+    var prev=pAgg.months[pm.m];
+    var cmp= prev? ((cur.e>=prev.e?'+':'−')+eur(Math.abs(cur.e-prev.e))+' in '+(cur.h>=prev.h?'+':'−')+hrs(Math.abs(cur.h-prev.h))+' glede na '+MESECI[pm.m]) : 'prvi zabeležen mesec';
+    /* najboljsi teden zadnjega meseca */
+    var bw=null, first=new Date(lm.y,lm.m,1), off=(first.getDay()+6)%7, wk={};
+    for(var dd=1;dd<=dim(lm.y,lm.m);dd++){
+      var kk2=key(lm.y,lm.m,dd), v2=S.data[kk2];
+      if(v2==null||isPlan(v2)) continue;
+      var wi=Math.floor((dd+off-1)/7);
+      if(!wk[wi]) wk[wi]={e:0,from:dd,to:dd};
+      wk[wi].e+=entEur(kk2,v2); wk[wi].to=dd;
+    }
+    for(var w in wk){ if(!bw||wk[w].e>bw.e) bw=wk[w]; }
+    rep.style.display='';
+    rep.innerHTML='<b>Mesečno poročilo — '+MESECI[lm.m]+':</b> '+hrs(cur.h)+' · '+eur(cur.e)+
+      (S.netPct>0? ' (≈ '+eur(netOf(cur.e))+' na roke)':'')+'. '+cmp+'.'+
+      (bw? ' Najboljši teden: '+bw.from+'.–'+bw.to+'. ('+eur(Math.round(bw.e))+').':'');
+  } else rep.style.display='none';
+  /* arhiv */
+  var al=document.getElementById('archList'); al.innerHTML='';
+  var gE=goalE();
+  var any=false;
+  for(var m=11;m>=0;m--){
+    var mo=agg.months[m]; if(!mo) continue;
+    any=true;
+    var row=document.createElement('div'); row.className='arow';
+    var goalTxt = gE>0 ? (mo.e>=gE? '🎉 cilj dosežen' : Math.round(mo.e/gE*100)+' % cilja') : '';
+    row.innerHTML='<div class="an"><b>'+MESECI[m]+'</b><small>'+hrs(mo.h)+' · '+mo.d+' delovnih dni</small></div>'+
+      '<div class="av"><b>'+eur(mo.e)+'</b><small>'+goalTxt+'</small></div>';
+    al.appendChild(row);
+  }
+  if(!any) al.innerHTML='<div class="wempty">V letu '+yView+' še ni vnosov.</div>';
+}
 
-/* ================= entry ================= */
+/* ================= CSV ================= */
+function csvNum(n){ return (Math.round(n*100)/100).toLocaleString('sl-SI'); }
+function csvRows(y, mFrom, mTo){
+  var rows=['Datum;Dan;Ure;Od;Do;Pavza (min);Postavka;Bruto;Na roke;Status'];
+  for(var m=mFrom;m<=mTo;m++){
+    for(var d=1;d<=dim(y,m);d++){
+      var k=key(y,m,d), v=S.data[k]; if(v==null) continue;
+      var o=(typeof v==='object')?v:{};
+      var bruto=entEur(k,v);
+      rows.push([ d+'.'+(m+1)+'.'+y, DNI[kDate(k).getDay()], csvNum(entH(v)), o.f||'', o.t||'', o.b||'',
+        csvNum(dayRate(k)), csvNum(bruto), S.netPct>0? csvNum(netOf(bruto)):'', isPlan(v)?'plan':'opravljeno' ].join(';'));
+    }
+  }
+  return rows;
+}
+function dlCsv(name, rows){
+  var blob=new Blob(['﻿'+rows.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('CSV prenešen ⬇︎');
+}
+function exportCsvMonth(){ dlCsv('ura-plus-'+MESECI[vm]+'-'+vy+'.csv', csvRows(vy,vm,vm)); }
+function exportCsvYear(){ dlCsv('ura-plus-'+yView+'.csv', csvRows(yView,0,11)); }
+
+/* ================= vnosni list ================= */
 var entryKey=null, entrySel=null, entryMode='h';
 var CHIPS=[2,4,6,8,10,12];
 function setMode(m){
@@ -710,23 +1166,21 @@ function calcRange(){
   var f=timeToMin(document.getElementById('eFrom').value);
   var t=timeToMin(document.getElementById('eTo').value);
   if(f==null||t==null) return 0;
-  var mins=t-f; if(mins<=0) mins+=1440;          /* nočna izmena čez polnoč */
+  var mins=t-f; if(mins<=0) mins+=1440;
   var br=parseInt(document.getElementById('eBreak').value,10)||0;
   mins-=br;
   return Math.max(0, Math.round(mins/60*100)/100);
 }
 function openEntry(k){
   entryKey=k; entrySel=null;
-  var parts=k.split('-');
-  var dt=new Date(+parts[0],+parts[1]-1,+parts[2]);
-  var DNI=['nedelja','ponedeljek','torek','sreda','četrtek','petek','sobota'];
-  var isFut = k>todayKey();
-  document.getElementById('eTitle').textContent = (k===todayKey()?'Danes':DNI[dt.getDay()])+', '+dt.getDate()+'. '+MESECI[dt.getMonth()]+' '+dt.getFullYear();
+  var dt=kDate(k);
+  var tk=todayKey();
+  var isFut = k>tk;
+  document.getElementById('eTitle').textContent = (k===tk?'Danes':DNI[dt.getDay()])+', '+dt.getDate()+'. '+MESECI[dt.getMonth()]+' '+dt.getFullYear();
   var v=S.data[k], h=entH(v), rng=entRange(v);
   document.getElementById('eSub').textContent =
-    v!=null ? ((isFut?'Planirano: ':'Trenutno vpisano: ')+hrs(h)+(rng?' ('+rng+')':''))
-            : (isFut?'Planiraj delavnik za ta dan.':'Koliko ur si delal ta dan?');
-  /* prefill */
+    v!=null ? ((isPlan(v)?'Planirano: ':'Vpisano: ')+hrs(h)+(rng?' ('+rng+')':'')+(dayRate(k)!==S.rate?' · vikend postavka '+eur(dayRate(k))+'/h':''))
+            : (isFut?'To bo planiran vnos — potrdil ga boš, ko dan mine.':'Koliko ur si delal ta dan?');
   document.getElementById('eCustom').value='';
   document.getElementById('eBreak').value='';
   document.getElementById('eRepeat').value='';
@@ -746,10 +1200,11 @@ function openEntry(k){
 }
 function paintChips(){
   var c=document.getElementById('eChips'); c.innerHTML='';
+  var r=dayRate(entryKey||todayKey());
   CHIPS.forEach(function(h){
     var b=document.createElement('button');
     b.className='chip'+(entrySel===h?' sel':'');
-    b.innerHTML=h+' h<small>'+eur(h*S.rate)+'</small>';
+    b.innerHTML=h+' h<small>'+eur(h*r)+'</small>';
     b.onclick=function(){ entrySel=h; document.getElementById('eCustom').value=''; paintChips(); liveCalc(); };
     c.appendChild(b);
   });
@@ -762,16 +1217,21 @@ function entryVal(){
 }
 function liveCalc(){
   var v=entryVal();
+  var r=dayRate(entryKey||todayKey());
   var pre = entryMode==='t' ? (document.getElementById('eFrom').value+'–'+document.getElementById('eTo').value+' → ') : '';
-  document.getElementById('eCalc').textContent = pre+hrs(v)+' = '+eur(v*S.rate);
+  document.getElementById('eCalc').textContent = pre+hrs(v)+' = '+eur(v*r);
 }
 function buildValue(){
   var h=Math.round(entryVal()*100)/100;
-  if(entryMode==='t'){
-    return { h:h, f:document.getElementById('eFrom').value, t:document.getElementById('eTo').value,
-             b:parseInt(document.getElementById('eBreak').value,10)||0 };
+  var val;
+  if(entryMode==='t') val={ h:h, f:document.getElementById('eFrom').value, t:document.getElementById('eTo').value,
+                            b:parseInt(document.getElementById('eBreak').value,10)||0 };
+  else val=h;
+  if(entryKey>todayKey()){
+    if(typeof val==='number') val={h:val,p:1};
+    else val.p=1;
   }
-  return h;
+  return val;
 }
 function repeatMatch(rep, dow, baseDow){
   if(rep==='pp') return dow>=1&&dow<=5;
@@ -785,31 +1245,41 @@ function saveEntry(){
   if(v<=0){ toast('Vpiši število ur'); return; }
   if(v>24){ toast('Največ 24 h na dan 🙂'); return; }
   var val=buildValue();
-  S.data[entryKey]=val;
-
-  /* ponovi do konca meseca (preskoči dneve, ki že imajo vnos) */
-  var rep=document.getElementById('eRepeat').value, added=0;
+  var rep=document.getElementById('eRepeat').value;
+  var touched=[entryKey];
   if(rep){
     var p=entryKey.split('-'); var y=+p[0], m=+p[1]-1, d0=+p[2];
-    var baseDow=new Date(y,m,d0).getDay();
+    var baseDow=kDate(entryKey).getDay();
     for(var d=d0+1; d<=dim(y,m); d++){
       var dt=new Date(y,m,d), k=key(y,m,d);
       if(!repeatMatch(rep, dt.getDay(), baseDow)) continue;
       if(S.data[k]!=null) continue;
-      S.data[k]= (typeof val==='object') ? {h:val.h,f:val.f,t:val.t,b:val.b} : val;
-      added++;
+      touched.push(k);
     }
   }
-  save(); closeOvl('entryOvl'); render();
-  toast(added>0 ? '+'+eur(entH(val)*S.rate)+' · delavnik nastavljen še za '+added+' dni 📅'
-                : '+'+eur(entH(val)*S.rate)+' zabeleženo 💪');
+  snapDays(touched);
+  S.data[entryKey]=val; markDay(entryKey);
+  var added=0, tk=todayKey();
+  for(var i=1;i<touched.length;i++){
+    var k2=touched[i];
+    var cp=(typeof val==='object')? JSON.parse(JSON.stringify(val)) : val;
+    if(k2>tk){ if(typeof cp==='number') cp={h:cp,p:1}; else cp.p=1; }
+    else if(typeof cp==='object') delete cp.p;
+    S.data[k2]=cp; markDay(k2); added++;
+  }
+  save(); closeOvl('entryOvl'); haptic(12); render();
+  toastU(added>0 ? '+'+eur(entEur(entryKey,val))+' · delavnik nastavljen še za '+added+' dni 📅'
+                 : (isPlan(val)? 'Plan shranjen 📅' : '+'+eur(entEur(entryKey,val))+' zabeleženo 💪'),
+        'Razveljavi', doUndo);
 }
 function delEntry(){
-  delete S.data[entryKey];
-  save(); closeOvl('entryOvl'); render(); toast('Vnos izbrisan');
+  snapDays([entryKey]);
+  delete S.data[entryKey]; tombDay(entryKey);
+  save(); closeOvl('entryOvl'); render();
+  toastU('Vnos izbrisan','Razveljavi',doUndo);
 }
 
-/* ================= settings ================= */
+/* ================= nastavitve ================= */
 var goalMode='h';
 function setGoalMode(m){
   goalMode=m;
@@ -825,8 +1295,12 @@ function openSettings(){
   document.getElementById('sGoalEur').value=S.goalMoney||'';
   document.getElementById('sReward').value=S.reward||'';
   document.getElementById('sRewPrice').value=S.rewPrice||'';
+  document.getElementById('sNet').value=S.netPct||'';
+  document.getElementById('sWkx').value=(S.wkx&&S.wkx!==1)?S.wkx:'';
   setGoalMode(S.goalMode==='e'?'e':'h');
+  paintThemeSeg();
   renderAcct();
+  renderLog();
   document.getElementById('sRate').oninput=setCalc;
   document.getElementById('sGoal').oninput=setCalc;
   document.getElementById('sGoalEur').oninput=setCalc;
@@ -838,34 +1312,45 @@ function setCalc(){
   var n=dim(now.getFullYear(),now.getMonth());
   if(goalMode==='h'){
     var g=parseFloat(String(document.getElementById('sGoal').value).replace(',','.'))||0;
-    if(r>0&&g>0) el.textContent='Cilj = '+eur(r*g)+' na mesec · ~'+eur(r*g/n)+' na dan';
-    else el.textContent='Vpiši postavko in cilj, da vidiš izračun';
+    el.textContent = (r>0&&g>0)? 'Cilj = '+eur(r*g)+' na mesec · ~'+eur(r*g/n)+'\u00A0na dan' : 'Vpiši postavko in cilj, da vidiš izračun';
   } else {
     var e=parseFloat(String(document.getElementById('sGoalEur').value).replace(',','.'))||0;
-    if(r>0&&e>0){
-      var hh=e/r;
-      el.textContent='Za '+eur(e)+' rabiš '+(Math.round(hh*10)/10).toLocaleString('sl-SI')+' h · ~'+(Math.round(hh/n*10)/10).toLocaleString('sl-SI')+' h na dan';
-    } else el.textContent='Vpiši postavko in znesek, da vidiš potrebne ure';
+    if(r>0&&e>0){ var hh=e/r; el.textContent='Za '+eur(e)+' rabiš '+(Math.round(hh*10)/10).toLocaleString('sl-SI')+' h · ~'+(Math.round(hh/n*10)/10).toLocaleString('sl-SI')+'\u00A0h na dan'; }
+    else el.textContent='Vpiši postavko in znesek, da vidiš potrebne ure';
   }
 }
 function saveSettings(){
   var r=parseFloat(String(document.getElementById('sRate').value).replace(',','.'));
   S.rate=isNaN(r)||r<0?0:r;
   S.goalMode=goalMode;
-  if(goalMode==='h'){
-    var g=parseFloat(String(document.getElementById('sGoal').value).replace(',','.'));
-    S.goalHours=isNaN(g)||g<0?0:Math.round(g);
-  } else {
-    var e=parseFloat(String(document.getElementById('sGoalEur').value).replace(',','.'));
-    S.goalMoney=isNaN(e)||e<0?0:e;
-  }
+  if(goalMode==='h'){ var g=parseFloat(String(document.getElementById('sGoal').value).replace(',','.')); S.goalHours=isNaN(g)||g<0?0:Math.round(g); }
+  else { var e=parseFloat(String(document.getElementById('sGoalEur').value).replace(',','.')); S.goalMoney=isNaN(e)||e<0?0:e; }
   S.reward=document.getElementById('sReward').value.trim();
   var rp=parseFloat(String(document.getElementById('sRewPrice').value).replace(',','.'));
   S.rewPrice=isNaN(rp)||rp<0?0:rp;
+  var np=parseInt(document.getElementById('sNet').value,10);
+  S.netPct=isNaN(np)||np<0||np>100?0:np;
+  var wx=parseFloat(String(document.getElementById('sWkx').value).replace(',','.'));
+  S.wkx=isNaN(wx)||wx<1?1:Math.min(3,wx);
+  S.meta.settingsTs=Date.now();
   save(); closeOvl('setOvl'); render(); toast('Nastavitve shranjene ✓');
 }
+function toggleLog(ev){
+  ev.preventDefault();
+  var l=document.getElementById('logList');
+  l.style.display = l.style.display==='block'?'none':'block';
+  renderLog();
+}
+function renderLog(){
+  var l=document.getElementById('logList');
+  if(!S.meta.log.length){ l.innerHTML='<div>Ni še sprememb.</div>'; return; }
+  l.innerHTML=S.meta.log.map(function(e){
+    var d=new Date(e.ts);
+    return '<div>'+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'. '+pad(d.getHours())+':'+pad(d.getMinutes())+' · '+e.op+' '+e.k+' · '+e.dev+'</div>';
+  }).join('');
+}
 
-/* ================= backup ================= */
+/* ================= kopije ================= */
 function exportData(){
   var blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
   var a=document.createElement('a');
@@ -873,7 +1358,7 @@ function exportData(){
   var t=new Date();
   a.download='ura-plus-kopija-'+t.getFullYear()+pad(t.getMonth()+1)+pad(t.getDate())+'.json';
   document.body.appendChild(a); a.click(); a.remove();
-  toast('Kopija prenesena ⬇︎');
+  toast('Kopija prenešena ⬇︎');
 }
 function importData(inp){
   var f=inp.files[0]; if(!f) return;
@@ -882,42 +1367,39 @@ function importData(inp){
     try{
       var o=JSON.parse(rd.result);
       if(typeof o!=='object'||!o.data) throw 0;
-      S=o; if(!S.celebrated)S.celebrated={};
-      save(); render(); closeOvl('setOvl'); toast('Podatki uvoženi ✓');
+      var def=defState();
+      for(var k in def) if(!(k in o)) o[k]=def[k];
+      if(!o.meta) o.meta=def.meta;
+      ['perDay','del','log'].forEach(function(f2){ if(!o.meta[f2]) o.meta[f2]= f2==='log'?[]:{}; });
+      S=migrate(o);
+      applyTheme(); save(); render(); closeOvl('setOvl'); toast('Podatki uvoženi ✓');
     }catch(e){ toast('Ta datoteka ni veljavna kopija'); }
   };
   rd.readAsText(f); inp.value='';
 }
-
-/* ================= misc ================= */
 function closeOvl(id){ document.getElementById(id).classList.remove('on'); }
 
-/* first run: open settings if not configured */
-render();
-if(!S.rate && !S.goalHours && !S.goalMoney){
-  setTimeout(function(){ openSettings(); toast('Dobrodošel! Najprej nastavi postavko in cilj 👇'); },400);
-}
-/* ================= račun & sinhronizacija (Supabase) =================
-   App je offline-first: vse dela brez prijave; s prijavo se stanje
-   sinhronizira med napravami (zadnji zapis zmaga). */
+/* ================= racun & sinhronizacija (Supabase, zdruzevanje po dnevih) ================= */
 var SB_URL='https://cgnihdlprjqpawvpznsw.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnbmloZGxwcmpxcGF3dnB6bnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3ODAwODAsImV4cCI6MjEwMTM1NjA4MH0.HQgn-5op-0BYAMllyE3rbhwlLPILxvl1OVnqXau_33g';
 var SESS_KEY='uraplus_sess';
 var memSess=null;
-function loadSess(){
-  try{ var raw= storageOK? localStorage.getItem(SESS_KEY) : memSess; return raw? JSON.parse(raw):null; }
-  catch(e){ return null; }
-}
+function loadSess(){ try{ var raw= storageOK? localStorage.getItem(SESS_KEY):memSess; return raw? JSON.parse(raw):null; }catch(e){ return null; } }
 function storeSess(s){
-  SESS=s;
-  var raw=s? JSON.stringify(s):null;
+  SESS=s; var raw=s? JSON.stringify(s):null;
   if(storageOK){ try{ if(raw)localStorage.setItem(SESS_KEY,raw); else localStorage.removeItem(SESS_KEY); }catch(e){} }
   else memSess=raw;
 }
 var SESS=loadSess();
 var syncState='—', syncTimer=null, lastPull=0;
-
-function setSyncState(t){ syncState=t; renderAcct(); }
+function setSyncState(t){ syncState=t; renderAcct(); renderSyncLine(); }
+function renderSyncLine(){
+  var el=document.getElementById('syncLine'); if(!el) return;
+  var ls=lsGet('uraplus_lastsync');
+  if(SESS && ls){ el.style.display=''; var d=new Date(+ls); el.textContent='☁ usklajeno ob '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+  else if(SESS){ el.style.display=''; el.textContent='☁ '+syncState; }
+  else el.style.display='none';
+}
 function sbHeaders(auth){
   var h={'apikey':SB_KEY,'Content-Type':'application/json'};
   if(auth && SESS) h['Authorization']='Bearer '+SESS.access_token;
@@ -937,8 +1419,44 @@ function ensureToken(){
     .then(function(d){ storeSess(normSess(d)); return true; })
     .catch(function(){ storeSess(null); setSyncState('odjavljen'); return false; });
 }
-function anyLocalData(){
-  return !!(S.rate || S.goalHours || S.goalMoney || Object.keys(S.data).length);
+function anyLocalData(){ return !!(S.rate || S.goalHours || S.goalMoney || Object.keys(S.data).length); }
+
+/* zdruzi oddaljeno stanje v lokalno: po dnevih, z nagrobniki */
+function mergeRemote(remote){
+  var rem=remote.state||{};
+  var remTs=Date.parse(remote.updated_at)||0;
+  var rm=rem.meta||{}; var rPer=rm.perDay||{}, rDel=rm.del||{};
+  var lPer=S.meta.perDay, lDel=S.meta.del;
+  function rTs(k){ return rPer[k] || ((rem.data && k in rem.data)? remTs : 0); }
+  var changed=false;
+  /* nastavitve: novejsi settingsTs zmaga (legacy oddaljeno stanje = remTs) */
+  var rst=rm.settingsTs||remTs, lst=S.meta.settingsTs||0;
+  if(rst>lst){
+    ['rate','goalHours','goalMode','goalMoney','reward','rewPrice','theme','netPct','wkx'].forEach(function(f){
+      if(f in rem && JSON.stringify(rem[f])!==JSON.stringify(S[f])){ S[f]=rem[f]; changed=true; }
+    });
+    S.meta.settingsTs=rst;
+  }
+  /* dnevi */
+  var keys={};
+  Object.keys(S.data).forEach(function(k){keys[k]=1;});
+  Object.keys(rem.data||{}).forEach(function(k){keys[k]=1;});
+  Object.keys(rDel).forEach(function(k){keys[k]=1;});
+  Object.keys(lDel).forEach(function(k){keys[k]=1;});
+  Object.keys(keys).forEach(function(k){
+    var lSet=lPer[k]||0, lD=lDel[k]||0, rSet=rTs(k), rD=rDel[k]||0;
+    var lBest=Math.max(lSet,lD), rBest=Math.max(rSet,rD);
+    if(rBest>lBest){
+      if(rD>=rSet && rD>0){ if(k in S.data){ delete S.data[k]; changed=true; } lDel[k]=rD; delete lPer[k]; }
+      else if(rem.data && k in rem.data){
+        if(JSON.stringify(rem.data[k])!==JSON.stringify(S.data[k])) changed=true;
+        S.data[k]=rem.data[k]; lPer[k]=rSet; delete lDel[k];
+      }
+    }
+  });
+  S.msDone=Math.max(S.msDone||0, rem.msDone||0);
+  if(rem.celebrated) for(var c in rem.celebrated) if(!S.celebrated[c]){ S.celebrated[c]=1; }
+  return changed;
 }
 function syncPush(){
   if(!SESS) return;
@@ -947,9 +1465,10 @@ function syncPush(){
     return fetch(SB_URL+'/rest/v1/app_state',{
       method:'POST',
       headers:Object.assign(sbHeaders(true),{'Prefer':'resolution=merge-duplicates,return=minimal'}),
-      body:JSON.stringify({user_id:SESS.user.id, state:S, updated_at:S._ts||new Date().toISOString()})
+      body:JSON.stringify({user_id:SESS.user.id, state:S, updated_at:new Date().toISOString()})
     }).then(function(r){
-      setSyncState(r.ok? 'usklajeno ✓' : 'napaka pri usklajevanju');
+      if(r.ok){ lsSet('uraplus_lastsync', String(Date.now())); setSyncState('usklajeno ✓'); }
+      else setSyncState('napaka pri usklajevanju');
     });
   }).catch(function(){ setSyncState('offline — uskladim kasneje'); });
 }
@@ -963,26 +1482,21 @@ function syncStart(){
     }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(rows){
         if(rows.length){
-          var remote=rows[0], localTs=S._ts||'1970-01-01';
-          if(!anyLocalData() || remote.updated_at>localTs){
-            var st=remote.state||{};
-            if(!st.data) st.data={};
-            if(!st.celebrated) st.celebrated={};
-            S=st; S._ts=remote.updated_at;
-            persist(); render();
-          } else if(localTs>remote.updated_at){ syncPush(); }
-          setSyncState('usklajeno ✓');
+          var changed=mergeRemote(rows[0]);
+          S=migrate(S);
+          persist();
+          if(changed){ applyTheme(); render(); }
+          syncPush();
         } else if(anyLocalData()){ syncPush(); }
-        else setSyncState('usklajeno ✓');
+        else { lsSet('uraplus_lastsync', String(Date.now())); setSyncState('usklajeno ✓'); }
       });
   }).catch(function(){ setSyncState('offline — uskladim kasneje'); });
 }
 function queueSync(){
   if(!SESS) return;
   clearTimeout(syncTimer);
-  syncTimer=setTimeout(syncPush, 1500);
+  syncTimer=setTimeout(syncStart, 1500); /* pull -> merge -> push, da nikoli ne povozimo tujega dneva */
 }
-/* auth UI */
 function aErr(msg){
   var e=document.getElementById('aErr');
   if(msg){ e.textContent=msg; e.style.display='block'; } else e.style.display='none';
@@ -1000,8 +1514,7 @@ function authDone(d){
   storeSess(normSess(d));
   closeOvl('authOvl');
   toast('Prijavljen ✓');
-  renderAcct();
-  syncStart();
+  renderAcct(); syncStart();
 }
 function doLogin(){
   aErr(null);
@@ -1010,10 +1523,8 @@ function doLogin(){
   fetch(SB_URL+'/auth/v1/token?grant_type=password',{
     method:'POST',headers:sbHeaders(false),body:JSON.stringify({email:em,password:pw})
   }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
-    .then(function(x){
-      if(x.ok && x.d.access_token) authDone(x.d);
-      else aErr(slErr(x.d.error_description||x.d.msg||x.d.message));
-    }).catch(function(){ aErr('Ni povezave — poskusi z internetom.'); });
+    .then(function(x){ if(x.ok && x.d.access_token) authDone(x.d); else aErr(slErr(x.d.error_description||x.d.msg||x.d.message)); })
+    .catch(function(){ aErr('Ni povezave — poskusi z internetom.'); });
 }
 function doSignup(){
   aErr(null);
@@ -1025,23 +1536,18 @@ function doSignup(){
   }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
     .then(function(x){
       if(x.ok && x.d.access_token) authDone(x.d);
-      else if(x.ok && x.d.id || (x.d.user&&!x.d.access_token)) aErr('Račun ustvarjen — preveri e-pošto in potrdi, nato se prijavi.');
+      else if(x.ok && (x.d.id || (x.d.user&&!x.d.access_token))) aErr('Račun ustvarjen — preveri e-pošto in potrdi, nato se prijavi.');
       else aErr(slErr(x.d.error_description||x.d.msg||x.d.message));
     }).catch(function(){ aErr('Ni povezave — poskusi z internetom.'); });
 }
-function logout(){
-  storeSess(null);
-  renderAcct();
-  toast('Odjavljen — podatki ostanejo na napravi');
-}
+function logout(){ storeSess(null); renderAcct(); renderSyncLine(); toast('Odjavljen — podatki ostanejo na napravi'); }
 function openAuth(){
   aErr(null);
   document.getElementById('aPass').value='';
   document.getElementById('authOvl').classList.add('on');
 }
 function renderAcct(){
-  var box=document.getElementById('acctBox');
-  if(!box) return;
+  var box=document.getElementById('acctBox'); if(!box) return;
   if(SESS){
     box.innerHTML='<p style="margin:0 0 8px;color:var(--muted);font-size:12.5px">Prijavljen: <b style="color:var(--ink)">'+
       (SESS.user.email||'')+'</b><br>Sinhronizacija: '+syncState+'</p>'+
@@ -1051,17 +1557,24 @@ function renderAcct(){
       '<button class="btn s" style="margin-top:0" onclick="closeOvl(\'setOvl\');openAuth()">Prijava / nov račun</button>';
   }
 }
-window.addEventListener('online', function(){ if(SESS) syncPush(); });
+window.addEventListener('online', function(){ if(SESS) syncStart(); });
 document.addEventListener('visibilitychange', function(){
   if(!document.hidden && SESS && Date.now()-lastPull>60000) syncStart();
 });
-if(SESS) setTimeout(syncStart, 300);
 
-/* PWA: service worker samo, ko app teče prek http(s) — lokalna datoteka dela brez njega */
+/* PWA */
 if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   navigator.serviceWorker.register('sw.js').catch(function(){});
 }
-/* refresh "now" if app stays open across midnight */
+
+/* zagon */
+applyTheme();
+persist(); /* shrani morebitno migracijo */
+render();
+if(SESS) setTimeout(syncStart, 300);
+if(!S.rate && !S.goalHours && !S.goalMoney){
+  setTimeout(function(){ openSettings(); toast('Dobrodošel! Najprej nastavi postavko in cilj 👇'); },400);
+}
 setInterval(function(){
   var t=new Date();
   if(t.getDate()!==now.getDate()){ now=t; render(); }
