@@ -336,6 +336,98 @@
   .confetti span{position:absolute;top:-12px;width:8px;height:8px;border-radius:2px;opacity:.95;animation:cfall linear forwards}
   @keyframes cfall{to{transform:translateY(108vh) rotate(760deg);opacity:.85}}
 
+  /* ── weekly recap ── */
+  #recap{position:fixed;inset:0;z-index:90;display:none}
+  #recap.on{display:block}
+  .rc-scrim{position:absolute;inset:0;background:rgba(10,8,9,.74);opacity:0;transition:opacity .45s}
+  .rc-scrim.on{opacity:1}
+  /* the story */
+  .rc-story{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ink2);
+    background-image:radial-gradient(560px 340px at 50% 10%,rgba(70,190,197,.17),transparent 68%);
+    background-repeat:no-repeat;opacity:0;transition:opacity .4s}
+  .rc-story.on{opacity:1}
+  .rc-story.out{opacity:0;transform:scale(.955);transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1)}
+  .rc-dots{display:flex;gap:5px;padding:calc(15px + env(safe-area-inset-top)) 18px 0}
+  .rc-dots i{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.14);position:relative}
+  .rc-dots i.done::after{content:"";position:absolute;inset:0;border-radius:2px;background:var(--teal)}
+  .rc-skip{position:absolute;top:calc(24px + env(safe-area-inset-top));right:16px;z-index:2;
+    background:none;border:none;color:var(--muted2);font-family:'Poppins';font-weight:600;font-size:12px;
+    padding:8px 10px;cursor:pointer}
+  .rc-skip:hover{color:var(--teal)}
+  .rc-beat{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 24px 18px;
+    max-width:520px;width:100%;margin:0 auto;animation:rcIn .45s cubic-bezier(.22,1,.36,1)}
+  @keyframes rcIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+  .rc-eyebrow{font-family:'Poppins';font-size:9.5px;font-weight:800;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+  .rc-big{font-family:'Poppins';font-weight:900;font-size:clamp(56px,17vw,74px);line-height:.95;
+    letter-spacing:-.03em;margin-bottom:7px;font-variant-numeric:tabular-nums}
+  .rc-big small{font-size:.4em;font-weight:800}
+  .rc-beat h3{font-family:'Poppins';font-weight:800;font-size:clamp(21px,6vw,26px);line-height:1.2;margin-bottom:10px}
+  .rc-beat p{font-size:14.5px;color:var(--muted);line-height:1.55}
+  .rc-beat p b{color:#fff;font-weight:600}
+  .rc-beat p u{text-decoration:none;color:var(--teal);font-weight:700}
+  .rc-strip{display:flex;gap:6px;margin:22px 0 4px}
+  .rc-strip div{flex:1;height:46px;border-radius:10px;display:flex;align-items:flex-end;justify-content:center;
+    padding-bottom:5px;font-family:'Poppins';font-size:9px;font-weight:800;color:var(--teal-deep);
+    background:var(--teal);opacity:0;transform:scaleY(.3);transform-origin:bottom;
+    transition:opacity .35s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .rc-strip div.part{background:rgba(70,190,197,.42);color:#cdeff1}
+  .rc-strip div.zero{background:rgba(226,86,74,.34);color:#ffb3ac}
+  .rc-strip div.none{background:rgba(255,255,255,.06);color:var(--muted2)}
+  .rc-strip div.go{opacity:1;transform:none}
+  .rc-tap{font-size:11.5px;color:var(--muted2);text-align:center;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom));font-style:italic}
+  /* the card */
+  .rc-card{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;
+    padding:0 12px calc(12px + env(safe-area-inset-bottom));
+    transform:translateY(112%);transition:transform .55s cubic-bezier(.22,1,.36,1)}
+  .rc-card.on{transform:none}
+  .rc-in{border:1px solid rgba(70,190,197,.5);border-radius:20px;padding:18px 17px;
+    background:linear-gradient(158deg,#1f2b2c,#161819 62%);box-shadow:0 -12px 44px rgba(0,0,0,.55);
+    max-height:86vh;overflow-y:auto}
+  .rc-in.hold{border-color:rgba(232,178,74,.45);background:linear-gradient(158deg,#2a2620,#161819 62%)}
+  .rc-kick{font-family:'Poppins';font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:7px}
+  .rc-in.hold .rc-kick{color:var(--amber)}
+  .rc-grade{font-family:'Poppins';font-weight:800;font-size:21px;line-height:1.18;margin-bottom:3px}
+  .rc-sub{font-size:12.5px;color:var(--muted);margin-bottom:15px;line-height:1.5}
+  .rc-lines{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .rc-li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;
+    opacity:0;transform:translateY(7px);transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1)}
+  .rc-card.on .rc-li{opacity:1;transform:none}
+  .rc-li .ic{width:18px;flex-shrink:0;text-align:center}
+  .rc-li b{font-family:'Poppins';font-weight:600}
+  .rc-li u{text-decoration:none;color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums}
+  .rc-li s{text-decoration:none;color:var(--amber);font-weight:700;font-variant-numeric:tabular-nums}
+  .rc-verdict{border-top:1px solid var(--line);padding-top:13px;margin-bottom:14px;
+    font-family:'Poppins';font-weight:600;font-size:13.5px;line-height:1.45}
+  .rc-verdict em{font-style:normal;color:var(--teal)}
+  .rc-in.hold .rc-verdict em{color:var(--amber)}
+  .rc-btn{width:100%;background:var(--teal);color:var(--teal-deep);border:none;border-radius:12px;padding:12px;
+    font-family:'Poppins';font-weight:700;font-size:13px;cursor:pointer}
+  .rc-in.hold .rc-btn{background:var(--amber)}
+  .rc-btn.ghost{background:none;border:1px solid var(--line);color:var(--muted);margin-top:7px}
+  .rc-picks{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+  .rc-pk{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.045);border:1.5px solid var(--line);
+    border-radius:13px;padding:11px 13px;cursor:pointer;color:inherit;font-family:inherit;text-align:left;
+    transition:all .2s}
+  .rc-pk .stx{width:16px;flex-shrink:0;color:var(--muted2);text-align:center}
+  .rc-pk b{flex:1;font-family:'Poppins';font-weight:600;font-size:13px}
+  .rc-pk span{font-size:11px;color:var(--muted2);font-variant-numeric:tabular-nums}
+  .rc-pk.sel{border-color:var(--teal);background:rgba(70,190,197,.13)}
+  .rc-pk.sel .stx{color:var(--teal)}
+  /* the way back in */
+  .recapchip{width:100%;display:flex;align-items:center;gap:9px;background:rgba(70,190,197,.07);
+    border:1px solid rgba(70,190,197,.28);border-radius:13px;padding:10px 13px;margin-bottom:10px;
+    cursor:pointer;color:inherit;font-family:inherit;text-align:left;transition:all .2s}
+  .recapchip:hover{background:rgba(70,190,197,.12);border-color:rgba(70,190,197,.5)}
+  .recapchip .d{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+  .recapchip b{flex:1;font-family:'Poppins';font-weight:600;font-size:12.5px}
+  .recapchip i{font-style:normal;color:var(--teal);font-size:15px;line-height:1}
+  @media (prefers-reduced-motion:reduce){
+    .rc-story,.rc-card,.rc-li,.rc-strip div,.rc-beat{transition:none!important;animation:none!important}
+  }
+
   /* account sheet */
   .sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
   .sheetbg.on{opacity:1;pointer-events:auto}
@@ -347,6 +439,18 @@
   .sheet input{width:100%;font-family:'Inter';font-size:15px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:12px;transition:border-color .2s;outline:none}
   .sheet input:focus{border-color:var(--teal)}
   .sheet .row{display:flex;gap:9px;margin-top:4px}
+  .hapset{display:flex;align-items:center;gap:14px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .hapset .hl2{flex:1;min-width:0}
+  .hapset .hl2 b{display:block;font-family:'Poppins';font-size:13.5px;font-weight:600}
+  .hapset .hl2 span{display:block;font-size:11.5px;color:var(--muted2);line-height:1.45;margin-top:1px}
+  .tsw{width:46px;height:27px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.06);
+       flex-shrink:0;cursor:pointer;padding:0;position:relative;transition:all .25s}
+  .tsw span{position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--muted);
+            transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+  .tsw.on{background:rgba(70,190,197,.25);border-color:rgba(70,190,197,.55)}
+  .tsw.on span{left:22px;background:var(--teal)}
+  .tsw:disabled{opacity:.4;cursor:default}
+  .tsw:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
   .sheet .row .btn{flex:1;padding:13px 10px}
   .sheet .msg{font-size:12.5px;margin-top:12px;color:var(--muted);line-height:1.5;min-height:18px}
   .sheet .msg.err{color:var(--red)}
@@ -381,11 +485,58 @@
   @keyframes spH{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
   .sp-glow{position:absolute;width:230px;height:230px;border-radius:50%;opacity:0;animation:spGlow .54s ease 1.44s;pointer-events:none;box-shadow:0 0 60px 12px rgba(70,190,197,.45)}
   @keyframes spGlow{0%,100%{opacity:0}50%{opacity:1}}
+
+  /* ══════════ navigation motion ══════════
+     One pill slides between tabs instead of four backgrounds blinking on and off,
+     and the arriving view enters from the side you travelled. */
+  .tabs{position:relative}
+  .tabpill{position:absolute;left:0;top:4px;bottom:4px;width:0;border-radius:999px;background:var(--teal);
+    box-shadow:0 6px 18px rgba(70,190,197,.35);z-index:0;pointer-events:none;
+    transition:transform .44s cubic-bezier(.32,.72,0,1),width .44s cubic-bezier(.32,.72,0,1)}
+  .tabs.noanim .tabpill{transition:none}
+  .tab{position:relative;z-index:1;background:none;
+    transition:color .3s ease,transform .18s cubic-bezier(.34,1.56,.64,1)}
+  .tab.on{background:none;box-shadow:none;color:var(--teal-deep)}
+  .tab:active{transform:scale(.94)}
+  .view{animation:none}
+  @keyframes vInR{from{opacity:0;transform:translate3d(26px,0,0)}to{opacity:1;transform:none}}
+  @keyframes vInL{from{opacity:0;transform:translate3d(-26px,0,0)}to{opacity:1;transform:none}}
+  .view.slide-r{animation:vInR .42s cubic-bezier(.32,.72,0,1) both}
+  .view.slide-l{animation:vInL .42s cubic-bezier(.32,.72,0,1) both}
+  @keyframes cellIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:none}}
+
+  /* every control gives a little under the thumb */
+  .btn,.addbtn,.fchip,.altchip,.dp,.seg,.recapchip,.schip,.linkbtn2,.rc-btn,.rc-pk{
+    transition:transform .16s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s,color .2s,box-shadow .2s}
+  .btn:active,.addbtn:active,.fchip:active,.altchip:active,.dp:active,.seg:active,
+  .recapchip:active,.schip:active,.rc-btn:active,.rc-pk:active{transform:scale(.96)}
+  .stat{transition:transform .2s cubic-bezier(.34,1.56,.64,1),border-color .25s}
+  .tab:focus-visible,.addbtn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+  /* week / month history browsing */
+  .histnav{display:flex;align-items:center;gap:8px}
+  .histnav .hn{width:27px;height:27px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--muted);font-size:16px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:0;
+    transition:transform .16s cubic-bezier(.34,1.56,.64,1),color .2s,border-color .2s}
+  .histnav .hn:hover{color:var(--teal);border-color:rgba(70,190,197,.45)}
+  .histnav .hn:active{transform:scale(.9)}
+  .histnav .hn:disabled{opacity:.28;cursor:default;transform:none}
+  .histnav .hn:disabled:hover{color:var(--muted);border-color:var(--line)}
+  .histnav span{font-size:12px;color:var(--muted)}
+  .weekcard.hswap-l{animation:vInL .38s cubic-bezier(.32,.72,0,1) both}
+  .weekcard.hswap-r{animation:vInR .38s cubic-bezier(.32,.72,0,1) both}
+
+  @media (prefers-reduced-motion:reduce){
+    .tabpill{transition:none}
+    .view.slide-r,.view.slide-l,.weekcard.hswap-l,.weekcard.hswap-r{animation:none}
+  }
 </style>
 </head>
 <body>
 
 <div id="splash"></div>
+<div id="recap"></div>
 
 <div class="app">
   <header>
@@ -434,6 +585,7 @@
   </div>
 
   <div class="tabs">
+    <span class="tabpill"></span>
     <button class="tab on" data-v="today">Today</button>
     <button class="tab" data-v="week">Week</button>
     <button class="tab" data-v="month">Month</button>
@@ -442,6 +594,7 @@
 
   <!-- TODAY -->
   <div class="view on" id="v-today">
+    <div id="recapchip"></div>
     <div id="missmount"></div>
     <div class="sechead"><h2>Daily non-negotiables</h2><span id="todaycount"></span></div>
     <div id="starter"></div>
@@ -460,7 +613,8 @@
 
   <!-- WEEK -->
   <div class="view" id="v-week">
-    <div class="sechead"><h2>This week</h2><span id="weekrange"></span></div>
+    <div class="sechead"><h2 id="weektitle">This week</h2>
+      <span class="histnav"><button class="hn" id="wk-prev" title="Earlier week">&lsaquo;</button><span id="weekrange"></span><button class="hn" id="wk-next" title="Later week">&rsaquo;</button></span></div>
     <div class="weekcard">
       <table class="wk" id="wktable"></table>
       <div class="weekfoot">
@@ -481,7 +635,8 @@
 
   <!-- MONTH -->
   <div class="view" id="v-month">
-    <div class="sechead"><h2 id="monthtitle">Consistency</h2><span>day score heatmap</span></div>
+    <div class="sechead"><h2 id="monthtitle">Consistency</h2>
+      <span class="histnav"><button class="hn" id="mo-prev" title="Earlier month">&lsaquo;</button><button class="hn" id="mo-next" title="Later month">&rsaquo;</button></span></div>
     <div class="weekcard">
       <div class="heat" id="heat"></div>
       <div class="legend">less <i style="background:rgba(255,255,255,.05)"></i><i style="background:rgba(70,190,197,.18)"></i><i style="background:rgba(70,190,197,.38)"></i><i style="background:rgba(70,190,197,.62)"></i><i style="background:#46BEC5"></i> more</div>
@@ -567,7 +722,7 @@ const fmtShort = k => { const d = fromKey(k); return `${DAYS3[dow(k)]} ${d.getDa
 
 /* ── state ── */
 const LS = 'foqshabit.v1';
-function blank(){ return {v:1, habits:[], log:{}, missLogs:[], missAsked:{}, focus:null, lastSplash:null, firstDay:TODAY(), updatedAt:0}; }
+function blank(){ return {v:1, habits:[], log:{}, missLogs:[], missAsked:{}, focus:null, lastSplash:null, haptics:true, lastWeekBuzz:null, lastRecap:null, firstDay:TODAY(), updatedAt:0}; }
 let S = blank();
 try { const raw = localStorage.getItem(LS); if(raw) S = Object.assign(blank(), JSON.parse(raw)); } catch(e){}
 if(!S.firstDay) S.firstDay = TODAY();
@@ -609,6 +764,27 @@ function save(bump=true){
   if(bump && user){ clearTimeout(pushT); pushT = setTimeout(syncPush, 1200); }
 }
 const uid = () => 'h' + Math.random().toString(36).slice(2,9);
+
+/* ── haptics ──
+   Android only. Safari has never implemented the Vibration API and the old
+   iOS switch-input trick was closed in iOS 26.5, so on iPhone this simply does
+   nothing rather than pretending. Desktop Chrome knows the call but has no motor.
+   Everything the hand feels ten times a day is deliberately tiny; only winning
+   the day or the week is allowed to be long. */
+const HAP = {
+  tick:  [12],
+  half:  [8],
+  close: [10,45,18],
+  undo:  [26],
+  both:  [8,32,8,32,14],
+  day:   [16,55,16,55,45],
+  week:  [20,60,20,60,20,60,70]
+};
+const canBuzz = typeof navigator.vibrate === "function";
+function buzz(name){
+  if(!canBuzz || S.haptics === false) return;
+  try { navigator.vibrate(HAP[name] || HAP.tick); } catch(e){}
+}
 
 /* ── data helpers ── */
 const dayRec = k => S.log[k] || {};
@@ -812,11 +988,26 @@ function habitWeekRate(h){
   }
   return {r: denom? Math.round(hits/denom*100) : null, denom};
 }
-function monthChecks(){
-  const t = fromKey(TODAY());
+/* Same as habitWeekRate but for any week, so the recap can look back. */
+function habitWeekRateAt(h, off){
+  const mon = addD(monday(TODAY()), off*7);
+  let hits=0, denom=0;
+  for(let j=0;j<7;j++){
+    const k = addD(mon,j);
+    if(k > TODAY()) break;
+    if(k < S.firstDay) continue;
+    const sl = slot(h,k); denom += sl.need; hits += sl.got;
+  }
+  return {r: denom? Math.round(hits/denom*100) : null, denom};
+}
+function monthChecks(off=0){
+  const t0 = fromKey(TODAY());
+  const t = new Date(t0.getFullYear(), t0.getMonth() + off, 1);
+  const upTo = off === 0 ? t0.getDate() : new Date(t.getFullYear(), t.getMonth()+1, 0).getDate();
   let total=0, perfect=0;
-  for(let d=1; d<=t.getDate(); d++){
+  for(let d=1; d<=upTo; d++){
     const k = keyOf(new Date(t.getFullYear(), t.getMonth(), d));
+    if(k > TODAY()) break;
     if(k < S.firstDay) continue;
     const st = dayStats(k);
     total += st.c;
@@ -1153,7 +1344,9 @@ function toggle(h, el){
   const tk = TODAY(), T = tgt(h);
   if(T > 1 && !h.alts){
     /* one tap advances, and the tap after the last one clears the day */
-    setReps(h, (reps(h,tk) + 1) % (T + 1));
+    const nv = (reps(h,tk) + 1) % (T + 1);
+    setReps(h, nv);
+    buzz(nv === 0 ? "undo" : nv >= T ? "close" : "half");
     syncRowUI(h, el);
     render();
     return;
@@ -1162,6 +1355,7 @@ function toggle(h, el){
   if(!on) setCheck(h, false);
   else if(h.alts){ const os = optsDone(h,tk); setCheck(h, true, os.length ? os : [0]); }
   else setCheck(h, true, null);
+  buzz(on ? "tick" : "undo");
   syncRowUI(h, el);
   render();
 }
@@ -1172,6 +1366,7 @@ function pickAlt(h, el, ai){
   let os = optsDone(h,tk).slice();
   os = os.includes(ai) ? os.filter(x=>x!==ai) : os.concat(ai);
   if(os.length) setCheck(h, true, os); else setCheck(h, false);
+  buzz(!os.length ? "undo" : (!was && bothDone(h,tk)) ? "both" : "tick");
   syncRowUI(h, el);
   if(!was && bothDone(h,tk)){          /* one-off sheen the moment both land */
     el.classList.remove("justboth"); void el.offsetWidth; el.classList.add("justboth");
@@ -1302,6 +1497,7 @@ function restoreCheckin(){
 
 /* ── scoreboard + hero ── */
 let wasWon = null;   /* null on first render, so reopening a won day does not re-celebrate */
+let wasWeekWon = null;   /* same guard for the once-a-week moment */
 function render(){
   const tk = TODAY();
   const {n, c, won} = dayStats(tk);
@@ -1325,15 +1521,17 @@ function render(){
   const roll = rolling7();
   countTo("s-week", roll.pct, "<small>%</small>");
   const ws = weekStats(0);
-  $("wkrate").textContent = ws.pct + "%";
-  const needed = Math.max(0, Math.ceil(0.8*ws.denom) - ws.hits);
-  $("wkneed").textContent = ws.denom===0 ? (S.habits.length ? "nothing owed yet this week" : "no scheduled checks yet") : (ws.pct >= 80 ? "target hit 🎯" : needed + " checks to win the week");
-  $("wkbadge").style.display = (ws.denom>0 && ws.pct >= 80) ? "inline-block" : "none";
+  const weekWon = ws.denom > 0 && ws.pct >= 80;
+  /* The weekly buzz is the biggest one in the app, so it is rationed: never
+     before Friday (100% on a Monday is not a won week) and once per week only. */
+  if(weekWon && wasWeekWon === false && dow(TODAY()) >= 4 && S.lastWeekBuzz !== monday(TODAY())){
+    S.lastWeekBuzz = monday(TODAY());
+    save(false);
+    buzz("week");
+  }
+  wasWeekWon = weekWon;
 
   countTo("s-month", monthPct(), "<small>%</small>");
-  const mc = monthChecks();
-  $("m-checks").textContent = mc.total;
-  $("m-perfect").textContent = mc.perfect;
   $("m-best").textContent = bestStreak();
 
   const hero = $("hero");
@@ -1349,7 +1547,7 @@ function render(){
   } else if(won){
     $("heromsg").textContent = "Day won. 🏆";
     $("herosub").textContent = streak + "-day streak. Tomorrow defends it.";
-    if(wasWon === false){ showToast("🏆 Day won - streak " + streak); confetti(); }
+    if(wasWon === false){ showToast("🏆 Day won - streak " + streak); confetti(); buzz("day"); }
   } else if(c===0){
     $("heromsg").textContent = lostYesterday ? "Never miss twice." : "Win the day.";
     $("herosub").textContent = defend ? defend.n + " was missed yesterday - don't let it become a pattern." : "Every check is a rep. Stack them.";
@@ -1394,10 +1592,37 @@ function confetti(){
 }
 
 /* ── week ── */
-function renderWeek(){
-  const tk = TODAY(), mon = monday(tk);
+/* How far back the arrows may go: to the week / month the data starts in. */
+let wkOff = 0, moOff = 0;
+function wkMin(){
+  const a = fromKey(monday(S.firstDay)), b = fromKey(monday(TODAY()));
+  return Math.round((a - b) / (7*86400000));
+}
+function moMin(){
+  const f = fromKey(S.firstDay), t = fromKey(TODAY());
+  return (f.getFullYear() - t.getFullYear())*12 + (f.getMonth() - t.getMonth());
+}
+function renderWeek(slide){
+  const tk = TODAY(), mon = addD(monday(tk), wkOff*7);
   const sun = addD(mon,6);
+  $("weektitle").textContent = wkOff === 0 ? "This week" : wkOff === -1 ? "Last week" : (-wkOff) + " weeks ago";
+  $("wk-prev").disabled = wkOff <= wkMin();
+  $("wk-next").disabled = wkOff >= 0;
   $("weekrange").textContent = `${fmtShort(mon)} - ${fmtShort(sun)} ${MONTHS[fromKey(sun).getMonth()].slice(0,3)}`;
+  /* the card below the arrows is what changes, so it is what moves */
+  if(slide){
+    const card = $("wktable").closest(".weekcard");
+    card.classList.remove("hswap-l","hswap-r"); void card.offsetWidth;
+    card.classList.add(slide === "l" ? "hswap-l" : "hswap-r");
+  }
+  const ws = weekStats(wkOff);
+  $("wkrate").textContent = ws.denom ? ws.pct + "%" : "-";
+  $("wkneed").textContent = wkOff === 0
+    ? (ws.denom === 0 ? (S.habits.length ? "nothing owed yet this week" : "no scheduled checks yet")
+       : (ws.pct >= 80 ? "target hit 🎯" : Math.max(0, Math.ceil(0.8*ws.denom) - ws.hits) + " checks to win the week"))
+    : (ws.denom === 0 ? "nothing was owed that week"
+       : (ws.pct >= 80 ? "that week was won 🎯" : "finished below the 80% line"));
+  $("wkbadge").style.display = (ws.denom > 0 && ws.pct >= 80) ? "inline-block" : "none";
   let html = "<tr><th></th>" + DAYS3.map((d,j)=>`<th class="${addD(mon,j)===tk?'today':''}">${d}</th>`).join("") + "<th>rate</th></tr>";
   S.habits.forEach(h=>{
     let hits=0, sdays=0;
@@ -1429,9 +1654,17 @@ function renderWeek(){
 }
 
 /* ── month ── */
-function renderHeat(){
-  const t = fromKey(TODAY());
-  $("monthtitle").textContent = MONTHS[t.getMonth()] + " consistency";
+function renderHeat(slide){
+  const t0 = fromKey(TODAY());
+  const t = new Date(t0.getFullYear(), t0.getMonth() + moOff, 1);
+  $("monthtitle").textContent = MONTHS[t.getMonth()] + (t.getFullYear() !== t0.getFullYear() ? " " + t.getFullYear() : "") + " consistency";
+  $("mo-prev").disabled = moOff <= moMin();
+  $("mo-next").disabled = moOff >= 0;
+  if(slide){
+    const card = $("heat").closest(".weekcard");
+    card.classList.remove("hswap-l","hswap-r"); void card.offsetWidth;
+    card.classList.add(slide === "l" ? "hswap-l" : "hswap-r");
+  }
   const first = new Date(t.getFullYear(), t.getMonth(), 1);
   const lastDate = new Date(t.getFullYear(), t.getMonth()+1, 0).getDate();
   const firstDow = (first.getDay()+6)%7;
@@ -1446,6 +1679,9 @@ function renderHeat(){
     html += `<div class="day ${l>0?'l'+l:''} ${k===TODAY()?'todaycell':''}" title="${k}">${d}</div>`;
   }
   $("heat").innerHTML = html;
+  const mc = monthChecks(moOff);
+  $("m-checks").textContent = mc.total;
+  $("m-perfect").textContent = mc.perfect;
 }
 
 /* ── stats ── */
@@ -1641,15 +1877,56 @@ function renderReview(){
 }
 
 /* ── tabs ── */
-document.querySelectorAll(".tab").forEach(t=>{
-  t.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
-    document.querySelectorAll(".view").forEach(x=>x.classList.remove("on"));
-    t.classList.add("on");
-    $("v-"+t.dataset.v).classList.add("on");
-    if(t.dataset.v==="stats") renderStats();
+const TABS = [...document.querySelectorAll(".tab")];
+const TABPILL = document.querySelector(".tabpill");
+const TABBAR = document.querySelector(".tabs");
+let curTab = 0;
+/* The pill is one element that travels, so the eye follows a thing moving
+   rather than one box vanishing and another appearing. */
+function movePill(t, instant){
+  if(!TABPILL || !t) return;
+  if(instant) TABBAR.classList.add("noanim");
+  TABPILL.style.width = t.offsetWidth + "px";
+  TABPILL.style.transform = "translateX(" + t.offsetLeft + "px)";
+  if(instant) requestAnimationFrame(()=>requestAnimationFrame(()=>TABBAR.classList.remove("noanim")));
+}
+/* Content arrives in sequence instead of all at once. */
+function stagger(v){
+  [...v.children].forEach((k,i)=>{
+    k.style.animation = "none"; void k.offsetWidth;
+    k.style.animation = "riseIn .5s cubic-bezier(.22,1,.36,1) " + (0.05 + i*0.055).toFixed(3) + "s backwards";
   });
-});
+  v.querySelectorAll("#heat .day").forEach((c,i)=>{
+    c.style.animation = "none"; void c.offsetWidth;
+    c.style.animation = "cellIn .34s cubic-bezier(.34,1.56,.64,1) " + (0.10 + i*0.011).toFixed(3) + "s backwards";
+  });
+}
+function goTab(i){
+  const t = TABS[i];
+  if(!t || i === curTab) return;
+  const dir = i > curTab ? "r" : "l";
+  curTab = i;
+  TABS.forEach(x=>x.classList.remove("on"));
+  t.classList.add("on");
+  movePill(t);
+  document.querySelectorAll(".view").forEach(x=>x.classList.remove("on","slide-r","slide-l"));
+  const v = $("v-"+t.dataset.v);
+  v.classList.add("on");
+  if(t.dataset.v === "stats") renderStats();
+  v.classList.add("slide-" + dir);
+  stagger(v);
+  /* land at the top of the new view instead of halfway down the old one */
+  const top = TABBAR.offsetTop - 14;
+  if(window.scrollY > top) window.scrollTo({top, behavior:"smooth"});
+}
+$("wk-prev").addEventListener("click", ()=>{ if(wkOff > wkMin()){ wkOff--; renderWeek("l"); } });
+$("wk-next").addEventListener("click", ()=>{ if(wkOff < 0){ wkOff++; renderWeek("r"); } });
+$("mo-prev").addEventListener("click", ()=>{ if(moOff > moMin()){ moOff--; renderHeat("l"); } });
+$("mo-next").addEventListener("click", ()=>{ if(moOff < 0){ moOff++; renderHeat("r"); } });
+TABS.forEach((t,i)=>t.addEventListener("click", ()=>goTab(i)));
+window.addEventListener("resize", ()=>movePill(TABS[curTab], true));
+movePill(TABS[0], true);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>movePill(TABS[curTab], true));
 $("addbtn").addEventListener("click", ()=>{ editing = "new"; renderToday(); });
 
 /* ── export ── */
@@ -1678,6 +1955,237 @@ $("exportbtn").addEventListener("click", ()=>{
 });
 
 /* ── splash (A+B, 0.9x speed, once per day) ── */
+/* ══════════ weekly recap ══════════
+   Everything below reads last week only. Nothing new is measured: it is the same
+   slot() rule the rest of the app uses, pointed one week back. */
+function recapData(){
+  const mon = addD(monday(TODAY()), -7), end = addD(mon,6);
+  const ws = weekStats(-1), prev = weekStats(-2);
+  const days = [];
+  for(let j=0;j<7;j++){
+    const k = addD(mon,j), st = dayStats(k);
+    days.push({k, n:st.n, c:st.c, won:st.won, pct: st.n ? Math.round(st.c/st.n*100) : null});
+  }
+  const zeros = days.filter(d=>d.n>0 && d.c===0);
+  const perfect = days.filter(d=>d.n>0 && d.won).length;
+  const rated = S.habits.map(h=>({h, r: habitWeekRateAt(h,-1).r}))
+                        .filter(x=>x.r !== null).sort((a,b)=>b.r-a.r);
+  const best = rated[0] || null;
+  const worst = rated.length > 1 ? rated[rated.length-1] : null;
+  const agg = {};
+  (S.missLogs||[]).forEach(m=>{ if(m.dk >= mon && m.dk <= end) agg[m.r] = (agg[m.r]||0)+1; });
+  const topReason = Object.entries(agg).sort((a,b)=>b[1]-a[1])[0] || null;
+  const quotas = S.habits.filter(isQuota).map(h=>{
+    let c = 0;
+    for(let j=0;j<7;j++){ const k = addD(mon,j); if(k >= (h.since||S.firstDay) && isChecked(h,k)) c++; }
+    return {h, c, hit: c >= h.quota};
+  });
+  return {mon, end, ws, prev, days, zeros, perfect, best, worst, topReason, quotas};
+}
+/* The ladder: whatever you lost, look at the level above it - and when there is
+   nothing above left to point at, say so plainly instead of inventing comfort. */
+function recapCopy(d){
+  const pct = d.ws.pct, won = pct >= 80, z = d.zeros.length, mpct = monthPct();
+  let o = {tone:"win"};
+  if(won && z === 0){
+    o.grade = "Week won.";
+    o.sub = pct + "% - every day you were due, you showed up.";
+    o.b1 = "Week won."; o.b1p = "Every day you were due, you showed up.";
+    o.b3 = "Nothing to fix."; o.b3p = "Start the new week from exactly the same place.";
+    o.verdict = "<em>Nothing to fix.</em> Start the new week from the same place.";
+  } else if(won && z === 1){
+    const dayName = DAYSFULL[dow(d.zeros[0].k)];
+    o.grade = "One bad day. Week still won.";
+    o.sub = "You missed " + dayName + " completely. The week still came out at " + pct + "%.";
+    o.b1 = "Week won."; o.b1p = "Even with a day you wrote off entirely.";
+    o.b3 = "Your streak broke.<br>Your week did not.";
+    o.b3p = "Those are two different numbers, and only one of them measures the week.";
+    o.verdict = "<em>A lost day is not a lost week.</em> The rest of the week carried it.";
+  } else if(won){
+    o.grade = z + " days lost. Week still won.";
+    o.sub = "You had " + z + " zero days and the week still came out at " + pct + "%.";
+    o.b1 = "Week won."; o.b1p = "With " + z + " days written off along the way.";
+    o.b3 = "Lost days are not<br>a lost week."; o.b3p = "The days you did show up carried the ones you did not.";
+    o.verdict = "<em>Lost days are not a lost week.</em> The days you showed up carried the rest.";
+  } else if(mpct >= 70){
+    o.tone = "hold";
+    o.grade = "Rough week. The month still holds.";
+    o.sub = pct + "% this week. Your month is at " + mpct + "% and still standing.";
+    o.b1 = "Below the line."; o.b1p = "First week under 80% in a while.";
+    o.b3 = "One week does not<br>undo a month."; o.b3p = "Your month is still at " + mpct + "%. You have the rest of it.";
+    o.verdict = "<em>One week does not undo a month.</em> You have the rest of it to prove it.";
+  } else {
+    o.tone = "hold";
+    const anchor = d.best && d.best.r >= 70 ? d.best.h.n : null;
+    o.grade = "Two levels down. Time to shrink it.";
+    o.sub = pct + "% this week, " + mpct + "% for the month. This is a pattern, not a bad week.";
+    o.b1 = "Below the line."; o.b1p = "And the month is at " + mpct + "%, so this is not a one-off.";
+    o.b3 = "This is a pattern,<br>not a bad week.";
+    o.b3p = anchor
+      ? "Nothing left to zoom out to. Keep <b>" + esc(anchor) + "</b>, pause what you can, and win small."
+      : "Nothing left to zoom out to. Cut the board down to one habit and win that one.";
+    o.verdict = anchor
+      ? "Nothing to zoom out to this time. <em>So keep " + esc(anchor) + ", pause what you can, and win small.</em>"
+      : "Nothing to zoom out to this time. <em>Cut the board down to one habit and win that.</em>";
+  }
+  /* Beat 2 always reports what actually happened, good or bad. */
+  if(z === 0){ o.b2 = "No zero days."; o.b2p = "Seven for seven on everything you were due."; }
+  else if(z === 1){
+    o.b2 = DAYSFULL[dow(d.zeros[0].k)] + " was your<br>only zero.";
+    o.b2p = d.topReason ? 'You wrote <b>"' + esc(d.topReason[0]) + '"</b> that day.' : "One day out of seven.";
+  } else {
+    o.b2 = z + " zero days.";
+    o.b2p = d.topReason ? 'Same reason most times: <b>"' + esc(d.topReason[0]) + '"</b>.' : "Spread across the week.";
+  }
+  /* Card lines: only the ones that are actually true this week, best first. */
+  const L = [];
+  if(d.prev.denom > 0 && d.prev.pct !== pct){
+    const dl = pct - d.prev.pct;
+    L.push(dl > 0
+      ? {ic:"📈", t:"Up <u>" + dl + " points</u> on the week before."}
+      : {ic:"📉", t:"Down <s>" + (-dl) + " points</s> on the week before."});
+  }
+  if(d.best && d.best.r >= 80) L.push({ic:"🏆", t:"<b>" + esc(d.best.h.n) + "</b> carried you - <u>" + d.best.r + "%</u>."});
+  d.quotas.forEach(q=>{
+    if(L.length >= 5) return;
+    L.push(q.hit
+      ? {ic:"🎯", t:"<b>" + esc(q.h.n) + "</b> hit its number - <u>" + q.c + "/" + q.h.quota + "</u>."}
+      : {ic:"🎯", t:"<b>" + esc(q.h.n) + "</b> came up short - <s>" + q.c + "/" + q.h.quota + "</s>."});
+  });
+  if(d.worst && d.worst.r < 70 && (!d.best || d.worst.h.id !== d.best.h.id))
+    L.push({ic:"⚠️", t:"<b>" + esc(d.worst.h.n) + "</b> slipped to <s>" + d.worst.r + "%</s>."});
+  if(d.topReason) L.push({ic:"💭", t:'You wrote <b>"' + esc(d.topReason[0]) + '"</b> ' + (d.topReason[1] > 1 ? d.topReason[1] + " times" : "once") + " this week."});
+  if(d.perfect > 0) L.push({ic:"🏁", t:"<u>" + d.perfect + "</u> perfect " + (d.perfect === 1 ? "day" : "days") + " in the week."});
+  if(z > 0 && won) L.push({ic:"🔥", t:"<b>Your streak broke</b>, your week did not. Those are two different numbers."});
+  o.lines = L.slice(0,4);
+  return o;
+}
+
+let rcBeat = 0, rcD = null, rcC = null, rcTimers = [];
+function rcAfter(ms, fn){ rcTimers.push(setTimeout(fn, ms)); }
+function closeRecap(){
+  rcTimers.forEach(clearTimeout); rcTimers = [];
+  const r = $("recap");
+  r.classList.remove("on");
+  r.innerHTML = "";
+  renderAll();
+}
+function openRecap(){
+  if(!S.habits.length) return;
+  rcD = recapData();
+  if(rcD.ws.denom <= 0) return;
+  rcC = recapCopy(rcD);
+  rcBeat = 0;
+  const r = $("recap");
+  r.classList.add("on");
+  r.innerHTML = '<div class="rc-scrim"></div>'
+    + '<div class="rc-story"><button class="rc-skip" type="button">Skip</button>'
+    + '<div class="rc-dots"><i></i><i></i><i></i></div><div class="rc-beat"></div>'
+    + '<div class="rc-tap">tap to continue</div></div>'
+    + '<div class="rc-card"><div class="rc-in ' + rcC.tone + '"></div></div>';
+  const story = r.querySelector(".rc-story");
+  r.querySelector(".rc-skip").addEventListener("click", e=>{ e.stopPropagation(); handOff(true); });
+  story.addEventListener("click", e=>{
+    if(e.target.closest(".rc-skip")) return;
+    if(rcBeat < 2) drawBeat(rcBeat + 1); else handOff(false);
+  });
+  requestAnimationFrame(()=>{ story.classList.add("on"); drawBeat(0); });
+}
+function drawBeat(i){
+  rcBeat = i;
+  const r = $("recap"), c = rcC;
+  const el = r.querySelector(".rc-beat");
+  r.querySelectorAll(".rc-dots i").forEach((d,j)=>d.classList.toggle("done", j <= i));
+  let html = "";
+  if(i === 0){
+    html = '<div class="rc-eyebrow">' + fmtShort(rcD.mon) + " - " + fmtShort(rcD.end) + " " + MONTHS[fromKey(rcD.end).getMonth()].slice(0,3) + '</div>'
+         + '<div class="rc-big" id="rcbig">0<small>%</small></div>'
+         + "<h3>" + c.b1 + "</h3><p>" + c.b1p + "</p>";
+  } else if(i === 1){
+    html = '<div class="rc-eyebrow">what happened</div><h3>' + c.b2 + "</h3><p>" + c.b2p + "</p>"
+         + '<div class="rc-strip">' + rcD.days.map((d,j)=>{
+             const cls = d.n === 0 ? "none" : d.c === 0 ? "zero" : d.won ? "" : "part";
+             return '<div class="' + cls + '">' + DAYS3[j][0] + "</div>";
+           }).join("") + "</div>";
+  } else {
+    html = '<div class="rc-eyebrow">what it means</div><h3>' + c.b3 + "</h3><p>" + c.b3p + "</p>";
+  }
+  el.innerHTML = html;
+  el.style.animation = "none"; void el.offsetWidth; el.style.animation = "";
+  r.querySelector(".rc-tap").textContent = i === 2 ? "tap for the summary" : "tap to continue";
+  if(i === 0) rcAfter(240, ()=>{
+    const b = document.getElementById("rcbig");
+    if(!b) return;
+    const to = rcD.ws.pct, t0 = performance.now();
+    (function step(t){
+      const pr = Math.min(1,(t-t0)/900), e = 1-Math.pow(1-pr,3);
+      b.innerHTML = Math.round(to*e) + "<small>%</small>";
+      if(pr < 1) requestAnimationFrame(step);
+    })(performance.now());
+  });
+  if(i === 1) r.querySelectorAll(".rc-strip div").forEach((cell,j)=>rcAfter(220 + j*70, ()=>cell.classList.add("go")));
+}
+/* The story lets go and the card takes over: one is the moment, the other is the
+   note that stays on the screen afterwards. */
+function handOff(skipped){
+  const r = $("recap"), story = r.querySelector(".rc-story");
+  if(skipped) story.classList.remove("on");
+  story.classList.add("out");
+  rcAfter(430, ()=>{ story.style.display = "none"; r.querySelector(".rc-scrim").classList.add("on"); });
+  rcAfter(520, drawCard);
+}
+function drawCard(){
+  const r = $("recap"), c = rcC;
+  const card = r.querySelector(".rc-card"), inn = r.querySelector(".rc-in");
+  inn.innerHTML = '<div class="rc-kick">' + fmtShort(rcD.mon) + " - " + fmtShort(rcD.end) + " " + MONTHS[fromKey(rcD.end).getMonth()].slice(0,3) + '</div>'
+    + '<div class="rc-grade">' + c.grade + '</div>'
+    + '<div class="rc-sub">' + c.sub + '</div>'
+    + '<div class="rc-lines">' + c.lines.map(l=>'<div class="rc-li"><span class="ic">' + l.ic + '</span><span>' + l.t + '</span></div>').join("") + '</div>'
+    + '<div class="rc-verdict">' + c.verdict + '</div>'
+    + '<button class="rc-btn" id="rc-focus">Pick this week\'s focus</button>'
+    + '<button class="rc-btn ghost" id="rc-later">Later</button>';
+  requestAnimationFrame(()=>{
+    card.classList.add("on");
+    inn.querySelectorAll(".rc-li").forEach((li,i)=>{ li.style.transitionDelay = (0.22 + i*0.09) + "s"; });
+  });
+  $("rc-later").addEventListener("click", closeRecap);
+  $("rc-focus").addEventListener("click", drawFocus);
+}
+function drawFocus(){
+  const inn = $("recap").querySelector(".rc-in");
+  inn.innerHTML = '<div class="rc-kick">new week</div>'
+    + '<div class="rc-grade">Pick one to defend.</div>'
+    + '<div class="rc-sub">It sits on top of your list all week. One is the point - pick two and you have picked none.</div>'
+    + '<div class="rc-picks">' + S.habits.map(h=>{
+        const rr = habitWeekRateAt(h,-1).r;
+        return '<button class="rc-pk ' + (S.focus===h.id?'sel':'') + '" data-fid="' + h.id + '">'
+             + '<span class="stx">' + (S.focus===h.id?'★':'☆') + '</span><b>' + esc(h.n) + '</b>'
+             + '<span>' + (rr === null ? "new" : rr + "%") + '</span></button>';
+      }).join("") + '</div>'
+    + '<button class="rc-btn" id="rc-start">Start the week</button>';
+  inn.querySelectorAll(".rc-pk").forEach(b=>b.addEventListener("click", ()=>{
+    S.focus = S.focus === b.dataset.fid ? null : b.dataset.fid;
+    save();
+    inn.querySelectorAll(".rc-pk").forEach(x=>{
+      const on = x.dataset.fid === S.focus;
+      x.classList.toggle("sel", on);
+      x.querySelector(".stx").textContent = on ? "★" : "☆";
+    });
+    buzz("tick");
+  }));
+  $("rc-start").addEventListener("click", closeRecap);
+}
+/* The way back in: all week, a quiet line on Today reopens last week's recap. */
+function renderRecapChip(){
+  const el = $("recapchip");
+  if(!el) return;
+  if(!S.habits.length || weekStats(-1).denom <= 0){ el.innerHTML = ""; return; }
+  const ws = weekStats(-1);
+  el.innerHTML = '<button class="recapchip" id="reopenrecap"><span class="d"></span>'
+    + '<b>Last week: ' + ws.pct + '%' + (ws.pct >= 80 ? ' · week won' : '') + '</b><i>&rsaquo;</i></button>';
+  $("reopenrecap").addEventListener("click", openRecap);
+}
+
 function playSplash(){
   const sp = $("splash");
   sp.classList.add("on");
@@ -1697,11 +2205,24 @@ function playSplash(){
     setTimeout(()=>{ sp.classList.remove("on","exit"); sp.innerHTML=""; }, 550);
   }, 2205);
 }
+let splashPlayed = false;
 if(S.lastSplash !== TODAY()){
   S.lastSplash = TODAY();
   save(false);
   playSplash();
+  splashPlayed = true;
 }
+/* Fires once per calendar week, on the first open of that week. It waits for you
+   rather than for Monday, so a week away still gets its recap. */
+(function(){
+  const mon = monday(TODAY());
+  if(S.lastRecap === mon) return;
+  if(!S.habits.length) return;
+  if(weekStats(-1).denom <= 0){ S.lastRecap = mon; save(false); return; }
+  S.lastRecap = mon;
+  save(false);
+  setTimeout(openRecap, splashPlayed ? 2950 : 620);
+})();
 
 /* ── auth + sync ── */
 let sb = null, user = null, recovery = false;
@@ -1764,6 +2285,28 @@ function sheetUI(msg, cls){
       $("au-pass").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
     }
   }
+  addHapticsRow(sh);
+}
+/* Vibration is something people either love or switch off, so it gets its own
+   control instead of forcing a trip to the system settings. */
+function addHapticsRow(sh){
+  const on = S.haptics !== false;
+  const row = document.createElement("div");
+  row.className = "hapset";
+  row.innerHTML = `<div class="hl2"><b>Haptic feedback</b><span>${canBuzz
+      ? "A short buzz when you check a habit, and a longer one when you win the day."
+      : "This device can't vibrate, so there is nothing to feel here."}</span></div>
+    <button class="tsw ${on && canBuzz ? "on" : ""}" role="switch" aria-checked="${on}" aria-label="Haptic feedback" ${canBuzz ? "" : "disabled"}><span></span></button>`;
+  sh.appendChild(row);
+  const btn = row.querySelector(".tsw");
+  if(!canBuzz) return;
+  btn.addEventListener("click", ()=>{
+    S.haptics = !(S.haptics !== false);
+    save();
+    btn.classList.toggle("on", S.haptics);
+    btn.setAttribute("aria-checked", String(S.haptics));
+    if(S.haptics) buzz("tick");   /* confirm the change with the thing itself */
+  });
 }
 async function doLogin(){
   const email = $("au-email").value.trim(), pass = $("au-pass").value;
@@ -1866,7 +2409,7 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
 }
 
 /* ── go ── */
-function renderAll(){ renderToday(); renderMiss(); restoreCheckin(); render(); }
+function renderAll(){ renderRecapChip(); renderToday(); renderMiss(); restoreCheckin(); render(); }
 renderAll();
 
 /* If the app is left open past midnight, roll over to the new day instead of
@@ -1876,7 +2419,7 @@ function checkRollover(){
   if(TODAY() !== curDay){
     curDay = TODAY();
     Object.keys(shown).forEach(k=>delete shown[k]);
-    wasWon = null;
+    wasWon = null; wasWeekWon = null;
     renderAll();
   }
 }
