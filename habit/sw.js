@@ -1,7 +1,7 @@
 /* foqs.habit service worker
    Served from /habit/ on GitHub Pages. Scope is /habit/ only.
    Cache name is unique so it never collides with the Ura+ app on the same origin. */
-const CACHE = 'foqs-habit-v8';
+const CACHE = 'foqs-habit-v10';
 const ASSETS = [
   './',
   './index.html',
@@ -66,5 +66,35 @@ self.addEventListener('fetch', e => {
           m || (req.mode === 'navigate' ? caches.match('./') : undefined)
         )
       )
+  );
+});
+
+/* ── push reminders (Lights out) ──
+   The server sends a small JSON payload: {title, body, tag, url}. */
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'foqs.habit', {
+    body: d.body || '',
+    tag: d.tag || 'foqs-habit',
+    icon: './icon-192.png',
+    badge: './icon-192.png',
+    data: { url: d.url || './' },
+    renotify: false
+  }));
+});
+
+/* Tapping the notification opens the app, or brings it to the front if it is already open. */
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const base = new URL('./', self.location.href).href;
+  const target = new URL((e.notification.data && e.notification.data.url) || './', self.location.href).href;
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const c of list) {
+        if (c.url.startsWith(base) && 'focus' in c) return c.focus();
+      }
+      return self.clients.openWindow(target);
+    })
   );
 });

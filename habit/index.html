@@ -33,11 +33,11 @@
   .app{max-width:480px;margin:0 auto;padding:0 18px 110px}
 
   header{padding:26px 0 6px;display:flex;align-items:center;justify-content:space-between}
-  .logo{font-family:'Poppins';font-weight:800;font-size:24px;letter-spacing:-.03em}
+  .logo{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em}
   .logo .h{color:var(--teal);font-weight:600}
   .hright{display:flex;align-items:center;gap:12px}
   .datebar{font-size:12.5px;color:var(--muted);font-weight:500;letter-spacing:.02em}
-  .avatar{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Poppins';font-weight:700;font-size:14px;transition:all .2s;position:relative;flex-shrink:0}
+  .avatar{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:14px;transition:all .2s;position:relative;flex-shrink:0}
   .avatar:hover{border-color:rgba(70,190,197,.5)}
   .avatar.in{background:var(--teal);border-color:var(--teal);color:var(--teal-deep)}
   .avatar svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
@@ -45,7 +45,7 @@
   .avatar .sy.ok{background:var(--teal)}
   .avatar .sy.err{background:var(--amber)}
 
-  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:rgba(70,190,197,.09);border:1px solid rgba(70,190,197,.22);padding:6px 12px;border-radius:999px;margin:10px 0 4px;cursor:pointer;transition:background .25s;font-family:'Poppins'}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:rgba(70,190,197,.09);border:1px solid rgba(70,190,197,.22);padding:6px 12px;border-radius:999px;margin:10px 0 4px;cursor:pointer;transition:background .25s;font-family:'Poppins',system-ui,sans-serif}
   .kicker:hover{background:rgba(70,190,197,.16)}
   .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -56,12 +56,12 @@
   .explain-in h3{font-size:13.5px;font-weight:700;margin-bottom:10px;color:var(--teal);line-height:1.4}
   .way{display:flex;gap:12px;align-items:flex-start;padding:7px 0}
   .way .ic{width:30px;height:30px;border-radius:10px;background:rgba(70,190,197,.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .way b{display:block;font-family:'Poppins';font-size:13px;font-weight:600;margin-bottom:2px}
+  .way b{display:block;font-family:'Poppins',system-ui,sans-serif;font-size:13px;font-weight:600;margin-bottom:2px}
   .way span{font-size:11.5px;color:var(--muted);line-height:1.45;display:block}
 
   .board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 8px}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 6px 11px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
-  .stat .v{font-family:'Poppins';font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1}
+  .stat .v{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1}
   .stat .v small{font-size:12px;font-weight:700;color:var(--muted)}
   .stat .l{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px}
   .stat.win{border-color:rgba(70,190,197,.45);background:rgba(70,190,197,.08)}
@@ -80,7 +80,7 @@
   .ring-bg{stroke:rgba(255,255,255,.09);fill:none;stroke-width:8}
   .ring-fg{stroke:var(--teal);fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)}
   .ringlabel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ringlabel b{font-family:'Poppins';font-weight:800;font-size:20px;letter-spacing:-.02em}
+  .ringlabel b{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:20px;letter-spacing:-.02em}
   .ringlabel span{font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .hero .msg h3{font-size:16.5px;font-weight:700;margin-bottom:3px}
   .hero .msg p{font-size:13px;color:var(--muted);line-height:1.45}
@@ -88,7 +88,7 @@
   .hero.won .msg h3{color:var(--teal)}
 
   .tabs{display:flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:4px;margin:6px 0 18px;position:sticky;top:12px;z-index:40;backdrop-filter:blur(14px)}
-  .tab{flex:1;text-align:center;font-family:'Poppins';font-weight:600;font-size:12.5px;padding:9px 0;border-radius:999px;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .25s}
+  .tab{flex:1;text-align:center;font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:12.5px;padding:9px 0;border-radius:999px;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .25s}
   .tab.on{background:var(--teal);color:var(--teal-deep);box-shadow:0 6px 18px rgba(70,190,197,.35)}
 
   .view{display:none;animation:fadein .35s ease}
@@ -105,11 +105,11 @@
   .habit .chk{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.22);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(.34,1.56,.64,1);position:relative}
   .habit .chk svg{width:15px;height:15px;stroke:var(--teal-deep);stroke-width:3.4;fill:none;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .3s ease .05s}
   .habit .hname{flex:1;min-width:0}
-  .habit .hname b{display:block;font-family:'Poppins';font-weight:600;font-size:15px;transition:color .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .habit .hname b{display:block;font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:15px;transition:color .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .habit .hname span{font-size:11.5px;color:var(--muted)}
   .habit .hname span:empty{display:none}
   .altchips{display:flex;gap:6px;margin-top:6px}
-  .altchip{font-family:'Poppins';font-size:11px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+  .altchip{font-family:'Poppins',system-ui,sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .altchip:hover{border-color:rgba(70,190,197,.5)}
   .altchip.sel{background:var(--teal);border-color:var(--teal);color:var(--teal-deep);transform:scale(1.05)}
   .habit.defend{border-left:3px solid var(--amber)}
@@ -139,7 +139,7 @@
   .reordrow{margin-top:10px}
   .reordhint{font-size:11.5px;color:var(--muted);text-align:center;margin-bottom:10px}
   .reordrow .btn{width:100%;padding:13px}
-  .linkbtn2{width:100%;background:none;border:none;color:var(--muted2);font-family:'Poppins';font-weight:600;font-size:12.5px;cursor:pointer;padding:13px;transition:color .2s}
+  .linkbtn2{width:100%;background:none;border:none;color:var(--muted2);font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:12.5px;cursor:pointer;padding:13px;transition:color .2s}
   .linkbtn2:hover{color:var(--teal)}
   .habit.dragging{opacity:.95;box-shadow:0 12px 34px rgba(0,0,0,.5);position:relative;z-index:5;border-color:rgba(70,190,197,.5);transition:none}
   .btn-del.armed{background:rgba(226,86,74,.18);color:#ff8e84}
@@ -175,12 +175,12 @@
   @keyframes burst{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.1)}}
 
   .editor{background:var(--card);border:1.5px solid rgba(70,190,197,.4);border-radius:16px;padding:15px 16px;margin-bottom:9px;animation:riseIn .35s ease}
-  .editor label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 5px 2px;font-family:'Poppins'}
-  .editor input{width:100%;font-family:'Inter';font-size:14.5px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:11px;transition:border-color .2s;outline:none}
+  .editor label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 5px 2px;font-family:'Poppins',system-ui,sans-serif}
+  .editor input{width:100%;font-family:'Inter',system-ui,sans-serif;font-size:14.5px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:11px;transition:border-color .2s;outline:none}
   .editor input:focus{border-color:var(--teal)}
   .editor input::placeholder{color:var(--muted2)}
   .edrow{display:flex;gap:8px;align-items:center}
-  .btn{font-family:'Poppins';font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
+  .btn{font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
   .btn-save{background:var(--teal);color:var(--teal-deep);box-shadow:0 6px 18px rgba(70,190,197,.3)}
   .btn-save:hover{transform:translateY(-1px)}
   .btn-ghost{background:rgba(255,255,255,.07);color:var(--muted)}
@@ -188,36 +188,36 @@
   .btn-del{background:none;color:var(--red);margin-left:auto;font-size:12.5px;padding:10px 10px}
   .btn-del:hover{background:rgba(226,86,74,.12)}
   .daypick{display:flex;gap:6px;margin-bottom:11px}
-  .dp{flex:1;height:30px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins';font-weight:700;font-size:10.5px;cursor:pointer;transition:all .2s}
+  .dp{flex:1;height:30px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:10.5px;cursor:pointer;transition:all .2s}
   .dp.on{background:rgba(70,190,197,.18);border-color:rgba(70,190,197,.5);color:var(--teal)}
   .segrow{display:flex;gap:6px;margin-bottom:9px}
-  .seg{flex:1;height:32px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins';font-weight:700;font-size:11px;cursor:pointer;transition:all .2s}
+  .seg{flex:1;height:32px;border-radius:9px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s}
   .seg.on{background:rgba(70,190,197,.18);border-color:rgba(70,190,197,.5);color:var(--teal)}
   .mblk[hidden]{display:none}
   .qhint{font-size:11.5px;color:var(--muted2);line-height:1.5;margin:-3px 0 11px}
 
-  .addbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins';font-weight:600;font-size:14px;color:var(--muted);background:none;border:1.5px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px;cursor:pointer;transition:all .25s;margin-top:4px}
+  .addbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--muted);background:none;border:1.5px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px;cursor:pointer;transition:all .25s;margin-top:4px}
   .addbtn:hover{color:var(--teal);border-color:rgba(70,190,197,.5)}
 
   .starter{background:var(--card);border:1px solid rgba(70,190,197,.3);border-radius:18px;padding:18px;margin-bottom:12px;animation:riseIn .5s ease}
   .starter h3{font-size:15px;font-weight:700;margin-bottom:4px}
   .starter p{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.5}
   .starter .schips{display:flex;flex-wrap:wrap;gap:7px}
-  .schip{font-family:'Poppins';font-size:12px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:8px 13px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .schip{font-family:'Poppins',system-ui,sans-serif;font-size:12px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:8px 13px;border-radius:999px;cursor:pointer;transition:all .2s}
   .schip:hover{border-color:rgba(70,190,197,.55);color:var(--teal)}
 
   .misscard{background:rgba(232,178,74,.06);border:1px solid rgba(232,178,74,.3);border-radius:18px;padding:16px 18px;margin:0 0 14px;overflow:hidden;transition:all .5s ease;animation:riseIn .5s ease backwards}
   .mc-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
-  .mc-head b{display:block;font-family:'Poppins';font-size:13.5px;font-weight:600;margin-bottom:2px}
+  .mc-head b{display:block;font-family:'Poppins',system-ui,sans-serif;font-size:13.5px;font-weight:600;margin-bottom:2px}
   .mc-head b .hlm{color:var(--amber);display:inline}
   .mc-head span{font-size:11.5px;color:var(--muted);line-height:1.5;display:block}
   .rchips{display:flex;flex-wrap:wrap;gap:7px}
-  .rchip{font-family:'Poppins';font-size:11.5px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+  .rchip{font-family:'Poppins',system-ui,sans-serif;font-size:11.5px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .rchip:hover{border-color:rgba(232,178,74,.55);transform:translateY(-1px)}
   .mc-other{display:flex;gap:8px;margin-top:10px}
-  .mc-other input{flex:1;font-family:'Inter';font-size:13.5px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:10px 13px;outline:none;transition:border-color .2s}
+  .mc-other input{flex:1;font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:10px 13px;outline:none;transition:border-color .2s}
   .mc-other input:focus{border-color:var(--amber)}
-  .mc-done{font-family:'Poppins';font-size:13px;font-weight:600;color:var(--amber);text-align:center;padding:4px 0}
+  .mc-done{font-family:'Poppins',system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--amber);text-align:center;padding:4px 0}
   .fill2{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(232,178,74,.55),var(--amber));width:0;transition:width 1s cubic-bezier(.22,1,.36,1)}
   .hbar .top span.amb{color:var(--amber)}
 
@@ -226,9 +226,9 @@
   .checkin .sub{font-size:11.5px;color:var(--muted);margin-bottom:14px}
   .feelrow{margin-bottom:15px}
   .feelrow:last-of-type{margin-bottom:2px}
-  .feelrow .fl{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:#ddd;font-family:'Poppins';margin-bottom:8px}
+  .feelrow .fl{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:#ddd;font-family:'Poppins',system-ui,sans-serif;margin-bottom:8px}
   .dots{display:flex;gap:7px}
-  .fdot{flex:1;height:34px;border-radius:10px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins';font-weight:700;font-size:12.5px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+  .fdot{flex:1;height:34px;border-radius:10px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:12.5px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .fdot:hover{border-color:rgba(70,190,197,.5)}
   .fdot.sel{background:var(--teal);border-color:var(--teal);color:var(--teal-deep);transform:scale(1.08);box-shadow:0 4px 14px rgba(70,190,197,.35)}
   .checkin .logged{font-size:11.5px;color:var(--teal);font-weight:600;margin-top:10px;opacity:0;transition:opacity .4s}
@@ -236,7 +236,7 @@
 
   .weekcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;overflow-x:auto;animation:riseIn .45s ease backwards}
   table.wk{border-collapse:separate;border-spacing:4px;width:100%}
-  table.wk th{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:4px;text-align:center;font-family:'Poppins'}
+  table.wk th{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:4px;text-align:center;font-family:'Poppins',system-ui,sans-serif}
   table.wk th.today{color:var(--teal)}
   table.wk td.hlabel{font-size:12px;font-weight:600;color:#ddd;white-space:nowrap;padding-right:8px;max-width:110px;overflow:hidden;text-overflow:ellipsis}
   .cell{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.06);margin:0 auto;display:flex;align-items:center;justify-content:center;transition:all .25s}
@@ -257,10 +257,10 @@
   .weekfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 2px}
   .weekfoot .wr{font-size:12.5px;color:var(--muted)}
   .weekfoot .wr b{color:#fff}
-  .badge-win{font-family:'Poppins';font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep);background:var(--teal);padding:4px 10px;border-radius:6px}
+  .badge-win{font-family:'Poppins',system-ui,sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep);background:var(--teal);padding:4px 10px;border-radius:6px}
 
   .heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
-  .hd{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;font-family:'Poppins'}
+  .hd{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;font-family:'Poppins',system-ui,sans-serif}
   .day{aspect-ratio:1;border-radius:9px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);position:relative;transition:transform .15s}
   .day:hover{transform:scale(1.12)}
   .day.l1{background:rgba(70,190,197,.18);color:rgba(255,255,255,.55)}
@@ -273,7 +273,7 @@
   .legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
   .mstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
   .mstat{background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:14px;padding:12px 8px;text-align:center}
-  .mstat b{font-family:'Poppins';font-weight:800;font-size:18px;display:block}
+  .mstat b{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:18px;display:block}
   .mstat b.t{color:var(--teal)}
   .mstat span{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
@@ -286,7 +286,7 @@
   .hbar{margin-bottom:11px}
   .hbar:last-child{margin-bottom:2px}
   .hbar .top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
-  .hbar .top b{font-family:'Poppins';font-weight:600;color:#ddd}
+  .hbar .top b{font-family:'Poppins',system-ui,sans-serif;font-weight:600;color:#ddd}
   .hbar .top span{font-weight:700;color:var(--teal)}
   .hbar .track{height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
   .hbar .fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-d),var(--teal));width:0;transition:width 1s cubic-bezier(.22,1,.36,1)}
@@ -296,26 +296,26 @@
   .wbar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
   .wbar .bar{width:100%;max-width:44px;border-radius:8px 8px 3px 3px;background:rgba(70,190,197,.25);height:0;transition:height 1s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0}
   .wbar.cur .bar{background:var(--teal);box-shadow:0 4px 14px rgba(70,190,197,.35)}
-  .wbar .bv{font-size:10.5px;font-weight:700;color:var(--muted);font-family:'Poppins'}
+  .wbar .bv{font-size:10.5px;font-weight:700;color:var(--muted);font-family:'Poppins',system-ui,sans-serif}
   .wbar.cur .bv{color:var(--teal)}
   .wbar .bl{font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2)}
   .insight{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line2)}
   .insight:last-child{border-bottom:none;padding-bottom:2px}
   .insight .ic{width:30px;height:30px;border-radius:10px;background:rgba(70,190,197,.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .insight b{display:block;font-family:'Poppins';font-size:12.5px;font-weight:600}
+  .insight b{display:block;font-family:'Poppins',system-ui,sans-serif;font-size:12.5px;font-weight:600}
   .insight span{font-size:11.5px;color:var(--muted);line-height:1.45;display:block}
   .insight .hl{color:var(--teal);font-weight:700;display:inline}
   .split{margin-bottom:17px}
   .split:last-child{margin-bottom:2px}
   .split .stop{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:6px}
-  .split .stop b{font-family:'Poppins';font-weight:600;color:#ddd}
+  .split .stop b{font-family:'Poppins',system-ui,sans-serif;font-weight:600;color:#ddd}
   .split .stop span{color:var(--muted);font-size:11px}
   .sbar{height:10px;border-radius:5px;overflow:hidden;display:flex;background:rgba(255,255,255,.07)}
   .sbar i{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.22,1,.36,1)}
   .slegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:8px;font-size:10.5px;color:var(--muted)}
   .slegend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
   .slegend b{color:#ddd;font-weight:700}
-  .fchip{font-family:'Poppins';font-size:11.5px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+  .fchip{font-family:'Poppins',system-ui,sans-serif;font-size:11.5px;font-weight:600;color:#ddd;background:rgba(255,255,255,.05);border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
   .fchip:hover{border-color:rgba(70,190,197,.5)}
   .fchip.sel{background:var(--teal);border-color:var(--teal);color:var(--teal-deep)}
   .focusrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
@@ -323,14 +323,14 @@
 
   .tip{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
   .tip .ic{width:30px;height:30px;border-radius:10px;background:rgba(70,190,197,.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .tip b{display:block;font-family:'Poppins';font-size:13px;font-weight:600;margin-bottom:2px}
+  .tip b{display:block;font-family:'Poppins',system-ui,sans-serif;font-size:13px;font-weight:600;margin-bottom:2px}
   .tip b .teal{color:var(--teal);display:inline}
   .tip span{font-size:11.5px;color:var(--muted);line-height:1.5;display:block}
   footer{text-align:center;padding:28px 0 10px;font-size:11.5px;color:var(--muted2);line-height:1.9}
   footer b{color:var(--muted)}
-  footer .tag{color:var(--muted);font-family:'Poppins';font-weight:600}
+  footer .tag{color:var(--muted);font-family:'Poppins',system-ui,sans-serif;font-weight:600}
 
-  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120px);background:var(--teal);color:var(--teal-deep);font-family:'Poppins';font-weight:700;font-size:14.5px;padding:14px 26px;border-radius:999px;box-shadow:0 14px 40px rgba(70,190,197,.5);transition:transform .5s cubic-bezier(.34,1.56,.64,1);z-index:100;white-space:nowrap}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120px);background:var(--teal);color:var(--teal-deep);font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:14.5px;padding:14px 26px;border-radius:999px;box-shadow:0 14px 40px rgba(70,190,197,.5);transition:transform .5s cubic-bezier(.34,1.56,.64,1);z-index:100;white-space:nowrap}
   .toast.show{transform:translate(-50%,0)}
   .confetti{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
   .confetti span{position:absolute;top:-12px;width:8px;height:8px;border-radius:2px;opacity:.95;animation:cfall linear forwards}
@@ -351,24 +351,24 @@
   .rc-dots i{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.14);position:relative}
   .rc-dots i.done::after{content:"";position:absolute;inset:0;border-radius:2px;background:var(--teal)}
   .rc-skip{position:absolute;top:calc(24px + env(safe-area-inset-top));right:16px;z-index:2;
-    background:none;border:none;color:var(--muted2);font-family:'Poppins';font-weight:600;font-size:12px;
+    background:none;border:none;color:var(--muted2);font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:12px;
     padding:8px 10px;cursor:pointer}
   .rc-skip:hover{color:var(--teal)}
   .rc-beat{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 24px 18px;
     max-width:520px;width:100%;margin:0 auto;animation:rcIn .45s cubic-bezier(.22,1,.36,1)}
   @keyframes rcIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
-  .rc-eyebrow{font-family:'Poppins';font-size:9.5px;font-weight:800;letter-spacing:.15em;
+  .rc-eyebrow{font-family:'Poppins',system-ui,sans-serif;font-size:9.5px;font-weight:800;letter-spacing:.15em;
     text-transform:uppercase;color:var(--teal);margin-bottom:14px}
-  .rc-big{font-family:'Poppins';font-weight:900;font-size:clamp(56px,17vw,74px);line-height:.95;
+  .rc-big{font-family:'Poppins',system-ui,sans-serif;font-weight:900;font-size:clamp(56px,17vw,74px);line-height:.95;
     letter-spacing:-.03em;margin-bottom:7px;font-variant-numeric:tabular-nums}
   .rc-big small{font-size:.4em;font-weight:800}
-  .rc-beat h3{font-family:'Poppins';font-weight:800;font-size:clamp(21px,6vw,26px);line-height:1.2;margin-bottom:10px}
+  .rc-beat h3{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:clamp(21px,6vw,26px);line-height:1.2;margin-bottom:10px}
   .rc-beat p{font-size:14.5px;color:var(--muted);line-height:1.55}
   .rc-beat p b{color:#fff;font-weight:600}
   .rc-beat p u{text-decoration:none;color:var(--teal);font-weight:700}
   .rc-strip{display:flex;gap:6px;margin:22px 0 4px}
   .rc-strip div{flex:1;height:46px;border-radius:10px;display:flex;align-items:flex-end;justify-content:center;
-    padding-bottom:5px;font-family:'Poppins';font-size:9px;font-weight:800;color:var(--teal-deep);
+    padding-bottom:5px;font-family:'Poppins',system-ui,sans-serif;font-size:9px;font-weight:800;color:var(--teal-deep);
     background:var(--teal);opacity:0;transform:scaleY(.3);transform-origin:bottom;
     transition:opacity .35s,transform .35s cubic-bezier(.34,1.56,.64,1)}
   .rc-strip div.part{background:rgba(70,190,197,.42);color:#cdeff1}
@@ -386,25 +386,25 @@
     background:linear-gradient(158deg,#1f2b2c,#161819 62%);box-shadow:0 -12px 44px rgba(0,0,0,.55);
     max-height:86vh;overflow-y:auto}
   .rc-in.hold{border-color:rgba(232,178,74,.45);background:linear-gradient(158deg,#2a2620,#161819 62%)}
-  .rc-kick{font-family:'Poppins';font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  .rc-kick{font-family:'Poppins',system-ui,sans-serif;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
     color:var(--teal);margin-bottom:7px}
   .rc-in.hold .rc-kick{color:var(--amber)}
-  .rc-grade{font-family:'Poppins';font-weight:800;font-size:21px;line-height:1.18;margin-bottom:3px}
+  .rc-grade{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:21px;line-height:1.18;margin-bottom:3px}
   .rc-sub{font-size:12.5px;color:var(--muted);margin-bottom:15px;line-height:1.5}
   .rc-lines{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
   .rc-li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;
     opacity:0;transform:translateY(7px);transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1)}
   .rc-card.on .rc-li{opacity:1;transform:none}
   .rc-li .ic{width:18px;flex-shrink:0;text-align:center}
-  .rc-li b{font-family:'Poppins';font-weight:600}
+  .rc-li b{font-family:'Poppins',system-ui,sans-serif;font-weight:600}
   .rc-li u{text-decoration:none;color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums}
   .rc-li s{text-decoration:none;color:var(--amber);font-weight:700;font-variant-numeric:tabular-nums}
   .rc-verdict{border-top:1px solid var(--line);padding-top:13px;margin-bottom:14px;
-    font-family:'Poppins';font-weight:600;font-size:13.5px;line-height:1.45}
+    font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:13.5px;line-height:1.45}
   .rc-verdict em{font-style:normal;color:var(--teal)}
   .rc-in.hold .rc-verdict em{color:var(--amber)}
   .rc-btn{width:100%;background:var(--teal);color:var(--teal-deep);border:none;border-radius:12px;padding:12px;
-    font-family:'Poppins';font-weight:700;font-size:13px;cursor:pointer}
+    font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:13px;cursor:pointer}
   .rc-in.hold .rc-btn{background:var(--amber)}
   .rc-btn.ghost{background:none;border:1px solid var(--line);color:var(--muted);margin-top:7px}
   .rc-picks{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
@@ -412,7 +412,7 @@
     border-radius:13px;padding:11px 13px;cursor:pointer;color:inherit;font-family:inherit;text-align:left;
     transition:all .2s}
   .rc-pk .stx{width:16px;flex-shrink:0;color:var(--muted2);text-align:center}
-  .rc-pk b{flex:1;font-family:'Poppins';font-weight:600;font-size:13px}
+  .rc-pk b{flex:1;font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:13px}
   .rc-pk span{font-size:11px;color:var(--muted2);font-variant-numeric:tabular-nums}
   .rc-pk.sel{border-color:var(--teal);background:rgba(70,190,197,.13)}
   .rc-pk.sel .stx{color:var(--teal)}
@@ -422,26 +422,109 @@
     cursor:pointer;color:inherit;font-family:inherit;text-align:left;transition:all .2s}
   .recapchip:hover{background:rgba(70,190,197,.12);border-color:rgba(70,190,197,.5)}
   .recapchip .d{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
-  .recapchip b{flex:1;font-family:'Poppins';font-weight:600;font-size:12.5px}
+  .recapchip b{flex:1;font-family:'Poppins',system-ui,sans-serif;font-weight:600;font-size:12.5px}
   .recapchip i{font-style:normal;color:var(--teal);font-size:15px;line-height:1}
   @media (prefers-reduced-motion:reduce){
     .rc-story,.rc-card,.rc-li,.rc-strip div,.rc-beat{transition:none!important;animation:none!important}
   }
 
+  /* ══════════ Lights out ══════════
+     A nightly check with its own window, its own score and its own look. */
+  :root{--night:#8f8cff;--night-lo:#c9c7ff;--moon:#f2d68a}
+  .lo{position:relative;overflow:hidden;border-radius:18px;border:1px solid rgba(143,140,255,.25);
+    background:linear-gradient(160deg,#1c1a33 0%,#151424 55%,#141112 100%);padding:14px 14px 14px;margin:0 0 9px;
+    cursor:pointer;user-select:none;transition:border-color .3s,box-shadow .3s,transform .12s;animation:riseIn .5s cubic-bezier(.22,1,.36,1) backwards}
+  .lo:active{transform:scale(.985)}
+  .lo.open{border-color:rgba(143,140,255,.55);box-shadow:0 8px 30px rgba(143,140,255,.14)}
+  .lo.early{border-color:rgba(143,140,255,.4)}
+  .lo.early .cta{background:rgba(143,140,255,.16);color:var(--night-lo);border:1px solid rgba(143,140,255,.4)}
+  .lo.done{border-color:rgba(70,190,197,.5);background:linear-gradient(160deg,#16302f 0%,#152224 55%,#141112 100%);cursor:default}
+  .lo.missed,.lo.off,.lo.before{cursor:default}
+  .lo.missed,.lo.off{opacity:.72}
+  .lo .stars{position:absolute;inset:0;pointer-events:none;opacity:.55}
+  .lo .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.35;animation:tw 3.2s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.15}50%{opacity:.6}}
+  .lo .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;position:relative}
+  .lo .head b{font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:14px;letter-spacing:.01em;display:flex;align-items:center;gap:7px;line-height:1}
+  .lo .head b em{font-style:normal;font-size:15px;line-height:1;transform:translateY(-1px)}
+  .lo .head .tag{font-family:'Poppins',system-ui,sans-serif;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--night-lo);background:rgba(143,140,255,.14);border:1px solid rgba(143,140,255,.3);padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .lo.done .head .tag{color:var(--teal);background:rgba(70,190,197,.12);border-color:rgba(70,190,197,.35)}
+  .lo.missed .head .tag,.lo.off .head .tag{color:var(--muted);background:rgba(255,255,255,.05);border-color:var(--line)}
+  .lo .arcwrap{position:relative;height:100px;margin:6px 0 0}
+  .lo svg.arc{width:100%;height:100%;overflow:visible;display:block}
+  .lo .arcbg{fill:none;stroke:rgba(255,255,255,.09);stroke-width:3;stroke-linecap:round}
+  .lo .arcfg{fill:none;stroke:var(--night);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)}
+  .lo.done .arcfg{stroke:var(--teal)}
+  .lo .moon{fill:var(--moon);filter:drop-shadow(0 0 6px rgba(242,214,138,.7));transition:cx .6s cubic-bezier(.22,1,.36,1),cy .6s cubic-bezier(.22,1,.36,1)}
+  .lo .mid{position:absolute;left:0;right:0;bottom:0;text-align:center;pointer-events:none}
+  .lo .mid b{display:block;font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:22px;line-height:1;font-variant-numeric:tabular-nums}
+  .lo .mid span{display:block;font-size:10.5px;color:var(--muted);margin-top:4px}
+  .lo.open .mid span{color:var(--night-lo)}
+  .lo .foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:10.5px;color:var(--muted2);font-variant-numeric:tabular-nums;position:relative}
+  .lo .foot u{text-decoration:none;color:var(--night-lo);font-weight:600}
+  .lo.done .foot u{color:var(--teal-lo)}
+  .lo .cta{margin-top:10px;width:100%;border:none;border-radius:11px;padding:11px;font-family:'Poppins',system-ui,sans-serif;font-weight:700;
+    font-size:12.5px;cursor:pointer;background:var(--night);color:#14122a;position:relative;transition:all .2s}
+  .lo .cta:active{transform:scale(.97)}
+  .lo.done .cta{background:rgba(70,190,197,.14);color:var(--teal);border:1px solid rgba(70,190,197,.35)}
+  .lo.done .cta.armed{background:rgba(232,178,74,.16);color:var(--amber);border-color:rgba(232,178,74,.45)}
+  .lo.done .cta.locked{cursor:default;opacity:.8}
+  .lo-add{width:100%;background:none;border:1.5px dashed rgba(143,140,255,.3);border-radius:16px;padding:13px 14px;
+    color:var(--muted);font-family:'Inter',system-ui,sans-serif;font-size:12.5px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;
+    margin:0 0 9px;transition:all .2s}
+  .lo-add:hover{border-color:rgba(143,140,255,.55);color:#fff}
+  .lo-add em{font-style:normal;font-size:16px}
+  .lo-add b{font-family:'Poppins',system-ui,sans-serif;font-weight:600;color:#fff;display:block;font-size:13px}
+  .lo-add small{display:block;font-size:11px;color:var(--muted2)}
+  /* settings rows in the account sheet */
+  .loset .times{display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center;margin:2px 0 10px}
+  .loset .times em{font-style:normal;color:var(--muted2);font-size:12px}
+  .loset input[type=time]{margin-bottom:0;text-align:center;font-family:'Poppins',system-ui,sans-serif;font-weight:700;font-size:16px;padding:9px 10px}
+  .loset .daypick{margin-bottom:8px}
+  .loset .dp.on{background:rgba(143,140,255,.16);border-color:rgba(143,140,255,.5);color:var(--night-lo)}
+  .loset .qhint{margin:0 0 4px}
+  /* stats card */
+  .lo-gauge{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .lo-gauge svg{width:72px;height:72px;flex-shrink:0}
+  .lo-gauge .g1{fill:none;stroke:rgba(255,255,255,.08);stroke-width:7}
+  .lo-gauge .g2{fill:none;stroke:var(--night);stroke-width:7;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .8s cubic-bezier(.22,1,.36,1)}
+  .lo-gauge b{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:24px;display:block;line-height:1}
+  .lo-gauge span{font-size:11.5px;color:var(--muted);display:block;margin-top:3px}
+  .lo-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+  .lo-kpi{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:9px 6px;text-align:center}
+  .lo-kpi b{display:block;font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
+  .lo-kpi span{display:block;font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .lo-nights{display:flex;gap:4px}
+  .lo-nights i{flex:1;height:22px;border-radius:6px;background:rgba(255,255,255,.06)}
+  .lo-nights i.ok{background:var(--night)}
+  .lo-nights i.miss{background:rgba(226,86,74,.22)}
+  .lo-nights i.off{background:rgba(255,255,255,.03)}
+  .lo-nl{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted2);margin-top:4px}
+  @media (prefers-reduced-motion:reduce){.lo .stars i{animation:none}}
+
   /* account sheet */
   .sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
   .sheetbg.on{opacity:1;pointer-events:auto}
-  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:#211d1e;border-radius:22px 22px 0 0;border-top:1px solid var(--line);padding:22px 22px 34px;max-width:480px;margin:0 auto;transform:translateY(105%);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:#211d1e;border-radius:22px 22px 0 0;border-top:1px solid var(--line);padding:22px 22px calc(34px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto;transform:translateY(105%);transition:transform .4s cubic-bezier(.22,1,.36,1);max-height:88vh;max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   .sheet.on{transform:none}
   .sheet h3{font-size:17px;font-weight:700;margin-bottom:4px}
   .sheet .sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5}
-  .sheet label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 5px 2px;font-family:'Poppins'}
-  .sheet input{width:100%;font-family:'Inter';font-size:15px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:12px;transition:border-color .2s;outline:none}
+  /* "You" sections: Account · Lights out · Haptics · Data */
+  .sheet .sec{font-family:'Poppins',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2);margin:20px 0 10px 2px;padding-top:16px;border-top:1px solid var(--line)}
+  .sheet .sec.first{border-top:none;padding-top:0;margin-top:2px}
+  .sheet .sec + .hapset{margin-top:0;padding-top:0;border-top:none}
+  .sheet .mini{padding:9px 14px;font-size:12.5px;flex-shrink:0}
+  .lo-push{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+  .lo-push .linkbtn{padding-top:8px}
+  .lo-push .linkbtn:disabled{color:var(--muted2);text-decoration:none;cursor:default}
+  .sheet label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 5px 2px;font-family:'Poppins',system-ui,sans-serif}
+  .sheet input{width:100%;font-family:'Inter',system-ui,sans-serif;font-size:15px;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:12px;transition:border-color .2s;outline:none}
   .sheet input:focus{border-color:var(--teal)}
   .sheet .row{display:flex;gap:9px;margin-top:4px}
   .hapset{display:flex;align-items:center;gap:14px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .hapset .hl2{flex:1;min-width:0}
-  .hapset .hl2 b{display:block;font-family:'Poppins';font-size:13.5px;font-weight:600}
+  .hapset .hl2 b{display:block;font-family:'Poppins',system-ui,sans-serif;font-size:13.5px;font-weight:600}
   .hapset .hl2 span{display:block;font-size:11.5px;color:var(--muted2);line-height:1.45;margin-top:1px}
   .tsw{width:46px;height:27px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.06);
        flex-shrink:0;cursor:pointer;padding:0;position:relative;transition:all .25s}
@@ -456,10 +539,10 @@
   .sheet .msg.err{color:var(--red)}
   .sheet .msg.ok{color:var(--teal)}
   .sheet .who{display:flex;align-items:center;gap:12px;background:rgba(70,190,197,.07);border:1px solid rgba(70,190,197,.25);border-radius:14px;padding:14px;margin-bottom:14px}
-  .sheet .who .av{width:40px;height:40px;border-radius:50%;background:var(--teal);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;font-family:'Poppins';font-weight:800;font-size:17px}
+  .sheet .who .av{width:40px;height:40px;border-radius:50%;background:var(--teal);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:17px}
   .sheet .who b{display:block;font-size:14px;word-break:break-all}
   .sheet .who span{font-size:11.5px;color:var(--muted)}
-  .sheet .linkbtn{background:none;border:none;color:var(--teal);font-family:'Inter';font-size:12.5px;font-weight:600;cursor:pointer;padding:10px 2px 0;text-decoration:underline;text-underline-offset:2px}
+  .sheet .linkbtn{background:none;border:none;color:var(--teal);font-family:'Inter',system-ui,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;padding:10px 2px 0;text-decoration:underline;text-underline-offset:2px}
   .sheet .linkbtn:hover{color:#fff}
 
   /* ── splash (A+B, 0.9x) ── */
@@ -468,7 +551,7 @@
   #splash.on{display:flex}
   #splash.exit{animation:spExit .5s cubic-bezier(.55,0,.55,1) forwards}
   @keyframes spExit{to{transform:translateY(-100%)}}
-  .biglogo{font-family:'Poppins';font-weight:800;font-size:27px;letter-spacing:-.03em;display:flex;align-items:baseline}
+  .biglogo{font-family:'Poppins',system-ui,sans-serif;font-weight:800;font-size:27px;letter-spacing:-.03em;display:flex;align-items:baseline}
   .biglogo .h{color:var(--teal);font-weight:600}
   .sp-stage{position:relative;display:flex;align-items:center;justify-content:center}
   .sp-ring{position:absolute;transform:rotate(-90deg)}
@@ -601,6 +684,7 @@
     <div id="habitlist"></div>
     <button class="addbtn" id="addbtn">+ Add habit</button>
     <div class="reordrow" id="reordrow"></div>
+    <div id="lomount"></div>
 
     <div class="checkin" id="checkincard">
       <h3>Daily check-in</h3>
@@ -663,6 +747,7 @@
       <div class="sub">which habits are carrying you - and which need attention</div>
       <div id="hbars"></div>
     </div>
+    <div id="lostats"></div>
 
     <div class="statcard" style="animation-delay:.1s" id="splitcard">
       <h3>Either / or · last 30 days</h3>
@@ -688,7 +773,6 @@
       <div id="insights"></div>
     </div>
 
-    <button class="addbtn" id="exportbtn">⬇ Export my data (CSV)</button>
   </div>
 
   <footer><span class="tag">"The more ways you track, the more ways you win."</span><br />a <b>foqs.</b> tool · foqs.si/habit</footer>
@@ -722,7 +806,7 @@ const fmtShort = k => { const d = fromKey(k); return `${DAYS3[dow(k)]} ${d.getDa
 
 /* ── state ── */
 const LS = 'foqshabit.v1';
-function blank(){ return {v:1, habits:[], log:{}, missLogs:[], missAsked:{}, focus:null, lastSplash:null, haptics:true, lastWeekBuzz:null, lastRecap:null, firstDay:TODAY(), updatedAt:0}; }
+function blank(){ return {v:1, habits:[], log:{}, missLogs:[], missAsked:{}, focus:null, lastSplash:null, haptics:true, lastWeekBuzz:null, lastRecap:null, lo:null, firstDay:TODAY(), updatedAt:0}; }
 let S = blank();
 try { const raw = localStorage.getItem(LS); if(raw) S = Object.assign(blank(), JSON.parse(raw)); } catch(e){}
 if(!S.firstDay) S.firstDay = TODAY();
@@ -1771,6 +1855,7 @@ function renderSplits(){
 }
 
 function renderStats(){
+  renderLOStats();
   renderFeelChart();
   renderSplits();
   /* habit win-rates */
@@ -1863,7 +1948,7 @@ function renderReview(){
   if(top) items.push({ic:"💭", b:"Top miss reason: "+esc(top[0]), s:top[1]+"× in 30 days - the thing to fix next week."});
   if(!items.length) items.push({ic:"📋", b:"Nothing to review yet", s:"Track a few days and your weekly review builds itself."});
   $("reviewbody").innerHTML = items.map(i=>`<div class="insight"><div class="ic">${i.ic}</div><div><b>${i.b}</b><span>${esc(i.s)}</span></div></div>`).join("");
-  $("focusrow").innerHTML = S.habits.length ? `<span style="width:100%;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:'Poppins'">Pick one focus habit</span>` +
+  $("focusrow").innerHTML = S.habits.length ? `<span style="width:100%;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:'Poppins',system-ui,sans-serif">Pick one focus habit</span>` +
     S.habits.map(h=>`<button class="fchip ${S.focus===h.id?'sel':''}" data-fid="${h.id}">${esc(h.n)}</button>`).join("") : "";
   $("focusrow").querySelectorAll(".fchip").forEach(b=>b.addEventListener("click", ()=>{
     S.focus = S.focus===b.dataset.fid ? null : b.dataset.fid;
@@ -1929,8 +2014,8 @@ movePill(TABS[0], true);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>movePill(TABS[curTab], true));
 $("addbtn").addEventListener("click", ()=>{ editing = "new"; renderToday(); });
 
-/* ── export ── */
-$("exportbtn").addEventListener("click", ()=>{
+/* ── export (lives in the You sheet, under Data) ── */
+function exportCSV(){
   const lines = ["date,habit,scheduled,checked,option,productivity,wellbeing,miss_reason"];
   const keys = Object.keys(S.log).sort();
   const missBy = {};
@@ -1952,9 +2037,308 @@ $("exportbtn").addEventListener("click", ()=>{
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
   showToast("⬇ Exported " + (keys.length) + " days");
-});
+}
 
 /* ── splash (A+B, 0.9x speed, once per day) ── */
+/* ══════════ Lights out ══════════
+   A nightly "in bed by" check. It has a window (default 22:00 - 22:30) and can only
+   be checked inside it: before, it waits; after, it locks for that night. It keeps
+   its own score and never touches the habit numbers. */
+const LO_DEF = () => ({on:true, s:"22:00", e:"22:30", days:[1,1,1,1,1,1,1], since:TODAY(), log:{}});
+const loOn = () => !!(S.lo && S.lo.on);
+const hm2m = t => { const a = String(t||"0:0").split(":").map(Number); return (a[0]||0)*60 + (a[1]||0); };
+const m2hm = m => { m = ((m%1440)+1440)%1440; return String(Math.floor(m/60)).padStart(2,"0") + ":" + String(m%60).padStart(2,"0"); };
+function loWin(){ let s = hm2m(S.lo.s), e = hm2m(S.lo.e); if(e <= s) e += 1440; return {s, e}; }
+/* Which night "now" belongs to. Nights are keyed by the day the window opens, so a
+   window that crosses midnight still belongs to the evening it started. */
+function loNow(d){
+  d = d || new Date();
+  let m = d.getHours()*60 + d.getMinutes(), k = keyOf(d);
+  const w = loWin();
+  if(w.e > 1440 && m < w.e - 1440){ m += 1440; k = addD(k,-1); }
+  return {m, k, w};
+}
+const loSched = k => !!S.lo.days[dow(k)] && k >= S.lo.since;
+const loRec = k => (S.lo.log || {})[k] || null;
+/* The rule is "in bed BY the end of the window", not "between". Going to bed
+   early is the better behaviour, so from 20:00 the card can be tapped quietly,
+   without the timer; the window itself is when it wakes up and counts down. */
+const LO_EARLY_FROM = 20*60;
+function loState(){
+  const {m, k, w} = loNow();
+  if(!loSched(k)) return {st:"off", k, m, w, p:0};
+  const r = loRec(k);
+  if(r) return {st:"done", k, m, w, p:1, at:r.at, early:!!r.early, inWindow: m <= w.e};
+  if(m < w.s){
+    if(m >= LO_EARLY_FROM) return {st:"early", k, m, w, p:0};
+    return {st:"before", k, m, w, p:0};
+  }
+  if(m <= w.e) return {st:"open", k, m, w, p:(m - w.s)/(w.e - w.s)};
+  return {st:"missed", k, m, w, p:1};
+}
+/* Its own numbers: nights in bed on time / nights with a window, the current run,
+   and the average time you tapped. Counts every closed night plus tonight if done. */
+function loStats(){
+  const now = loNow();
+  const lastClosed = (now.m > now.w.e || loRec(now.k)) ? now.k : addD(now.k,-1);
+  let n=0, hit=0, run=0, sum=0, cnt=0;
+  const list = [];
+  const s0 = hm2m(S.lo.s);
+  for(let k = S.lo.since, i = 0; k <= lastClosed && i < 400; k = addD(k,1), i++){
+    if(!loSched(k)){ list.push({k, st:"off"}); continue; }
+    const r = loRec(k);
+    n++;
+    if(r){
+      hit++; run++;
+      let mm = hm2m(r.at); if(mm < s0 - 720) mm += 1440;
+      sum += mm; cnt++;
+      list.push({k, st:"ok"});
+    } else { run = 0; list.push({k, st:"miss"}); }
+  }
+  return {n, hit, pct: n ? Math.round(hit/n*100) : null, streak: run, avg: cnt ? m2hm(Math.round(sum/cnt)) : null, list};
+}
+function loStars(){
+  let out = "", seed = 11;
+  const r = () => { seed = (seed*1103515245 + 12345) & 0x7fffffff; return seed/0x7fffffff; };
+  for(let i=0;i<16;i++) out += `<i style="left:${(r()*100).toFixed(1)}%;top:${(r()*100).toFixed(1)}%;animation-delay:${(r()*3).toFixed(2)}s"></i>`;
+  return out;
+}
+/* Half-ellipse from (10,84) to (290,84); the moon rides along it. */
+const LO_ARC = 335;
+function loArcPt(p){ const a = Math.PI*(1-p); return {x:150 + 140*Math.cos(a), y:84 - 70*Math.sin(a)}; }
+function loMins(x){ return x >= 60 ? Math.floor(x/60) + "h " + (x%60) + "m" : x + " min"; }
+
+let loArmed = null, loLastSt = null;
+function renderLO(){
+  const el = $("lomount");
+  if(!el) return;
+  if(!loOn()){
+    el.innerHTML = S.habits.length
+      ? `<button class="lo-add" id="lo-add"><em>🌙</em><span><b>Set up Lights out</b><small>a nightly bedtime check with its own score</small></span></button>`
+      : "";
+    const b = $("lo-add");
+    if(b) b.addEventListener("click", ()=>{ S.lo = Object.assign(LO_DEF(), S.lo && S.lo.log ? {log:S.lo.log, since:S.lo.since} : {}); S.lo.on = true; save(); renderLO(); openSheet(); });
+    return;
+  }
+  const x = loState(), m = loStats();
+  const win = `window <u>${S.lo.s} - ${S.lo.e}</u>`;
+  const score = m.n ? `${m.pct}% · ${m.n} night${m.n===1?"":"s"}` : "first night";
+  let tag, mid, sub, cta = "";
+  if(x.st === "before"){ tag = "tonight"; mid = S.lo.s; sub = "opens in " + loMins(x.w.s - x.m); }
+  else if(x.st === "early"){ tag = "early is fine"; mid = S.lo.s; sub = "window opens in " + loMins(x.w.s - x.m) + " · early counts"; cta = `<button class="cta" id="lo-cta">I'm in bed early</button>`; }
+  else if(x.st === "open"){ tag = "open now"; mid = loMins(x.w.e - x.m); sub = "left in your window"; cta = `<button class="cta" id="lo-cta">I'm in bed</button>`; }
+  else if(x.st === "done"){
+    tag = "lights out"; mid = x.at;
+    const st = m.streak;
+    sub = (x.early ? "in bed early · " : "in bed · ") + (st > 1 ? st + " nights in a row" : "night one");
+    cta = x.inWindow
+      ? `<button class="cta ${loArmed === x.k ? "armed" : ""}" id="lo-cta">${loArmed === x.k ? "Undo?" : "Good night ✓"}</button>`
+      : `<button class="cta locked" id="lo-cta">Good night ✓</button>`;
+  }
+  else if(x.st === "missed"){ tag = "missed tonight"; mid = "-"; sub = "window closed at " + S.lo.e; }
+  else { tag = "off tonight"; mid = "-"; sub = "no window on " + DAYSFULL[dow(x.k)] + "s"; }
+  const pp = x.st === "done" || x.st === "missed" ? 1 : x.st === "open" ? x.p : 0;
+  const pt = loArcPt(pp);
+  el.innerHTML = `<div class="sechead"><h2>Tonight</h2><span>separate score</span></div>
+    <div class="lo ${x.st}" id="lo-card">
+      <div class="stars">${loStars()}</div>
+      <div class="head"><b><em>🌙</em>Lights out</b><span class="tag">${tag}</span></div>
+      <div class="arcwrap"><svg class="arc" viewBox="0 0 300 96">
+        <path class="arcbg" d="M10,84 A140,70 0 0 1 290,84"/>
+        <path class="arcfg" d="M10,84 A140,70 0 0 1 290,84" style="stroke-dasharray:${LO_ARC};stroke-dashoffset:${(LO_ARC*(1-pp)).toFixed(1)}"/>
+        ${x.st === "missed" || x.st === "off" ? "" : `<circle class="moon" r="5" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}"/>`}
+      </svg><div class="mid"><b>${mid}</b><span>${sub}</span></div></div>
+      <div class="foot"><span>${win}</span><span>${score}</span></div>${cta}
+    </div>`;
+  const card = $("lo-card"), btn = $("lo-cta");
+  if(x.st === "open" || x.st === "early"){
+    /* the whole card checks - a big, easy target when you are already tired */
+    card.addEventListener("click", ()=>{
+      S.lo.log[x.k] = x.st === "early" ? {at: m2hm(x.m), early:true} : {at: m2hm(x.m)};
+      save(); buzz("close"); renderLO(); renderStats();
+    });
+  } else if(x.st === "done" && x.inWindow && btn){
+    /* undo only via the button, and only with two taps, and only while the
+       window is still open - once it closes the night is written */
+    btn.addEventListener("click", e=>{
+      e.stopPropagation();
+      if(loArmed !== x.k){
+        loArmed = x.k; renderLO();
+        setTimeout(()=>{ if(loArmed === x.k){ loArmed = null; renderLO(); } }, 3000);
+        return;
+      }
+      loArmed = null;
+      delete S.lo.log[x.k];
+      save(); buzz("undo"); renderLO(); renderStats();
+    });
+  }
+  /* a small buzz the moment the window opens, if the app is in front */
+  if(loLastSt === "before" && x.st === "open" && !document.hidden) buzz("tick");
+  loLastSt = x.st;
+}
+/* The timer is live: while a night is pending, redraw every 20 seconds. */
+setInterval(()=>{ if(loOn() && !document.hidden){ const st = loState().st; if(st === "before" || st === "early" || st === "open") renderLO(); } }, 20000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loOn()) renderLO(); });
+
+function renderLOStats(){
+  const el = $("lostats");
+  if(!el) return;
+  if(!loOn()){ el.innerHTML = ""; return; }
+  const m = loStats();
+  const last = m.list.slice(-14);
+  while(last.length < 14) last.unshift({st:"off"});
+  const pct = m.pct == null ? 0 : m.pct;
+  el.innerHTML = `<div class="statcard" style="animation-delay:.09s">
+    <h3>🌙 Lights out</h3>
+    <div class="sub">in bed by ${S.lo.e} · separate from your habit score</div>
+    <div class="lo-gauge"><svg viewBox="0 0 80 80"><circle class="g1" cx="40" cy="40" r="32"/><circle class="g2" cx="40" cy="40" r="32" style="stroke-dasharray:201;stroke-dashoffset:${(201*(1-pct/100)).toFixed(1)}"/></svg>
+      <div><b>${m.n ? m.pct + "%" : "-"}</b><span>${m.n ? "in bed on time · " + m.n + " night" + (m.n===1?"":"s") : "no nights closed yet"}</span></div></div>
+    <div class="lo-kpis">
+      <div class="lo-kpi"><b>${m.streak}</b><span>night streak</span></div>
+      <div class="lo-kpi"><b>${m.avg || "-"}</b><span>avg bedtime</span></div>
+      <div class="lo-kpi"><b>${m.hit}</b><span>on time</span></div>
+    </div>
+    <div class="lo-nights">${last.map(x=>`<i class="${x.st}"></i>`).join("")}</div>
+    <div class="lo-nl"><span>14 nights ago</span><span>last night</span></div>
+  </div>`;
+}
+/* Settings live in the account sheet next to haptics. */
+function addLightsOutRows(sh){
+  const on = loOn();
+  const row = document.createElement("div");
+  row.className = "hapset loset";
+  row.style.flexDirection = "column"; row.style.alignItems = "stretch";
+  row.innerHTML = `<div style="display:flex;align-items:center;gap:14px">
+      <div class="hl2"><b>Nightly bedtime check</b><span>A window to be in bed by, with its own score. It never touches your habit numbers.</span></div>
+      <button class="tsw ${on ? "on" : ""}" role="switch" aria-checked="${on}" aria-label="Lights out" id="lo-tog"><span></span></button>
+    </div>
+    <div id="lo-opts" ${on ? "" : "hidden"} style="margin-top:12px">
+      <label>Be in bed between</label>
+      <div class="times"><input type="time" id="lo-s" value="${on ? S.lo.s : "22:00"}"><em>and</em><input type="time" id="lo-e" value="${on ? S.lo.e : "22:30"}"></div>
+      <label>Nights</label>
+      <div class="daypick">${["M","T","W","T","F","S","S"].map((d,di)=>`<button type="button" class="dp ${on && S.lo.days[di] ? "on" : ""}" data-di="${di}">${d}</button>`).join("")}</div>
+      <p class="qhint">From 20:00 you can tap it early - early counts. Inside the window it counts down. After the window closes, nothing can be checked for that night - that is the point. Nights that are off do not count against you.</p>
+      <div class="lo-push" id="lo-push">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="hl2"><b>Remind me</b><span id="lo-push-hint">${PUSH_HINT_DEFAULT}</span></div>
+          <button class="tsw" role="switch" aria-checked="false" aria-label="Lights out reminder" id="lo-push-tog"><span></span></button>
+        </div>
+        <button class="linkbtn" id="lo-push-test" hidden>Send a test push</button>
+      </div>
+    </div>`;
+  sh.appendChild(row);
+  pushRowUI(row);
+  const tog = row.querySelector("#lo-tog"), opts = row.querySelector("#lo-opts");
+  tog.addEventListener("click", ()=>{
+    if(loOn()){ S.lo.on = false; }
+    else { S.lo = Object.assign(LO_DEF(), S.lo && S.lo.log ? {log:S.lo.log, since:S.lo.since || TODAY()} : {}); S.lo.on = true; }
+    save(); tog.classList.toggle("on", loOn()); tog.setAttribute("aria-checked", String(loOn()));
+    opts.hidden = !loOn();
+    if(loOn()){ row.querySelector("#lo-s").value = S.lo.s; row.querySelector("#lo-e").value = S.lo.e;
+      row.querySelectorAll(".dp").forEach((b,i)=>b.classList.toggle("on", !!S.lo.days[i])); }
+    renderLO(); renderLOStats();
+  });
+  const commit = ()=>{
+    if(!loOn()) return;
+    const sv = row.querySelector("#lo-s").value, ev = row.querySelector("#lo-e").value;
+    if(sv) S.lo.s = sv; if(ev) S.lo.e = ev;
+    let days = [...row.querySelectorAll(".dp")].map(b=>b.classList.contains("on") ? 1 : 0);
+    if(!days.some(Boolean)) days = [1,1,1,1,1,1,1];
+    S.lo.days = days;
+    save(); renderLO(); renderLOStats();
+  };
+  row.querySelector("#lo-s").addEventListener("change", commit);
+  row.querySelector("#lo-e").addEventListener("change", commit);
+  row.querySelectorAll(".dp").forEach(b=>b.addEventListener("click", ()=>{ b.classList.toggle("on"); commit(); }));
+}
+
+/* ══════════ push reminders ══════════
+   One nudge per night, when the Lights out window opens - and none if you are
+   already in bed. The phone only holds a subscription; the server reads the
+   synced state and decides. So: logged in, and an installed app on iPhone. */
+const VAPID_PUB = "BPNIA9QUeCvhBSG5tWVXwxMjQeuvPYlj38qJI-l8P0uLxZJGLEXEHim1qsChV9NTXFhtShxzRHU2esmfCfZxoW4";
+const PUSH_HINT_DEFAULT = "A push when the window opens - unless you're already in bed.";
+const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window && location.protocol !== "file:";
+const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isInstalled = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+function b64ToU8(s){
+  const pad = "=".repeat((4 - s.length % 4) % 4);
+  const bin = atob((s + pad).replace(/-/g, "+").replace(/_/g, "/"));
+  return Uint8Array.from(bin, c => c.charCodeAt(0));
+}
+async function pushSub(){
+  if(!pushSupported()) return null;
+  try { const reg = await navigator.serviceWorker.ready; return await reg.pushManager.getSubscription(); }
+  catch(e){ return null; }
+}
+async function pushSave(sub){
+  const j = sub.toJSON();
+  const rowData = {user_id: user.id, endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth,
+    tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || "Europe/Ljubljana"),
+    ua: navigator.userAgent.slice(0,140), updated_at: new Date().toISOString()};
+  const {error} = await sb.from("push_subs").upsert(rowData, {onConflict: "endpoint"});
+  if(error) throw new Error(error.code === "23505" ? "This device is already registered to another account." : error.message);
+}
+async function pushEnable(){
+  if(!sb || !user) throw new Error("Log in first.");
+  const perm = await Notification.requestPermission();
+  if(perm !== "granted") throw new Error("Notifications were not allowed - nothing changed.");
+  const reg = await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  if(!sub) sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: b64ToU8(VAPID_PUB)});
+  await pushSave(sub);
+  return sub;
+}
+async function pushDisable(sub){
+  try { if(sb && user) await sb.from("push_subs").delete().eq("endpoint", sub.endpoint); } catch(e){}
+  try { await sub.unsubscribe(); } catch(e){}
+}
+/* Keep the server row fresh (time zone, liveness) whenever a logged-in user opens the app. */
+function pushKeepAlive(){
+  if(!sb || !user) return;
+  pushSub().then(sub => { if(sub) pushSave(sub).catch(()=>{}); });
+}
+function pushRowUI(row){
+  const box = row.querySelector("#lo-push"), tog = row.querySelector("#lo-push-tog"),
+        hint = row.querySelector("#lo-push-hint"), test = row.querySelector("#lo-push-test");
+  if(!box) return;
+  let on = false;
+  const setOn = v => { on = v; tog.classList.toggle("on", v); tog.setAttribute("aria-checked", String(v)); test.hidden = !v; };
+  const block = txt => { tog.disabled = true; hint.textContent = txt; };
+  if(!pushSupported()) { block("This browser can't receive push notifications."); return; }
+  if(isIOS() && !isInstalled()) { block("On iPhone: Share → Add to Home Screen, then open foqs.habit from there to turn reminders on."); return; }
+  if(!user) { block("Log in first - the reminder is sent by the server, so it needs to know it's you."); return; }
+  if(Notification.permission === "denied") { block("Notifications are blocked for foqs.si in your browser or system settings."); return; }
+  pushSub().then(sub => setOn(!!sub));
+  tog.addEventListener("click", async ()=>{
+    if(tog.disabled) return;
+    tog.disabled = true;
+    try{
+      if(on){
+        const sub = await pushSub();
+        if(sub) await pushDisable(sub);
+        setOn(false); hint.textContent = PUSH_HINT_DEFAULT; showToast("Reminders off");
+      } else {
+        await pushEnable();
+        setOn(true); hint.textContent = "On for this device. One nudge a night, when the window opens."; showToast("🔔 Reminders on"); buzz("tick");
+      }
+    }catch(e){ hint.textContent = e && e.message ? e.message : "Couldn't change reminders. Try again."; }
+    if(Notification.permission === "denied") block("Notifications are blocked for foqs.si in your browser or system settings.");
+    else tog.disabled = false;
+  });
+  test.addEventListener("click", async ()=>{
+    test.disabled = true; test.textContent = "Sending...";
+    try{
+      const {data, error} = await sb.functions.invoke("push-lights-out", {body: {test: true}});
+      if(error) throw error;
+      const r = data || {};
+      const why = r.results && r.results[0] && !r.results[0].ok ? (r.results[0].code || r.results[0].why) : r.reason;
+      test.textContent = r.sent ? "Sent ✓ - it should pop up any second" : "Nothing sent" + (why ? " (" + why + ")" : "");
+    }catch(e){ test.textContent = "Couldn't send: " + (e && e.message ? e.message : e); }
+    setTimeout(()=>{ test.textContent = "Send a test push"; test.disabled = false; }, 5000);
+  });
+}
+
 /* ══════════ weekly recap ══════════
    Everything below reads last week only. Nothing new is measured: it is the same
    slot() rule the rest of the app uses, pointed one week back. */
@@ -2057,6 +2441,11 @@ function recapCopy(d){
   if(d.topReason) L.push({ic:"💭", t:'You wrote <b>"' + esc(d.topReason[0]) + '"</b> ' + (d.topReason[1] > 1 ? d.topReason[1] + " times" : "once") + " this week."});
   if(d.perfect > 0) L.push({ic:"🏁", t:"<u>" + d.perfect + "</u> perfect " + (d.perfect === 1 ? "day" : "days") + " in the week."});
   if(z > 0 && won) L.push({ic:"🔥", t:"<b>Your streak broke</b>, your week did not. Those are two different numbers."});
+  if(loOn()){
+    let nn=0, hh=0;
+    for(let j=0;j<7;j++){ const k = addD(d.mon,j); if(k >= S.lo.since && S.lo.days[dow(k)]){ nn++; if(loRec(k)) hh++; } }
+    if(nn) L.push({ic:"🌙", t:"In bed on time <u>" + hh + "/" + nn + "</u> nights."});
+  }
   o.lines = L.slice(0,4);
   return o;
 }
@@ -2256,10 +2645,12 @@ function sheetUI(msg, cls){
     $("au-cancelrec").addEventListener("click", ()=>{ recovery = false; sheetUI(); });
     return;
   }
+  /* The "You" sheet: everything that is about you rather than your habits.
+     Account · Lights out · Haptics · Data, top to bottom. */
+  const head = `<h3>You</h3><div class="sub">Everything that is about you, not your habits.</div><div class="sec first">Account</div>`;
   if(user){
-    sh.innerHTML = `<h3>foqs account</h3>
-      <div class="sub">One account for all foqs tools - your habits sync across devices, and it's the same login as Ura+.</div>
-      <div class="who"><div class="av">${esc((user.email||"?")[0].toUpperCase())}</div><div><b>${esc(user.email||"")}</b><span id="syncedat">synced</span></div></div>
+    sh.innerHTML = head + `
+      <div class="who"><div class="av">${esc((user.email||"?")[0].toUpperCase())}</div><div><b>${esc(user.email||"")}</b><span id="syncedat">synced - same login as Ura+</span></div></div>
       <div class="row">
         <button class="btn btn-save" id="syncnow">Sync now</button>
         <button class="btn btn-ghost" id="logout">Log out</button>
@@ -2268,8 +2659,8 @@ function sheetUI(msg, cls){
     $("syncnow").addEventListener("click", async ()=>{ await syncPull(true); await syncPush(); sheetUI("Synced ✓","ok"); });
     $("logout").addEventListener("click", async ()=>{ await sb.auth.signOut(); });
   } else {
-    sh.innerHTML = `<h3>foqs account</h3>
-      <div class="sub">Log in to sync your habits across devices. One account for all foqs tools - if you already use <b style="color:#ddd">Ura+</b>, the same login works here.</div>
+    sh.innerHTML = head + `
+      <div class="sub" style="margin-bottom:12px">Log in to sync across devices and get reminders. One account for all foqs tools - if you already use <b style="color:#ddd">Ura+</b>, the same login works here.</div>
       <label>Email</label><input type="email" id="au-email" placeholder="you@example.com" autocomplete="email" />
       <label>Password</label><input type="password" id="au-pass" placeholder="••••••••" autocomplete="current-password" />
       <div class="row">
@@ -2285,7 +2676,22 @@ function sheetUI(msg, cls){
       $("au-pass").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
     }
   }
-  addHapticsRow(sh);
+  addSec(sh, "🌙 Lights out"); addLightsOutRows(sh);
+  addSec(sh, "Haptics");       addHapticsRow(sh);
+  addSec(sh, "Data");          addDataRows(sh);
+}
+function addSec(sh, title){
+  const d = document.createElement("div");
+  d.className = "sec"; d.textContent = title;
+  sh.appendChild(d);
+}
+function addDataRows(sh){
+  const row = document.createElement("div");
+  row.className = "hapset";
+  row.innerHTML = `<div class="hl2"><b>Export my data</b><span>One CSV row per habit per day: scheduled, checked, option, mood scores and miss reasons. Yours to keep.</span></div>
+    <button class="btn btn-ghost mini" id="exportbtn">⬇ CSV</button>`;
+  sh.appendChild(row);
+  row.querySelector("#exportbtn").addEventListener("click", exportCSV);
 }
 /* Vibration is something people either love or switch off, so it gets its own
    control instead of forcing a trip to the system settings. */
@@ -2381,7 +2787,7 @@ function initAuth(){
   sb.auth.getSession().then(({data})=>{
     user = data.session ? data.session.user : null;
     avatarUI();
-    if(user){ syncPull().then(syncPush); }
+    if(user){ syncPull().then(syncPush); pushKeepAlive(); }
   });
 }
 document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && user) syncPull(); });
@@ -2409,7 +2815,7 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
 }
 
 /* ── go ── */
-function renderAll(){ renderRecapChip(); renderToday(); renderMiss(); restoreCheckin(); render(); }
+function renderAll(){ renderRecapChip(); renderToday(); renderLO(); renderMiss(); restoreCheckin(); render(); }
 renderAll();
 
 /* If the app is left open past midnight, roll over to the new day instead of
