@@ -1,13 +1,14 @@
 /* foqs.habit service worker
    Served from /habit/ on GitHub Pages. Scope is /habit/ only.
    Cache name is unique so it never collides with the Ura+ app on the same origin. */
-const CACHE = 'foqs-habit-v10';
+const CACHE = 'foqs-habit-v11';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './badge-96.png'
 ];
 
 self.addEventListener('install', e => {
@@ -78,7 +79,7 @@ self.addEventListener('push', e => {
     body: d.body || '',
     tag: d.tag || 'foqs-habit',
     icon: './icon-192.png',
-    badge: './icon-192.png',
+    badge: './badge-96.png',   /* monochrome, alpha only: Android paints it white in the status bar */
     data: { url: d.url || './' },
     renotify: false
   }));

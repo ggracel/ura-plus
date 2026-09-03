@@ -2223,7 +2223,6 @@ function addLightsOutRows(sh){
           <div class="hl2"><b>Remind me</b><span id="lo-push-hint">${PUSH_HINT_DEFAULT}</span></div>
           <button class="tsw" role="switch" aria-checked="false" aria-label="Lights out reminder" id="lo-push-tog"><span></span></button>
         </div>
-        <button class="linkbtn" id="lo-push-test" hidden>Send a test push</button>
       </div>
     </div>`;
   sh.appendChild(row);
@@ -2300,10 +2299,10 @@ function pushKeepAlive(){
 }
 function pushRowUI(row){
   const box = row.querySelector("#lo-push"), tog = row.querySelector("#lo-push-tog"),
-        hint = row.querySelector("#lo-push-hint"), test = row.querySelector("#lo-push-test");
+        hint = row.querySelector("#lo-push-hint");
   if(!box) return;
   let on = false;
-  const setOn = v => { on = v; tog.classList.toggle("on", v); tog.setAttribute("aria-checked", String(v)); test.hidden = !v; };
+  const setOn = v => { on = v; tog.classList.toggle("on", v); tog.setAttribute("aria-checked", String(v)); };
   const block = txt => { tog.disabled = true; hint.textContent = txt; };
   if(!pushSupported()) { block("This browser can't receive push notifications."); return; }
   if(isIOS() && !isInstalled()) { block("On iPhone: Share → Add to Home Screen, then open foqs.habit from there to turn reminders on."); return; }
@@ -2325,17 +2324,6 @@ function pushRowUI(row){
     }catch(e){ hint.textContent = e && e.message ? e.message : "Couldn't change reminders. Try again."; }
     if(Notification.permission === "denied") block("Notifications are blocked for foqs.si in your browser or system settings.");
     else tog.disabled = false;
-  });
-  test.addEventListener("click", async ()=>{
-    test.disabled = true; test.textContent = "Sending...";
-    try{
-      const {data, error} = await sb.functions.invoke("push-lights-out", {body: {test: true}});
-      if(error) throw error;
-      const r = data || {};
-      const why = r.results && r.results[0] && !r.results[0].ok ? (r.results[0].code || r.results[0].why) : r.reason;
-      test.textContent = r.sent ? "Sent ✓ - it should pop up any second" : "Nothing sent" + (why ? " (" + why + ")" : "");
-    }catch(e){ test.textContent = "Couldn't send: " + (e && e.message ? e.message : e); }
-    setTimeout(()=>{ test.textContent = "Send a test push"; test.disabled = false; }, 5000);
   });
 }
 
