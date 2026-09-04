@@ -511,8 +511,10 @@
   .sheet h3{font-size:17px;font-weight:700;margin-bottom:4px}
   .sheet .sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5}
   /* "You" sections: Account · Lights out · Haptics · Data */
-  .sheet .sec{font-family:'Poppins',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2);margin:20px 0 10px 2px;padding-top:16px;border-top:1px solid var(--line)}
+  .sheet .sec{display:flex;align-items:center;gap:7px;font-family:'Poppins',system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2);margin:20px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
   .sheet .sec.first{border-top:none;padding-top:0;margin-top:2px}
+  /* the section icon is an inline SVG, not an emoji: it sits flush with the rule and the text, on every phone */
+  .sheet .sec svg{width:12px;height:12px;flex-shrink:0;display:block;fill:var(--moon)}
   .sheet .sec + .hapset{margin-top:0;padding-top:0;border-top:none}
   .sheet .mini{padding:9px 14px;font-size:12.5px;flex-shrink:0}
   .lo-push{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
@@ -2664,13 +2666,15 @@ function sheetUI(msg, cls){
       $("au-pass").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
     }
   }
-  addSec(sh, "🌙 Lights out"); addLightsOutRows(sh);
+  addSec(sh, "Lights out", SEC_MOON); addLightsOutRows(sh);
   addSec(sh, "Haptics");       addHapticsRow(sh);
   addSec(sh, "Data");          addDataRows(sh);
 }
-function addSec(sh, title){
+const SEC_MOON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.68 1.01A7 7 0 1 0 12.4 12.45A6.6 6.6 0 0 1 6.68 1.01Z"/></svg>`;
+function addSec(sh, title, icon){
   const d = document.createElement("div");
-  d.className = "sec"; d.textContent = title;
+  d.className = "sec";
+  d.innerHTML = (icon || "") + `<span>${title}</span>`;
   sh.appendChild(d);
 }
 function addDataRows(sh){
